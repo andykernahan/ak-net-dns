@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6C6E4B6D-DEFD-4B1F-9C25-EFD99897772F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AK.Net.Dns.Test</RootNamespace>
+    <AssemblyName>AK.Net.Dns.Test</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Gallio, Version=3.0.5.546, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedLibs\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit, Version=3.0.5.546, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
+    <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SharedLibs\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\DnsSmartTransportSectionTest.cs" />
+    <Compile Include="Configuration\DnsEndPointElementCollectionTest.cs" />
+    <Compile Include="Configuration\DnsEndPointElementTest.cs" />
+    <Compile Include="Configuration\DnsStubResolverSection.cs" />
+    <Compile Include="Configuration\DnsResolverSectionTest.cs" />
+    <Compile Include="Configuration\DnsTcpTransportSectionTest.cs" />
+    <Compile Include="Configuration\DnsTransportSectionTest.cs" />
+    <Compile Include="Configuration\DnsUdpTransportSectionTest.cs" />
+    <Compile Include="Configuration\TypeConversion\DnsNameConverterTest.cs" />
+    <Compile Include="Configuration\TypeConversion\DnsNameCustomTypeDescriptorTest.cs" />
+    <Compile Include="Configuration\TypeConversion\DnsNameTypeDescriptionProviderTest.cs" />
+    <Compile Include="Configuration\TypeConversion\IPAddressConverterTest.cs" />
+    <Compile Include="Configuration\TypeConversion\IPAddressCustomTypeDescriptorTest.cs" />
+    <Compile Include="Configuration\TypeConversion\IPAddressTypeDescriptionProviderTest.cs" />
+    <Compile Include="Configuration\TypeConversion\RuntimeTypeConverterTest.cs" />
+    <Compile Include="Configuration\TypeConversion\RuntimeTypeCustomTypeDescriptorTest.cs" />
+    <Compile Include="Configuration\TypeConversion\RuntimeTypeTypeDescriptionProviderTest.cs" />
+    <Compile Include="DnsQueryClassTest.cs" />
+    <Compile Include="EnumSuperSetTest.cs" />
+    <Compile Include="DnsQueryTypeTest.cs" />
+    <Compile Include="DisposableTest.cs" />
+    <Compile Include="DnsAsyncStateTest.cs" />
+    <Compile Include="DnsClockTest.cs" />
+    <Compile Include="DnsFuncsTest.cs" />
+    <Compile Include="DnsHeaderTest.cs" />
+    <Compile Include="DnsQueryTest.cs" />
+    <Compile Include="DnsQuestionCollectionTest.cs" />
+    <Compile Include="DnsQuestionTest.cs" />
+    <Compile Include="IO\DnsWireReaderTest.cs" />
+    <Compile Include="DnsRecordCollectionTest.cs" />
+    <Compile Include="DnsRecordTest.cs" />
+    <Compile Include="DnsReplyTest.cs" />
+    <Compile Include="DnsTransportExceptionTest.cs" />
+    <Compile Include="DnsResolutionExceptionTest.cs" />
+    <Compile Include="DnsExceptionTest.cs" />
+    <Compile Include="DnsFormatExceptionTest.cs" />
+    <Compile Include="DnsNameTest.cs" />
+    <Compile Include="IO\DnsWireWriterTest.cs" />
+    <Compile Include="MXInfoTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Records\AaaaRecordTest.cs" />
+    <Compile Include="Records\ARecordTest.cs" />
+    <Compile Include="Records\Builders\DnsNativeRecordBuilderTest.cs" />
+    <Compile Include="Records\CNameRecordTest.cs" />
+    <Compile Include="Records\HInfoRecordTest.cs" />
+    <Compile Include="Records\MInfoRecordTest.cs" />
+    <Compile Include="Records\MXRecordTest.cs" />
+    <Compile Include="Records\NSRecordTest.cs" />
+    <Compile Include="Records\PtrRecordTest.cs" />
+    <Compile Include="Records\SoaRecordTest.cs" />
+    <Compile Include="Records\TxtRecordTest.cs" />
+    <Compile Include="Records\WksRecordTest.cs" />
+    <Compile Include="Records\XRecordTest.cs" />
+    <Compile Include="Resolvers\DnsStubResolverTest.cs" />
+    <Compile Include="Resolvers\DnsResolverTest.cs" />
+    <Compile Include="IO\DnsCompositeTransportTest.cs" />
+    <Compile Include="IO\DnsTcpTransportTest.cs" />
+    <Compile Include="IO\DnsUdpTransportTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AK.Net.Dns\AK.Net.Dns.csproj">
+      <Project>{FF8CF519-EB70-4340-A854-BCCC52CC1D77}</Project>
+      <Name>AK.Net.Dns</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AK.Net.Dns.Test.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

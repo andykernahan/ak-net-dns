@@ -1,0 +1,56 @@
+﻿<project schemaVersion="1.6.0.7">
+    <assemblies>
+        <assembly assemblyPath=".\bin\Docs\AK.Net.Dns.dll" xmlCommentsPath=".\bin\Docs\AK.Net.Dns.xml" commentsOnly="False" />
+    </assemblies>
+    <namespaceSummaries>
+        <namespaceSummaryItem name="" isDocumented="False" />
+        <namespaceSummaryItem name="Ak.Net.Dns" isDocumented="True" />
+        <namespaceSummaryItem name="Ak.Net.Dns.Caching" isDocumented="True" />
+        <namespaceSummaryItem name="Ak.Net.Dns.Configuration" isDocumented="True" />
+        <namespaceSummaryItem name="Ak.Net.Dns.Configuration.TypeConversion" isDocumented="True" />
+        <namespaceSummaryItem name="Ak.Net.Dns.Records" isDocumented="True" />
+        <namespaceSummaryItem name="Ak.Net.Dns.Resolvers" isDocumented="True" />
+        <namespaceSummaryItem name="Ak.Net.Dns.Transports" isDocumented="True" />
+    </namespaceSummaries>
+    <ProjectSummary />
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter</MissingTags>
+    <VisibleItems>Attributes, InheritedMembers, Protected, SealedProtected</VisibleItems>
+    <HtmlHelp1xCompilerPath path="" />
+    <HtmlHelp2xCompilerPath path="" />
+    <OutputPath>.\docs\</OutputPath>
+    <SandcastlePath path="" />
+    <WorkingPath path="" />
+    <CleanIntermediates>True</CleanIntermediates>
+    <KeepLogFile>True</KeepLogFile>
+    <BuildLogFile path="" />
+    <HelpFileFormat>HtmlHelp1x</HelpFileFormat>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <FrameworkVersion>3.5</FrameworkVersion>
+    <IndentHtml>False</IndentHtml>
+    <Preliminary>False</Preliminary>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <RootNamespaceTitle />
+    <HelpTitle>DNS for .NET 3.5 API Documentation</HelpTitle>
+    <HtmlHelpName>AK.Net.Dns</HtmlHelpName>
+    <Language>en-US</Language>
+    <CopyrightHref />
+    <CopyrightText>Copyright © Andy Kernahan 2008</CopyrightText>
+    <FeedbackEMailAddress>andrew.kernahan@gmail.com</FeedbackEMailAddress>
+    <FeedbackEMailLinkText>Andy Kernahan</FeedbackEMailLinkText>
+    <HeaderText />
+    <FooterText />
+    <ProjectLinkType>Local</ProjectLinkType>
+    <SdkLinkType>Msdn</SdkLinkType>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <PresentationStyle>vs2005</PresentationStyle>
+    <NamingMethod>MemberName</NamingMethod>
+    <SyntaxFilters>Standard</SyntaxFilters>
+    <ShowFeedbackControl>False</ShowFeedbackControl>
+    <BinaryTOC>True</BinaryTOC>
+    <IncludeFavorites>False</IncludeFavorites>
+    <CollectionTocStyle>Hierarchical</CollectionTocStyle>
+    <IncludeStopWordList>True</IncludeStopWordList>
+    <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
+    <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+</project>

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AK.Net.Dns.Test", "AK.Net.Dns.Test.csproj", "{6C6E4B6D-DEFD-4B1F-9C25-EFD99897772F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AK.Net.Dns", "..\Ak.Net.Dns\AK.Net.Dns.csproj", "{FF8CF519-EB70-4340-A854-BCCC52CC1D77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C6E4B6D-DEFD-4B1F-9C25-EFD99897772F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6E4B6D-DEFD-4B1F-9C25-EFD99897772F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6E4B6D-DEFD-4B1F-9C25-EFD99897772F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6E4B6D-DEFD-4B1F-9C25-EFD99897772F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF8CF519-EB70-4340-A854-BCCC52CC1D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF8CF519-EB70-4340-A854-BCCC52CC1D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF8CF519-EB70-4340-A854-BCCC52CC1D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF8CF519-EB70-4340-A854-BCCC52CC1D77}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

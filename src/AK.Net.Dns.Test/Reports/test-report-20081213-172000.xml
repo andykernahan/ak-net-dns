@@ -1,0 +1,1701 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.gallio.org/">
+  <testPackageConfig>
+    <assemblyFiles>
+      <assemblyFile>D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.dll</assemblyFile>
+    </assemblyFiles>
+    <hintDirectories />
+    <excludedFrameworkIds />
+    <hostSetup enableShadowCopy="false" configurationFileLocation="appBase" processorArchitecture="None">
+      <configuration legacyUnhandledExceptionPolicyEnabled="true" assertUiEnabled="false" remotingCustomErrorsEnabled="false">
+        <assemblyQualifications />
+        <assemblyDependencies />
+        <supportedRuntimeVersions />
+      </configuration>
+    </hostSetup>
+  </testPackageConfig>
+  <testModel>
+    <test id="c2722843734a7a54" name="Root" fullName="" isTestCase="false">
+      <codeReference />
+      <codeLocation />
+      <metadata>
+        <entry key="TestKind">
+          <value>Root</value>
+        </entry>
+      </metadata>
+      <children>
+        <test id="e9ba7b32f33cfad8" name="MbUnit v3.0.5.546" fullName="MbUnit v3.0.5.546" isTestCase="false">
+          <codeReference />
+          <codeLocation />
+          <metadata>
+            <entry key="TestKind">
+              <value>Framework</value>
+            </entry>
+          </metadata>
+          <children>
+            <test id="3aa4d427857484c" name="Ak.Net.Dns.Test" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test" isTestCase="false">
+              <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+              <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+              <metadata>
+                <entry key="TestKind">
+                  <value>Assembly</value>
+                </entry>
+                <entry key="CodeBase">
+                  <value>D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL</value>
+                </entry>
+                <entry key="Company">
+                  <value>Andy Kernahan</value>
+                </entry>
+                <entry key="Copyright">
+                  <value>Copyright © Andy Kernahan 2008</value>
+                </entry>
+                <entry key="Description">
+                  <value>Unit Tests for Domain Name System Library for .NET 3.5</value>
+                </entry>
+                <entry key="FileVersion">
+                  <value>1.0.0.0</value>
+                </entry>
+                <entry key="Product">
+                  <value>Ak.Net.Dns.Test</value>
+                </entry>
+                <entry key="Title">
+                  <value>Unit Tests for DNS for .NET 3.5</value>
+                </entry>
+                <entry key="Trademark">
+                  <value>Andy Kernahan</value>
+                </entry>
+                <entry key="Version">
+                  <value>1.0.0.0</value>
+                </entry>
+              </metadata>
+              <children>
+                <test id="c09a9da6937be05f" name="DnsTransportExceptionTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest" isTestCase="false">
+                  <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsTransportExceptionTest" />
+                  <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+                  <metadata>
+                    <entry key="TestKind">
+                      <value>Fixture</value>
+                    </entry>
+                    <entry key="TestsOn">
+                      <value>Ak.Net.Dns.DnsTransportException, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                    </entry>
+                  </metadata>
+                  <children>
+                    <test id="439c4513721f46a2" name="ExceptionContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract" isTestCase="false">
+                      <codeReference />
+                      <codeLocation />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Group</value>
+                        </entry>
+                      </metadata>
+                      <children>
+                        <test id="1260d689b625479" name="HasSerializableAttribute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/HasSerializableAttribute" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="bf02b337124b9641" name="HasSerializationConstructor" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/HasSerializationConstructor" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="56bb379adbc08141" name="IsDefaultConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/IsDefaultConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="fcdf799f6864b4e0" name="IsMessageConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/IsMessageConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="a34aa0acf911b510" name="IsMessageAndInnerExceptionConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/IsMessageAndInnerExceptionConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                      </children>
+                      <parameters />
+                    </test>
+                  </children>
+                  <parameters />
+                </test>
+                <test id="c946d49a940c2ad9" name="DnsResolutionExceptionTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest" isTestCase="false">
+                  <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsResolutionExceptionTest" />
+                  <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+                  <metadata>
+                    <entry key="TestKind">
+                      <value>Fixture</value>
+                    </entry>
+                    <entry key="TestsOn">
+                      <value>Ak.Net.Dns.DnsResolutionException, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                    </entry>
+                  </metadata>
+                  <children>
+                    <test id="1e331fc307ad9b63" name="ExceptionContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract" isTestCase="false">
+                      <codeReference />
+                      <codeLocation />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Group</value>
+                        </entry>
+                      </metadata>
+                      <children>
+                        <test id="5857d85b09374363" name="HasSerializableAttribute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/HasSerializableAttribute" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="eaa743b6b98162eb" name="HasSerializationConstructor" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/HasSerializationConstructor" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="d3968ce6e017045" name="IsDefaultConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/IsDefaultConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="232a6f699564d021" name="IsMessageConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/IsMessageConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="d01e849970fbacb3" name="IsMessageAndInnerExceptionConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/IsMessageAndInnerExceptionConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                      </children>
+                      <parameters />
+                    </test>
+                  </children>
+                  <parameters />
+                </test>
+                <test id="baeba53598a8bb1a" name="DnsExceptionTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest" isTestCase="false">
+                  <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsExceptionTest" />
+                  <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+                  <metadata>
+                    <entry key="TestKind">
+                      <value>Fixture</value>
+                    </entry>
+                    <entry key="TestsOn">
+                      <value>Ak.Net.Dns.DnsException, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                    </entry>
+                  </metadata>
+                  <children>
+                    <test id="400e27dba3088f5" name="ExceptionContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract" isTestCase="false">
+                      <codeReference />
+                      <codeLocation />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Group</value>
+                        </entry>
+                      </metadata>
+                      <children>
+                        <test id="ca97e9ae59fd647a" name="HasSerializableAttribute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/HasSerializableAttribute" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="6451c5273fc3094f" name="HasSerializationConstructor" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/HasSerializationConstructor" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="ecd482b58078bb04" name="IsDefaultConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/IsDefaultConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="bb2ad231888ba8e6" name="IsMessageConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/IsMessageConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="7a7cea80af7c2958" name="IsMessageAndInnerExceptionConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/IsMessageAndInnerExceptionConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                      </children>
+                      <parameters />
+                    </test>
+                  </children>
+                  <parameters />
+                </test>
+                <test id="4a5ab2fa812d44e8" name="DnsFormatExceptionTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest" isTestCase="false">
+                  <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsFormatExceptionTest" />
+                  <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+                  <metadata>
+                    <entry key="TestKind">
+                      <value>Fixture</value>
+                    </entry>
+                    <entry key="TestsOn">
+                      <value>Ak.Net.Dns.DnsFormatException, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                    </entry>
+                  </metadata>
+                  <children>
+                    <test id="73ef6f04336945d9" name="ExceptionContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract" isTestCase="false">
+                      <codeReference />
+                      <codeLocation />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Group</value>
+                        </entry>
+                      </metadata>
+                      <children>
+                        <test id="78e851641a6aaa65" name="HasSerializableAttribute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/HasSerializableAttribute" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="bec75193a5676056" name="HasSerializationConstructor" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/HasSerializationConstructor" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="a4cfc3b7a5fd7784" name="IsDefaultConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/IsDefaultConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="cf4b9ef4536fca5" name="IsMessageConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/IsMessageConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="c8bd5d493ee0d8b9" name="IsMessageAndInnerExceptionConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/IsMessageAndInnerExceptionConstructorWellDefined" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                      </children>
+                      <parameters />
+                    </test>
+                  </children>
+                  <parameters />
+                </test>
+                <test id="8f2cb87e5e6d0506" name="DnsNameTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest" isTestCase="false">
+                  <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" />
+                  <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" />
+                  <metadata>
+                    <entry key="TestKind">
+                      <value>Fixture</value>
+                    </entry>
+                    <entry key="TestsOn">
+                      <value>Ak.Net.Dns.DnsName, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                    </entry>
+                  </metadata>
+                  <children>
+                    <test id="a3897482cd4d72bf" name="append_returns_correctly_formatted_name" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/append_returns_correctly_formatted_name" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="append_returns_correctly_formatted_name" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="195" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="653781daee4f0867" name="append_returns_a_new_instance_and_does_not_modify_this" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/append_returns_a_new_instance_and_does_not_modify_this" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="append_returns_a_new_instance_and_does_not_modify_this" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="179" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="b1fc4cd6e5756d10" name="parse_throws_if_name_is_null" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/parse_throws_if_name_is_null" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="parse_throws_if_name_is_null" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="74" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                        <entry key="ExpectedException">
+                          <value>System.ArgumentNullException</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="1ad6dfcde9efb2e7" name="append_throws_if_name_is_absolute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/append_throws_if_name_is_absolute" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="append_throws_if_name_is_absolute" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="170" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                        <entry key="ExpectedException">
+                          <value>System.InvalidOperationException</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="f7ffcbd67062b07e" name="parse_parses_correctly_formatted_names" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/parse_parses_correctly_formatted_names" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="parse_parses_correctly_formatted_names" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="97" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="b1d88700ea768caa" name="try_parse_identifies_incorrectly_formatted_names" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/try_parse_identifies_incorrectly_formatted_names" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="try_parse_identifies_incorrectly_formatted_names" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="111" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="1c6f05a2f4b3c70f" name="parse_throws_if_name_is_empty" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/parse_throws_if_name_is_empty" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="parse_throws_if_name_is_empty" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="81" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                        <entry key="ExpectedException">
+                          <value>System.ArgumentException</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="2ae864f616e7aa32" name="parse_throws_if_name_is_incorrectly_formatted" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/parse_throws_if_name_is_incorrectly_formatted" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="parse_throws_if_name_is_incorrectly_formatted" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="87" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="6d1d389e6b034f26" name="try_parse_parses_correctly_formatted_names" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/try_parse_parses_correctly_formatted_names" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="try_parse_parses_correctly_formatted_names" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="122" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="e1bd6ffc481edec2" name="to_string_should_return_name" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/to_string_should_return_name" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="to_string_should_return_name" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="152" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="a411c2f563701069" name="append_throws_if_name_is_null" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/append_throws_if_name_is_null" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="append_throws_if_name_is_null" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="161" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                        <entry key="ExpectedException">
+                          <value>System.ArgumentNullException</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="8fd98b83deff47a2" name="classify_kind_throws_if_name_is_null" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/classify_kind_throws_if_name_is_null" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="classify_kind_throws_if_name_is_null" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="137" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                        <entry key="ExpectedException">
+                          <value>System.ArgumentNullException</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="30d9e70e80b55f60" name="classify_kind_returns_correct_kind" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/classify_kind_returns_correct_kind" isTestCase="true">
+                      <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="classify_kind_returns_correct_kind" />
+                      <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="143" />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Test</value>
+                        </entry>
+                      </metadata>
+                      <children />
+                      <parameters />
+                    </test>
+                    <test id="858650181e18e1dd" name="ComparisonContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/ComparisonContract" isTestCase="false">
+                      <codeReference />
+                      <codeLocation />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Group</value>
+                        </entry>
+                      </metadata>
+                      <children>
+                        <test id="47f55b6cf585b348" name="ComparableCompareTo" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/ComparisonContract/ComparableCompareTo" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                      </children>
+                      <parameters />
+                    </test>
+                    <test id="d8da80ceda3a759e" name="EqualityContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/EqualityContract" isTestCase="false">
+                      <codeReference />
+                      <codeLocation />
+                      <metadata>
+                        <entry key="TestKind">
+                          <value>Group</value>
+                        </entry>
+                      </metadata>
+                      <children>
+                        <test id="be7a2e836b24787d" name="ObjectEquals" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/EqualityContract/ObjectEquals" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="b143d27c2f20b662" name="ObjectGetHashCode" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/EqualityContract/ObjectGetHashCode" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                        <test id="1f16b7f95f77c757" name="EquatableEqual" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/EqualityContract/EquatableEqual" isTestCase="true">
+                          <codeReference />
+                          <codeLocation />
+                          <metadata>
+                            <entry key="TestKind">
+                              <value>Test</value>
+                            </entry>
+                          </metadata>
+                          <children />
+                          <parameters />
+                        </test>
+                      </children>
+                      <parameters />
+                    </test>
+                  </children>
+                  <parameters />
+                </test>
+              </children>
+              <parameters />
+            </test>
+          </children>
+          <parameters />
+        </test>
+      </children>
+      <parameters />
+    </test>
+    <annotations />
+  </testModel>
+  <testPackageRun startTime="2008-12-13T17:20:00.2376+00:00" endTime="2008-12-13T17:20:07.112+00:00">
+    <testStepRun startTime="2008-12-13T17:20:00.2376+00:00" endTime="2008-12-13T17:20:07.0808+00:00">
+      <testStep id="a8982bc5744d092b" name="Root" fullName="" testId="c2722843734a7a54" isPrimary="true" isTestCase="false" isDynamic="false">
+        <codeReference />
+        <codeLocation />
+        <metadata>
+          <entry key="TestKind">
+            <value>Root</value>
+          </entry>
+        </metadata>
+      </testStep>
+      <children>
+        <testStepRun startTime="2008-12-13T17:20:00.4404+00:00" endTime="2008-12-13T17:20:06.9598+00:00">
+          <testStep id="126967e24d2d3308" name="MbUnit v3.0.5.546" fullName="MbUnit v3.0.5.546" testId="e9ba7b32f33cfad8" isPrimary="true" isTestCase="false" isDynamic="false">
+            <codeReference />
+            <codeLocation />
+            <metadata>
+              <entry key="TestKind">
+                <value>Framework</value>
+              </entry>
+            </metadata>
+          </testStep>
+          <children>
+            <testStepRun startTime="2008-12-13T17:20:00.4872+00:00" endTime="2008-12-13T17:20:06.881+00:00">
+              <testStep id="c89db529043c3f67" name="Ak.Net.Dns.Test" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test" testId="3aa4d427857484c" isPrimary="true" isTestCase="false" isDynamic="false">
+                <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+                <metadata>
+                  <entry key="TestKind">
+                    <value>Assembly</value>
+                  </entry>
+                  <entry key="CodeBase">
+                    <value>D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL</value>
+                  </entry>
+                  <entry key="Company">
+                    <value>Andy Kernahan</value>
+                  </entry>
+                  <entry key="Copyright">
+                    <value>Copyright © Andy Kernahan 2008</value>
+                  </entry>
+                  <entry key="Description">
+                    <value>Unit Tests for Domain Name System Library for .NET 3.5</value>
+                  </entry>
+                  <entry key="FileVersion">
+                    <value>1.0.0.0</value>
+                  </entry>
+                  <entry key="Product">
+                    <value>Ak.Net.Dns.Test</value>
+                  </entry>
+                  <entry key="Title">
+                    <value>Unit Tests for DNS for .NET 3.5</value>
+                  </entry>
+                  <entry key="Trademark">
+                    <value>Andy Kernahan</value>
+                  </entry>
+                  <entry key="Version">
+                    <value>1.0.0.0</value>
+                  </entry>
+                </metadata>
+              </testStep>
+              <children>
+                <testStepRun startTime="2008-12-13T17:20:00.5028+00:00" endTime="2008-12-13T17:20:01.1252+00:00">
+                  <testStep id="4ae3ef64ae797688" name="DnsExceptionTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest" testId="baeba53598a8bb1a" isPrimary="true" isTestCase="false" isDynamic="false">
+                    <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsExceptionTest" />
+                    <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+                    <metadata>
+                      <entry key="TestKind">
+                        <value>Fixture</value>
+                      </entry>
+                      <entry key="TestsOn">
+                        <value>Ak.Net.Dns.DnsException, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                      </entry>
+                    </metadata>
+                  </testStep>
+                  <children>
+                    <testStepRun startTime="2008-12-13T17:20:00.5184+00:00" endTime="2008-12-13T17:20:01.0628+00:00">
+                      <testStep id="afea74ac63324f96" name="ExceptionContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract" testId="400e27dba3088f5" isPrimary="true" isTestCase="false" isDynamic="false">
+                        <codeReference />
+                        <codeLocation />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Group</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children>
+                        <testStepRun startTime="2008-12-13T17:20:00.534+00:00" endTime="2008-12-13T17:20:00.5652+00:00">
+                          <testStep id="2119f0d2c78052f8" name="HasSerializableAttribute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/HasSerializableAttribute" testId="ca97e9ae59fd647a" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="1" duration="0.0325711">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:00.613+00:00" endTime="2008-12-13T17:20:00.63+00:00">
+                          <testStep id="4a1b7760f34f73bb" name="HasSerializationConstructor" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/HasSerializationConstructor" testId="6451c5273fc3094f" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="1" duration="0.0179934">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:00.7312+00:00" endTime="2008-12-13T17:20:00.7624+00:00">
+                          <testStep id="247726976784644c" name="IsDefaultConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/IsDefaultConstructorWellDefined" testId="ecd482b58078bb04" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="6" duration="0.0280775">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:00.8258+00:00" endTime="2008-12-13T17:20:00.8458+00:00">
+                          <testStep id="ecab3224e2c3f3e5" name="IsMessageAndInnerExceptionConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/IsMessageAndInnerExceptionConstructorWellDefined" testId="7a7cea80af7c2958" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="31" duration="0.020750499999999998">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:00.937+00:00" endTime="2008-12-13T17:20:00.952+00:00">
+                          <testStep id="84b4c9e0ae8d7fb1" name="IsMessageConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsExceptionTest/ExceptionContract/IsMessageConstructorWellDefined" testId="bb2ad231888ba8e6" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="16" duration="0.0163647">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                      </children>
+                      <result assertCount="55" duration="0.54706939999999993">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                  </children>
+                  <result assertCount="55" duration="0.6267921">
+                    <outcome status="passed" />
+                  </result>
+                  <testLog>
+                    <streams />
+                    <attachments />
+                  </testLog>
+                </testStepRun>
+                <testStepRun startTime="2008-12-13T17:20:01.172+00:00" endTime="2008-12-13T17:20:01.8802+00:00">
+                  <testStep id="de067039afbac503" name="DnsFormatExceptionTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest" testId="4a5ab2fa812d44e8" isPrimary="true" isTestCase="false" isDynamic="false">
+                    <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsFormatExceptionTest" />
+                    <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+                    <metadata>
+                      <entry key="TestKind">
+                        <value>Fixture</value>
+                      </entry>
+                      <entry key="TestsOn">
+                        <value>Ak.Net.Dns.DnsFormatException, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                      </entry>
+                    </metadata>
+                  </testStep>
+                  <children>
+                    <testStepRun startTime="2008-12-13T17:20:01.173+00:00" endTime="2008-12-13T17:20:01.7714+00:00">
+                      <testStep id="d37b35534e0c7f40" name="ExceptionContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract" testId="73ef6f04336945d9" isPrimary="true" isTestCase="false" isDynamic="false">
+                        <codeReference />
+                        <codeLocation />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Group</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children>
+                        <testStepRun startTime="2008-12-13T17:20:01.188+00:00" endTime="2008-12-13T17:20:01.207+00:00">
+                          <testStep id="9d72cac0dfb22766" name="HasSerializableAttribute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/HasSerializableAttribute" testId="78e851641a6aaa65" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="1" duration="0.0198566">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:01.3302+00:00" endTime="2008-12-13T17:20:01.3458+00:00">
+                          <testStep id="9027ef6469968875" name="HasSerializationConstructor" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/HasSerializationConstructor" testId="bec75193a5676056" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="1" duration="0.0149194">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:01.4232+00:00" endTime="2008-12-13T17:20:01.4392+00:00">
+                          <testStep id="43bd09acd74e1527" name="IsDefaultConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/IsDefaultConstructorWellDefined" testId="a4cfc3b7a5fd7784" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="6" duration="0.0205372">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:01.545+00:00" endTime="2008-12-13T17:20:01.563+00:00">
+                          <testStep id="7d3e18ffa26a562b" name="IsMessageAndInnerExceptionConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/IsMessageAndInnerExceptionConstructorWellDefined" testId="c8bd5d493ee0d8b9" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="31" duration="0.0176401">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:01.6618+00:00" endTime="2008-12-13T17:20:01.6774+00:00">
+                          <testStep id="ee91a9c4aac2a97f" name="IsMessageConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsFormatExceptionTest/ExceptionContract/IsMessageConstructorWellDefined" testId="cf4b9ef4536fca5" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="16" duration="0.0187867">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                      </children>
+                      <result assertCount="55" duration="0.6048735">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                  </children>
+                  <result assertCount="55" duration="0.72712519999999992">
+                    <outcome status="passed" />
+                  </result>
+                  <testLog>
+                    <streams />
+                    <attachments />
+                  </testLog>
+                </testStepRun>
+                <testStepRun startTime="2008-12-13T17:20:01.9582+00:00" endTime="2008-12-13T17:20:04.7856+00:00">
+                  <testStep id="54706aca1408d5c5" name="DnsNameTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest" testId="8f2cb87e5e6d0506" isPrimary="true" isTestCase="false" isDynamic="false">
+                    <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" />
+                    <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" />
+                    <metadata>
+                      <entry key="TestKind">
+                        <value>Fixture</value>
+                      </entry>
+                      <entry key="TestsOn">
+                        <value>Ak.Net.Dns.DnsName, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                      </entry>
+                    </metadata>
+                  </testStep>
+                  <children>
+                    <testStepRun startTime="2008-12-13T17:20:01.9944+00:00" endTime="2008-12-13T17:20:02.0412+00:00">
+                      <testStep id="a6db6c47ef73b957" name="append_returns_a_new_instance_and_does_not_modify_this" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/append_returns_a_new_instance_and_does_not_modify_this" testId="653781daee4f0867" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="append_returns_a_new_instance_and_does_not_modify_this" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="179" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="4" duration="0.044228699999999996">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:02.1216+00:00" endTime="2008-12-13T17:20:02.1486+00:00">
+                      <testStep id="905ac167c4407a0a" name="append_returns_correctly_formatted_name" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/append_returns_correctly_formatted_name" testId="a3897482cd4d72bf" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="append_returns_correctly_formatted_name" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="195" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="4" duration="0.0281766">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:02.2816+00:00" endTime="2008-12-13T17:20:02.3692+00:00">
+                      <testStep id="d71177fa41d90f6c" name="append_throws_if_name_is_absolute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/append_throws_if_name_is_absolute" testId="1ad6dfcde9efb2e7" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="append_throws_if_name_is_absolute" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="170" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                          <entry key="ExpectedException">
+                            <value>System.InvalidOperationException</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="1" duration="0.1089267">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:02.4504+00:00" endTime="2008-12-13T17:20:02.4684+00:00">
+                      <testStep id="42b4025621ab12a0" name="append_throws_if_name_is_null" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/append_throws_if_name_is_null" testId="a411c2f563701069" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="append_throws_if_name_is_null" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="161" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                          <entry key="ExpectedException">
+                            <value>System.ArgumentNullException</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="0" duration="0.0190197">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:02.5828+00:00" endTime="2008-12-13T17:20:02.5998+00:00">
+                      <testStep id="1fae19470ae68d02" name="classify_kind_returns_correct_kind" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/classify_kind_returns_correct_kind" testId="30d9e70e80b55f60" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="classify_kind_returns_correct_kind" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="143" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="14" duration="0.0181997">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:02.7076+00:00" endTime="2008-12-13T17:20:02.7232+00:00">
+                      <testStep id="dfbb98c04d3bd17f" name="classify_kind_throws_if_name_is_null" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/classify_kind_throws_if_name_is_null" testId="8fd98b83deff47a2" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="classify_kind_throws_if_name_is_null" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="137" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                          <entry key="ExpectedException">
+                            <value>System.ArgumentNullException</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="0" duration="0.016155">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:02.8324+00:00" endTime="2008-12-13T17:20:03.0128+00:00">
+                      <testStep id="31a59330580ddd6a" name="ComparisonContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/ComparisonContract" testId="858650181e18e1dd" isPrimary="true" isTestCase="false" isDynamic="false">
+                        <codeReference />
+                        <codeLocation />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Group</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children>
+                        <testStepRun startTime="2008-12-13T17:20:02.8334+00:00" endTime="2008-12-13T17:20:02.8804+00:00">
+                          <testStep id="c019af848e2702c1" name="ComparableCompareTo" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/ComparisonContract/ComparableCompareTo" testId="47f55b6cf585b348" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="354" duration="0.0538468">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                      </children>
+                      <result assertCount="354" duration="0.1974504">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:03.1346+00:00" endTime="2008-12-13T17:20:03.7258+00:00">
+                      <testStep id="ed768e7b7f64f466" name="EqualityContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/EqualityContract" testId="d8da80ceda3a759e" isPrimary="true" isTestCase="false" isDynamic="false">
+                        <codeReference />
+                        <codeLocation />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Group</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children>
+                        <testStepRun startTime="2008-12-13T17:20:03.1502+00:00" endTime="2008-12-13T17:20:03.2438+00:00">
+                          <testStep id="95791c56e48e1666" name="EquatableEqual" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/EqualityContract/EquatableEqual" testId="1f16b7f95f77c757" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="2044" duration="0.0923662">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:03.3514+00:00" endTime="2008-12-13T17:20:03.4562+00:00">
+                          <testStep id="438a0f9309696d6b" name="ObjectEquals" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/EqualityContract/ObjectEquals" testId="be7a2e836b24787d" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="2044" duration="0.0901776">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:03.5668+00:00" endTime="2008-12-13T17:20:03.5858+00:00">
+                          <testStep id="d51c2a00590e9cde" name="ObjectGetHashCode" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/EqualityContract/ObjectGetHashCode" testId="b143d27c2f20b662" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="55" duration="0.0187828">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                      </children>
+                      <result assertCount="4143" duration="0.6068884">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:03.8516+00:00" endTime="2008-12-13T17:20:03.8706+00:00">
+                      <testStep id="7eb47c5ef97fb85f" name="parse_parses_correctly_formatted_names" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/parse_parses_correctly_formatted_names" testId="f7ffcbd67062b07e" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="parse_parses_correctly_formatted_names" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="97" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="52" duration="0.0201382">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:03.9856+00:00" endTime="2008-12-13T17:20:04.0012+00:00">
+                      <testStep id="9d16f23e01fe2460" name="parse_throws_if_name_is_empty" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/parse_throws_if_name_is_empty" testId="1c6f05a2f4b3c70f" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="parse_throws_if_name_is_empty" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="81" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                          <entry key="ExpectedException">
+                            <value>System.ArgumentException</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="0" duration="0.018125">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:04.0972+00:00" endTime="2008-12-13T17:20:04.1162+00:00">
+                      <testStep id="141c3578f5205538" name="parse_throws_if_name_is_incorrectly_formatted" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/parse_throws_if_name_is_incorrectly_formatted" testId="2ae864f616e7aa32" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="parse_throws_if_name_is_incorrectly_formatted" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="87" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="11" duration="0.019271999999999997">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:04.2136+00:00" endTime="2008-12-13T17:20:04.2448+00:00">
+                      <testStep id="4fb75624529460a" name="parse_throws_if_name_is_null" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/parse_throws_if_name_is_null" testId="b1fc4cd6e5756d10" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="parse_throws_if_name_is_null" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="74" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                          <entry key="ExpectedException">
+                            <value>System.ArgumentNullException</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="0" duration="0.0159182">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:04.3538+00:00" endTime="2008-12-13T17:20:04.3698+00:00">
+                      <testStep id="8bb7d99ff1fa6920" name="to_string_should_return_name" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/to_string_should_return_name" testId="e1bd6ffc481edec2" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="to_string_should_return_name" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="152" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="1" duration="0.0166668">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:04.4958+00:00" endTime="2008-12-13T17:20:04.5158+00:00">
+                      <testStep id="4d86e4c39673c09" name="try_parse_identifies_incorrectly_formatted_names" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/try_parse_identifies_incorrectly_formatted_names" testId="b1d88700ea768caa" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="try_parse_identifies_incorrectly_formatted_names" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="111" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="22" duration="0.0204985">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                    <testStepRun startTime="2008-12-13T17:20:04.6348+00:00" endTime="2008-12-13T17:20:04.6568+00:00">
+                      <testStep id="4c3f9e9b3c247d1d" name="try_parse_parses_correctly_formatted_names" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsNameTest/try_parse_parses_correctly_formatted_names" testId="6d1d389e6b034f26" isPrimary="true" isTestCase="true" isDynamic="false">
+                        <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsNameTest" member="try_parse_parses_correctly_formatted_names" />
+                        <codeLocation path="d:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\DnsNameTest.cs" line="122" />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Test</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children />
+                      <result assertCount="65" duration="0.0226891">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                  </children>
+                  <result assertCount="4671" duration="2.8287470999999997">
+                    <outcome status="passed" />
+                  </result>
+                  <testLog>
+                    <streams />
+                    <attachments />
+                  </testLog>
+                </testStepRun>
+                <testStepRun startTime="2008-12-13T17:20:04.917+00:00" endTime="2008-12-13T17:20:05.7348+00:00">
+                  <testStep id="f777c883ae68c2f7" name="DnsResolutionExceptionTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest" testId="c946d49a940c2ad9" isPrimary="true" isTestCase="false" isDynamic="false">
+                    <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsResolutionExceptionTest" />
+                    <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+                    <metadata>
+                      <entry key="TestKind">
+                        <value>Fixture</value>
+                      </entry>
+                      <entry key="TestsOn">
+                        <value>Ak.Net.Dns.DnsResolutionException, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                      </entry>
+                    </metadata>
+                  </testStep>
+                  <children>
+                    <testStepRun startTime="2008-12-13T17:20:04.9326+00:00" endTime="2008-12-13T17:20:05.605+00:00">
+                      <testStep id="fd5e9b1e3b5248e4" name="ExceptionContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract" testId="1e331fc307ad9b63" isPrimary="true" isTestCase="false" isDynamic="false">
+                        <codeReference />
+                        <codeLocation />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Group</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children>
+                        <testStepRun startTime="2008-12-13T17:20:04.9482+00:00" endTime="2008-12-13T17:20:04.9482+00:00">
+                          <testStep id="f755334bd36cbf2e" name="HasSerializableAttribute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/HasSerializableAttribute" testId="5857d85b09374363" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="1" duration="0.0152048">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:05.0512+00:00" endTime="2008-12-13T17:20:05.0682+00:00">
+                          <testStep id="ff772a901c6f9f12" name="HasSerializationConstructor" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/HasSerializationConstructor" testId="eaa743b6b98162eb" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="1" duration="0.0172001">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:05.188+00:00" endTime="2008-12-13T17:20:05.208+00:00">
+                          <testStep id="5c3ae9aaab7beea2" name="IsDefaultConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/IsDefaultConstructorWellDefined" testId="d3968ce6e017045" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="6" duration="0.0203724">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:05.3426+00:00" endTime="2008-12-13T17:20:05.3436+00:00">
+                          <testStep id="567a56266f092aee" name="IsMessageAndInnerExceptionConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/IsMessageAndInnerExceptionConstructorWellDefined" testId="d01e849970fbacb3" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="31" duration="0.0188138">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:05.493+00:00" endTime="2008-12-13T17:20:05.5086+00:00">
+                          <testStep id="626fdc8056f60a11" name="IsMessageConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsResolutionExceptionTest/ExceptionContract/IsMessageConstructorWellDefined" testId="232a6f699564d021" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="16" duration="0.016786199999999998">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                      </children>
+                      <result assertCount="55" duration="0.6969202">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                  </children>
+                  <result assertCount="55" duration="0.83927279999999993">
+                    <outcome status="passed" />
+                  </result>
+                  <testLog>
+                    <streams />
+                    <attachments />
+                  </testLog>
+                </testStepRun>
+                <testStepRun startTime="2008-12-13T17:20:05.8592+00:00" endTime="2008-12-13T17:20:06.729+00:00">
+                  <testStep id="80272c16b39396e3" name="DnsTransportExceptionTest" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest" testId="c09a9da6937be05f" isPrimary="true" isTestCase="false" isDynamic="false">
+                    <codeReference assembly="Ak.Net.Dns.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" namespace="Ak.Net.Dns.Test" type="Ak.Net.Dns.Test.DnsTransportExceptionTest" />
+                    <codeLocation path="D:\andyk\documents\visual-studio\Projects\Ak.Net.Dns\Ak.Net.Dns.Test\bin\Debug\Ak.Net.Dns.Test.DLL" />
+                    <metadata>
+                      <entry key="TestKind">
+                        <value>Fixture</value>
+                      </entry>
+                      <entry key="TestsOn">
+                        <value>Ak.Net.Dns.DnsTransportException, Ak.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=05236629ed6a9b9e</value>
+                      </entry>
+                    </metadata>
+                  </testStep>
+                  <children>
+                    <testStepRun startTime="2008-12-13T17:20:05.8712+00:00" endTime="2008-12-13T17:20:06.6012+00:00">
+                      <testStep id="aa02788126c9bf00" name="ExceptionContract" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract" testId="439c4513721f46a2" isPrimary="true" isTestCase="false" isDynamic="false">
+                        <codeReference />
+                        <codeLocation />
+                        <metadata>
+                          <entry key="TestKind">
+                            <value>Group</value>
+                          </entry>
+                        </metadata>
+                      </testStep>
+                      <children>
+                        <testStepRun startTime="2008-12-13T17:20:05.8822+00:00" endTime="2008-12-13T17:20:05.8992+00:00">
+                          <testStep id="c428c7258def057b" name="HasSerializableAttribute" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/HasSerializableAttribute" testId="1260d689b625479" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="1" duration="0.0153494">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:06.0226+00:00" endTime="2008-12-13T17:20:06.0396+00:00">
+                          <testStep id="d4ad35dee909ce95" name="HasSerializationConstructor" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/HasSerializationConstructor" testId="bf02b337124b9641" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="1" duration="0.0178505">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:06.166+00:00" endTime="2008-12-13T17:20:06.181+00:00">
+                          <testStep id="1885ef5db699ef74" name="IsDefaultConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/IsDefaultConstructorWellDefined" testId="56bb379adbc08141" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="6" duration="0.016426">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:06.3074+00:00" endTime="2008-12-13T17:20:06.3264+00:00">
+                          <testStep id="ef8b00b80e308952" name="IsMessageAndInnerExceptionConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/IsMessageAndInnerExceptionConstructorWellDefined" testId="a34aa0acf911b510" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="31" duration="0.0194132">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                        <testStepRun startTime="2008-12-13T17:20:06.4534+00:00" endTime="2008-12-13T17:20:06.4694+00:00">
+                          <testStep id="3bf85053efd9f44e" name="IsMessageConstructorWellDefined" fullName="MbUnit v3.0.5.546/Ak.Net.Dns.Test/DnsTransportExceptionTest/ExceptionContract/IsMessageConstructorWellDefined" testId="fcdf799f6864b4e0" isPrimary="true" isTestCase="true" isDynamic="false">
+                            <codeReference />
+                            <codeLocation />
+                            <metadata>
+                              <entry key="TestKind">
+                                <value>Test</value>
+                              </entry>
+                            </metadata>
+                          </testStep>
+                          <children />
+                          <result assertCount="16" duration="0.0165468">
+                            <outcome status="passed" />
+                          </result>
+                          <testLog>
+                            <streams />
+                            <attachments />
+                          </testLog>
+                        </testStepRun>
+                      </children>
+                      <result assertCount="55" duration="0.7304221">
+                        <outcome status="passed" />
+                      </result>
+                      <testLog>
+                        <streams />
+                        <attachments />
+                      </testLog>
+                    </testStepRun>
+                  </children>
+                  <result assertCount="55" duration="0.87433069999999991">
+                    <outcome status="passed" />
+                  </result>
+                  <testLog>
+                    <streams />
+                    <attachments />
+                  </testLog>
+                </testStepRun>
+              </children>
+              <result assertCount="4891" duration="6.3921129">
+                <outcome status="passed" />
+              </result>
+              <testLog>
+                <streams />
+                <attachments />
+              </testLog>
+            </testStepRun>
+          </children>
+          <result assertCount="4891" duration="6.5412412">
+            <outcome status="passed" />
+          </result>
+          <testLog>
+            <streams />
+            <attachments />
+          </testLog>
+        </testStepRun>
+      </children>
+      <result assertCount="4891" duration="6.8424758">
+        <outcome status="passed" />
+      </result>
+      <testLog>
+        <streams />
+        <attachments />
+      </testLog>
+    </testStepRun>
+    <statistics assertCount="4891" duration="6.8722484999999995" runCount="37" passedCount="37" failedCount="0" inconclusiveCount="0" skippedCount="0" testCount="37" stepCount="51">
+      <outcomeSummaries>
+        <outcomeSummary count="37">
+          <outcome status="passed" />
+        </outcomeSummary>
+      </outcomeSummaries>
+    </statistics>
+  </testPackageRun>
+</report>

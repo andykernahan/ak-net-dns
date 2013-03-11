@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FF8CF519-EB70-4340-A854-BCCC52CC1D77}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AK.Net.Dns</RootNamespace>
+    <AssemblyName>AK.Net.Dns</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>AK.Net.Dns.snk</AssemblyOriginatorKeyFile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;BUILD_DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\AK.Net.Dns.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>BUILD_RELEASE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\AK.Net.Dns.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Docs|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Docs\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;BUILD_DOCS</DefineConstants>
+    <DocumentationFile>bin\Release\AK.Net.Dns.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Caching\DnsCache2.cs" />
+    <Compile Include="Caching\DnsCache.cs" />
+    <Compile Include="Caching\DnsNullCache.cs" />
+    <Compile Include="Caching\NamespaceDoc.cs" />
+    <Compile Include="Configuration\BaseTypeValidator.cs" />
+    <Compile Include="Configuration\BaseTypeValidatorAttribute.cs" />
+    <Compile Include="Configuration\DnsStubResolverSection.cs" />
+    <Compile Include="Configuration\DnsEndPointElementCollection.cs" />
+    <Compile Include="Configuration\DnsEndPointElement.cs" />
+    <Compile Include="Configuration\DnsSmartTransportSection.cs" />
+    <Compile Include="Configuration\DnsTcpTransportSection.cs" />
+    <Compile Include="Configuration\DnsUdpTransportSection.cs" />
+    <Compile Include="Configuration\DnsTransportSection.cs" />
+    <Compile Include="Configuration\DnsResolverSection.cs" />
+    <Compile Include="Configuration\NamespaceDoc.cs" />
+    <Compile Include="Configuration\TypeConversion\DnsNameConverter.cs" />
+    <Compile Include="Configuration\TypeConversion\DnsNameCustomTypeDescriptor.cs" />
+    <Compile Include="Configuration\TypeConversion\DnsNameTypeDescriptionProvider.cs" />
+    <Compile Include="Configuration\TypeConversion\IPAddressConverter.cs" />
+    <Compile Include="Configuration\TypeConversion\IPAddressCustomTypeDescriptor.cs" />
+    <Compile Include="Configuration\TypeConversion\IPAddressTypeDescriptionProvider.cs" />
+    <Compile Include="Configuration\TypeConversion\NamespaceDoc.cs" />
+    <Compile Include="Configuration\TypeConversion\RuntimeTypeConverter.cs" />
+    <Compile Include="Configuration\TypeConversion\RuntimeTypeCustomTypeDescriptor.cs" />
+    <Compile Include="Configuration\TypeConversion\RuntimeTypeTypeDescriptionProvider.cs" />
+    <Compile Include="IDnsCache2.cs" />
+    <Compile Include="DnsCacheResult2.cs" />
+    <Compile Include="DnsQuery.cs" />
+    <Compile Include="DnsMessage.cs" />
+    <Compile Include="CopyOnMutateCollection.cs" />
+    <Compile Include="AKDns.cs" />
+    <Compile Include="IO\NamespaceDoc.cs" />
+    <Compile Include="Records\Builders\DnsDefaultRecordBuilder.cs" />
+    <Compile Include="Records\Builders\DnsNativeRecordBuilder.cs" />
+    <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="DnsCacheResultType.cs" />
+    <Compile Include="DnsCacheResult.cs" />
+    <Compile Include="IDnsCache.cs" />
+    <Compile Include="IDnsResolver.cs" />
+    <Compile Include="DnsAsyncState.cs" />
+    <Compile Include="Records\Builders\NamespaceDoc.cs" />
+    <Compile Include="Records\SrvRecord.cs" />
+    <Compile Include="Records\MRRecord.cs" />
+    <Compile Include="Records\MBRecord.cs" />
+    <Compile Include="Records\MGRecord.cs" />
+    <Compile Include="Records\SpfRecord.cs" />
+    <Compile Include="Records\DNRecord.cs" />
+    <Compile Include="Records\NamespaceDoc.cs" />
+    <Compile Include="Records\NullRecord.cs" />
+    <Compile Include="Resolvers\NamespaceDoc.cs" />
+    <Compile Include="IO\SocketExtensions.cs" />
+    <Compile Include="IO\DnsSmartTransport.cs" />
+    <Compile Include="IO\DnsTcpTransport.cs" />
+    <Compile Include="IO\DnsTransport.cs" />
+    <Compile Include="IO\DnsUdpTransport.cs" />
+    <Compile Include="DnsTransportException.cs" />
+    <Compile Include="IDnsTransport.cs" />
+    <Compile Include="DnsNameKind.cs" />
+    <Compile Include="IDnsWriter.cs" />
+    <Compile Include="Disposable.cs" />
+    <Compile Include="IDnsReader.cs" />
+    <Compile Include="DnsResolutionException.cs" />
+    <Compile Include="DnsFormatException.cs" />
+    <Compile Include="Guard.cs" />
+    <Compile Include="IDnsRecordBuilder.cs" />
+    <Compile Include="DnsException.cs" />
+    <Compile Include="DnsHeader.cs" />
+    <Compile Include="DnsName.cs" />
+    <Compile Include="DnsQuestion.cs" />
+    <Compile Include="DnsQuestionCollection.cs" />
+    <Compile Include="DnsReply.cs" />
+    <Compile Include="DnsUtility.cs" />
+    <Compile Include="Resolvers\DnsResolver.cs" />
+    <Compile Include="Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MXInfo.cs" />
+    <Compile Include="DnsOpCode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DnsQueryClass.cs" />
+    <Compile Include="DnsQueryType.cs" />
+    <Compile Include="IO\DnsWireWriter.cs" />
+    <Compile Include="DnsResponseCode.cs" />
+    <Compile Include="Records\AaaaRecord.cs" />
+    <Compile Include="Records\ARecord.cs" />
+    <Compile Include="Records\CNameRecord.cs" />
+    <Compile Include="Records\HInfoRecord.cs" />
+    <Compile Include="Records\MInfoRecord.cs" />
+    <Compile Include="Records\MXRecord.cs" />
+    <Compile Include="Records\NSRecord.cs" />
+    <Compile Include="Records\PtrRecord.cs" />
+    <Compile Include="DnsRecordCollection.cs" />
+    <Compile Include="Records\SoaRecord.cs" />
+    <Compile Include="Records\TxtRecord.cs" />
+    <Compile Include="Records\WksRecord.cs" />
+    <Compile Include="Records\XRecord.cs" />
+    <Compile Include="IO\DnsWireReader.cs" />
+    <Compile Include="DnsRecord.cs" />
+    <Compile Include="DnsRecordClass.cs" />
+    <Compile Include="DnsRecordType.cs" />
+    <Compile Include="Resolvers\DnsStubResolver.cs" />
+    <Compile Include="DnsFuncs.cs" />
+    <Compile Include="DnsClock.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AK.Net.Dns.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

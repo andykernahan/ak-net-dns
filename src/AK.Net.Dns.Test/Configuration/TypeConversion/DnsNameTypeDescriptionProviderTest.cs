@@ -1,0 +1,57 @@
+// Copyright 2008 Andy Kernahan
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
+using System.ComponentModel;
+using MbUnit.Framework;
+using MbUnit.Framework.ContractVerifiers;
+
+using AK.Net.Dns.Configuration.TypeConversion;
+
+namespace AK.Net.Dns.Test.Configuration.TypeConversion
+{
+    [TestFixture]
+    [TestsOn(typeof(DnsNameTypeDescriptionProvider))]    
+    public class DnsNameTypeDescriptionProviderTest
+    {
+        [Test]
+        [Repeat(2)]
+        public void register_provider_is_safe_to_call_multiple_times() {
+
+            DnsNameTypeDescriptionProvider.RegisterProvider();
+        }
+
+        [Test]
+        public void register_provider_registers_provider() {
+
+            TypeDescriptionProvider provider;
+
+            DnsNameTypeDescriptionProvider.RegisterProvider();
+            provider = TypeDescriptor.GetProvider(typeof(DnsName));
+            Assert.IsNotNull(provider);
+            Assert.IsInstanceOfType(typeof(DnsNameTypeDescriptionProvider), provider);
+        }        
+
+        [Test]
+        public void get_descriptor_returns_custom_descriptor() {
+
+            ICustomTypeDescriptor descriptor;
+
+            DnsNameTypeDescriptionProvider.RegisterProvider();
+            descriptor = TypeDescriptor.GetProvider(typeof(DnsName)).GetTypeDescriptor(null);
+            Assert.IsNotNull(descriptor);
+            Assert.IsInstanceOfType(typeof(DnsNameCustomTypeDescriptor), descriptor);
+        }
+    }
+}
