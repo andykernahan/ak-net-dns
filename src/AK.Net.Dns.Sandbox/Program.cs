@@ -12,16 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Configuration;
-using System.IO;
 using System.Net;
-using System.Text.RegularExpressions;
-using System.Threading;
-using AK.Net.Dns;
-using AK.Net.Dns.Configuration;
 using AK.Net.Dns.IO;
-using AK.Net.Dns.Caching;
+using log4net.Config;
 
 namespace AK.Net.Dns.Sandbox
 {
@@ -29,15 +22,13 @@ namespace AK.Net.Dns.Sandbox
     {
         static Program()
         {
-
-            log4net.Config.XmlConfigurator.Configure();
+            XmlConfigurator.Configure();
         }
 
         public static void Main(string[] args)
         {
-            var t = AKDns.GetNameServers("rcmap.co.uk.");
-            var p = AKDns.GetMXInfo("rcmap.co.uk.");
-            //var q = AKDns.GetHostEntry("rpc.thekernahans.net.");            
+            var nameServers = AKDns.GetNameServers("rcmap.co.uk.");
+            var mxInfo = AKDns.GetMXInfo("rcmap.co.uk.");            
 
             IDnsTransport transport = new DnsUdpTransport();
 
@@ -45,7 +36,7 @@ namespace AK.Net.Dns.Sandbox
 
             query.Questions.Add(new DnsQuestion("rcmap.co.uk.", DnsQueryType.A, DnsQueryClass.IN));
 
-            DnsReply reply = transport.Send(query, new IPEndPoint(IPAddress.Parse("208.67.222.222"), DnsTransport.DnsPort));
+            DnsReply reply = transport.Send(query, new IPEndPoint(IPAddress.Parse("8.8.8.8"), DnsTransport.DnsPort));
         }
     }
 }
