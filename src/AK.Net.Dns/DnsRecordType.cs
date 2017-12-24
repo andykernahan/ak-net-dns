@@ -122,6 +122,6 @@ namespace AK.Net.Dns
         /// A resource record which contains the Send Policy Framework (SPF)
         /// specification string for the owner.
         /// </summary>
-        Spf = 99,
+        Spf = 99
     }
 }

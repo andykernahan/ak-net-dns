@@ -47,8 +47,8 @@ namespace AK.Net.Dns.Configuration.TypeConversion
         /// <param name="objectType">The object type.</param>
         /// <param name="instance">The object instance.</param>
         /// <returns>The type descriptor for the specified type and instance.</returns>
-        public override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, object instance) {
-
+        public override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, object instance)
+        {
             return IPAddressCustomTypeDescriptor.Instance;
         }
 
@@ -59,10 +59,12 @@ namespace AK.Net.Dns.Configuration.TypeConversion
         /// <remarks>
         /// This method is safe to call multiple times.
         /// </remarks>
-        public static void RegisterProvider() {
-
-            if(Interlocked.Exchange(ref _registeredProvider, 1) == 0)
-                TypeDescriptor.AddProvider(IPAddressTypeDescriptionProvider.Instance, typeof(IPAddress));
+        public static void RegisterProvider()
+        {
+            if (Interlocked.Exchange(ref _registeredProvider, 1) == 0)
+            {
+                TypeDescriptor.AddProvider(Instance, typeof(IPAddress));
+            }
         }
 
         #endregion

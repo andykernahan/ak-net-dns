@@ -14,8 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-
-using AK.Net.Dns.Records;
 using AK.Net.Dns.Records.Builders;
 
 namespace AK.Net.Dns
@@ -28,17 +26,37 @@ namespace AK.Net.Dns
     [Serializable]
     public abstract class DnsRecord
     {
+        #region Protected Interface.
+
+        /// <summary>
+        /// Initialises a new instance of the DnsRecord class and specifies the
+        /// owner name, the resource record class and the TTL of the record.
+        /// </summary>
+        /// <param name="owner">The owner name.</param>
+        /// <param name="type">The class of resource record.</param>
+        /// <param name="cls">The class of resource record.</param>
+        /// <param name="ttl">The TTL.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown when <paramref name="owner"/> is <see langword="null"/>.
+        /// </exception>
+        protected DnsRecord(DnsName owner, DnsRecordType type, DnsRecordClass cls, TimeSpan ttl)
+        {
+            Guard.NotNull(owner, "owner");
+
+            Owner = owner;
+            Type = type;
+            Class = cls;
+            Ttl = ttl;
+            Expires = DnsClock.Now() + ttl;
+        }
+
+        #endregion
+
         #region Private Fields.
 
-        private readonly DnsRecordClass _class;
-        private readonly DnsRecordType _type;
-        private readonly DnsName _owner;
-        private readonly TimeSpan _ttl;
-        private readonly DateTime _expires;
+        private static readonly IList<IDnsRecordBuilder> _builders;
 
-        private static readonly IList<IDnsRecordBuilder> _builders;        
-
-        #endregion        
+        #endregion
 
         #region Public Interface.
 
@@ -66,10 +84,10 @@ namespace AK.Net.Dns
         /// <summary>
         /// DnsRecord class constructor.
         /// </summary>
-        static DnsRecord() {
-
+        static DnsRecord()
+        {
             _builders = new CopyOnMutateCollection<IDnsRecordBuilder>(
-                new IDnsRecordBuilder[] { DnsNativeRecordBuilder.Instance }
+                new IDnsRecordBuilder[] {DnsNativeRecordBuilder.Instance}
             );
         }
 
@@ -84,8 +102,8 @@ namespace AK.Net.Dns
         /// The builder for the specified <paramref name="type"/>. If no exact
         /// builder exists; the default record builder is injected.
         /// </returns>
-        public static IDnsRecordBuilder GetBuilder(DnsRecordType type) {
-
+        public static IDnsRecordBuilder GetBuilder(DnsRecordType type)
+        {
             return GetBuilder(type, true);
         }
 
@@ -105,11 +123,14 @@ namespace AK.Net.Dns
         /// and <paramref name="injectDefault"/> is <see langword="false"/>;
         /// <see langword="null"/> is returned.
         /// </returns>
-        public static IDnsRecordBuilder GetBuilder(DnsRecordType type, bool injectDefault) {
-
-            foreach(IDnsRecordBuilder builder in _builders) {
-                if(builder.CanBuild(type))
+        public static IDnsRecordBuilder GetBuilder(DnsRecordType type, bool injectDefault)
+        {
+            foreach (var builder in _builders)
+            {
+                if (builder.CanBuild(type))
+                {
                     return builder;
+                }
             }
 
             return injectDefault ? DnsDefaultRecordBuilder.Instance : null;
@@ -123,13 +144,16 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="builder"/> is <see langword="null"/>.
         /// </exception>
-        public static void AddBuilder(IDnsRecordBuilder builder) {
-
+        public static void AddBuilder(IDnsRecordBuilder builder)
+        {
             Guard.NotNull(builder, "builder");
 
-            lock(_builders) {
-                if(!_builders.Contains(builder))
+            lock (_builders)
+            {
+                if (!_builders.Contains(builder))
+                {
                     _builders.Add(builder);
+                }
             }
         }
 
@@ -137,58 +161,43 @@ namespace AK.Net.Dns
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0,-25} {1,-6} {2,-6} {3,-6}", 
-                this.Owner, DnsUtility.ToString(this.Ttl), DnsUtility.ToString(this.Class),
-                DnsUtility.ToString(this.Type));
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0,-25} {1,-6} {2,-6} {3,-6}",
+                Owner, DnsUtility.ToString(Ttl), DnsUtility.ToString(Class),
+                DnsUtility.ToString(Type));
         }
 
         /// <summary>
         /// Gets the name of the DNS node to which this resource record relates.
         /// </summary>
-        public DnsName Owner {
-
-            get { return _owner; }
-        }
+        public DnsName Owner { get; }
 
         /// <summary>
         /// Gets the type of this resource record.
         /// </summary>
-        public DnsRecordType Type {
-
-            get { return _type; }
-        }
+        public DnsRecordType Type { get; }
 
         /// <summary>
         /// Gets the class of this resource record.
         /// </summary>
-        public DnsRecordClass Class {
-
-            get { return _class; }
-        }
+        public DnsRecordClass Class { get; }
 
         /// <summary>
         /// Gets the Time To Live (TTL) value.
         /// </summary>
-        public TimeSpan Ttl {
-
-            get { return _ttl; }
-        }
+        public TimeSpan Ttl { get; }
 
         /// <summary>
         /// Gets the date time at which this resource records expires.
         /// </summary>
-        public DateTime Expires {
-
-            get { return _expires; }
-        }
+        public DateTime Expires { get; }
 
         /// <summary>
         /// Returns a value indicating if this resource record is alive.
         /// </summary>
-        public bool IsAlive() {
-
+        public bool IsAlive()
+        {
             return IsAlive(DnsClock.Now());
         }
 
@@ -196,35 +205,9 @@ namespace AK.Net.Dns
         /// Returns a value indicating if this resource record is alive.
         /// </summary>
         /// <param name="dateTime">The current date time.</param>
-        public bool IsAlive(DateTime dateTime) {
-
-            return dateTime <= this.Expires;
-        }
-
-        #endregion
-
-        #region Protected Interface.
-
-        /// <summary>
-        /// Initialises a new instance of the DnsRecord class and specifies the
-        /// owner name, the resource record class and the TTL of the record.
-        /// </summary>
-        /// <param name="owner">The owner name.</param>
-        /// <param name="type">The class of resource record.</param>
-        /// <param name="cls">The class of resource record.</param>
-        /// <param name="ttl">The TTL.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when <paramref name="owner"/> is <see langword="null"/>.
-        /// </exception>
-        protected DnsRecord(DnsName owner, DnsRecordType type, DnsRecordClass cls, TimeSpan ttl) {
-
-            Guard.NotNull(owner, "owner");
-
-            _owner = owner;
-            _type = type;
-            _class = cls;
-            _ttl = ttl;
-            _expires = DnsClock.Now() + ttl;
+        public bool IsAlive(DateTime dateTime)
+        {
+            return dateTime <= Expires;
         }
 
         #endregion

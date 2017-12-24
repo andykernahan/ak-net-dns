@@ -25,11 +25,6 @@ namespace AK.Net.Dns
         #region Public Interface.
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="DnsReply"/> class.
-        /// </summary>
-        public DnsReply() { }
-
-        /// <summary>
         /// Reads the values of this <see cref="DnsReply"/> from the specified
         /// <see cref="AK.Net.Dns.IDnsReader"/>.
         /// </summary>
@@ -43,13 +38,15 @@ namespace AK.Net.Dns
         /// Thrown when the <see cref="DnsReply"/> could not be read from the 
         /// <paramref name="reader"/>.
         /// </exception>
-        public override void Read(IDnsReader reader) {
-
+        public override void Read(IDnsReader reader)
+        {
             Guard.NotNull(reader, "reader");
 
             base.Read(reader);
-            if(this.Header.IsQuery)
+            if (Header.IsQuery)
+            {
                 throw Guard.DnsReplyExpected();
+            }
         }
 
         #endregion

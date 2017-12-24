@@ -13,15 +13,13 @@
 // limitations under the License.
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-
-using AK.Net.Dns.Resolvers;
 using AK.Net.Dns.IO;
+using AK.Net.Dns.Resolvers;
 
 namespace AK.Net.Dns.Configuration
 {
@@ -102,14 +100,35 @@ namespace AK.Net.Dns.Configuration
     /// </code>
     /// </example>
     public class DnsStubResolverSection : DnsResolverSection
-    {        
+    {
+        #region Private Impl.
+
+        private IEnumerable<IPEndPoint> DiscoverNetworkServers()
+        {
+            try
+            {
+                return (from network in NetworkInterface.GetAllNetworkInterfaces()
+                    where network.OperationalStatus == OperationalStatus.Up &&
+                          network.NetworkInterfaceType != NetworkInterfaceType.Loopback
+                    from address in network.GetIPProperties().DnsAddresses
+                    select new IPEndPoint(address, DnsTransport.DnsPort)).Distinct();
+            }
+            catch (NetworkInformationException exc)
+            {
+                Log.Error("discovery of network servers failed due to exception:", exc);
+                return DnsUtility.EMPTY_EP_ARRAY;
+            }
+        }
+
+        #endregion
+
         #region Public Interface.
 
         /// <summary>
         /// Defines the default location of the DnsStubResolverSection. This field is
         /// constant.
         /// </summary>
-        public const string DefaultLocation = DnsResolverSection.BaseLocation + "/stub";
+        public const string DefaultLocation = BaseLocation + "/stub";
 
         /// <summary>
         /// Applies this configuration to the specified <paramref name="resolver"/>.
@@ -118,25 +137,31 @@ namespace AK.Net.Dns.Configuration
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="resolver"/> is <see langword="null"/>.
         /// </exception>
-        public override void Apply(IDnsResolver resolver) {
-
-            DnsStubResolver stub = (DnsStubResolver)resolver;
+        public override void Apply(IDnsResolver resolver)
+        {
+            var stub = (DnsStubResolver)resolver;
 
             base.Apply(resolver);
-            lock(stub.Servers) {
+            lock (stub.Servers)
+            {
                 stub.Servers.Clear();
-                if(this.DiscoverServers) {
-                    this.Log.Info("discovering network servers");
-                    foreach(IPEndPoint server in DiscoverNetworkServers()) {
+                if (DiscoverServers)
+                {
+                    Log.Info("discovering network servers");
+                    foreach (var server in DiscoverNetworkServers())
+                    {
                         stub.Servers.Add(server);
-                        this.Log.InfoFormat("discovered server, ep={0}", server);
+                        Log.InfoFormat("discovered server, ep={0}", server);
                     }
                 }
-                foreach(DnsEndPointElement element in this.Servers)
+                foreach (DnsEndPointElement element in Servers)
+                {
                     stub.Servers.Add(element.Endpoint);
-                if(stub.Servers.Count == 0) {
-                    this.Log.Error("no servers specified in configuration and dicovery of network servers " +
-                    "failed to yield any servers or is disabled");
+                }
+                if (stub.Servers.Count == 0)
+                {
+                    Log.Error("no servers specified in configuration and dicovery of network servers " +
+                              "failed to yield any servers or is disabled");
                 }
             }
         }
@@ -145,10 +170,10 @@ namespace AK.Net.Dns.Configuration
         /// Gets the DnsStubResolverSection from its default location.
         /// </summary>
         /// <returns>The DnsStubResolverSection from its default location.</returns>
-        public static DnsStubResolverSection GetSection() {
-
+        public static DnsStubResolverSection GetSection()
+        {
             return (DnsStubResolverSection)ConfigurationManager.GetSection(
-                DnsStubResolverSection.DefaultLocation) ?? new DnsStubResolverSection();
+                       DefaultLocation) ?? new DnsStubResolverSection();
         }
 
         /// <summary>
@@ -157,10 +182,10 @@ namespace AK.Net.Dns.Configuration
         /// queries.
         /// </summary>
         [ConfigurationProperty("", IsDefaultCollection = true)]
-        public DnsEndPointElementCollection Servers {
-
-            get { return (DnsEndPointElementCollection)this[""]; }
-            set { this[""] = value; }
+        public DnsEndPointElementCollection Servers
+        {
+            get => (DnsEndPointElementCollection)this[""];
+            set => this[""] = value;
         }
 
         /// <summary>
@@ -170,28 +195,7 @@ namespace AK.Net.Dns.Configuration
         /// <remarks>If this property is <see langword="true"/> then the discovered network
         /// servers will take priority over those specified in the configuration file.</remarks>
         [ConfigurationProperty("discoverServers", IsRequired = false, DefaultValue = true)]
-        public bool DiscoverServers {
-
-            get { return (bool)this["discoverServers"]; }
-        }
-
-        #endregion        
-
-        #region Private Impl.
-        
-        private IEnumerable<IPEndPoint> DiscoverNetworkServers() {
-
-            try {
-                return (from network in NetworkInterface.GetAllNetworkInterfaces()
-                        where network.OperationalStatus == OperationalStatus.Up &&
-                        network.NetworkInterfaceType != NetworkInterfaceType.Loopback
-                        from address in network.GetIPProperties().DnsAddresses
-                        select new IPEndPoint(address, DnsTransport.DnsPort)).Distinct();
-            } catch(NetworkInformationException exc) {
-                this.Log.Error("discovery of network servers failed due to exception:", exc);
-                return DnsUtility.EMPTY_EP_ARRAY;
-            }
-        }
+        public bool DiscoverServers => (bool)this["discoverServers"];
 
         #endregion
     }

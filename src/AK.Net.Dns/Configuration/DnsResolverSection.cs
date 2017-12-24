@@ -15,11 +15,10 @@
 
 using System;
 using System.Configuration;
-using System.Net;
-
 using AK.Net.Dns.Caching;
 using AK.Net.Dns.Configuration.TypeConversion;
 using AK.Net.Dns.IO;
+using log4net;
 
 namespace AK.Net.Dns.Configuration
 {
@@ -29,9 +28,28 @@ namespace AK.Net.Dns.Configuration
     /// </summary>
     public abstract class DnsResolverSection : ConfigurationSection
     {
+        #region Protected Interface.
+
+        /// <summary>
+        /// Gets the <see cref="log4net.ILog"/> for this type.
+        /// </summary>
+        protected ILog Log
+        {
+            get
+            {
+                if (_log == null)
+                {
+                    _log = LogManager.GetLogger(GetType());
+                }
+                return _log;
+            }
+        }
+
+        #endregion
+
         #region Private Fields.
 
-        private log4net.ILog _log;
+        private ILog _log;
         private IDnsCache _cacheInstance;
         private IDnsTransport _transportInstance;
 
@@ -48,8 +66,8 @@ namespace AK.Net.Dns.Configuration
         /// <summary>
         /// Type initialiser for DnsResolverSection.
         /// </summary>
-        static DnsResolverSection() {
-
+        static DnsResolverSection()
+        {
             DnsNameTypeDescriptionProvider.RegisterProvider();
             RuntimeTypeTypeDescriptionProvider.RegisterProvider();
         }
@@ -61,13 +79,13 @@ namespace AK.Net.Dns.Configuration
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="resolver"/> is <see langword="null"/>.
         /// </exception>
-        public virtual void Apply(IDnsResolver resolver) {
-
+        public virtual void Apply(IDnsResolver resolver)
+        {
             Guard.NotNull(resolver, "resolver");
 
-            resolver.NameSuffix = this.NameSuffix;
-            resolver.Cache = this.CacheInstance;
-            resolver.Transport = this.TransportInstance;
+            resolver.NameSuffix = NameSuffix;
+            resolver.Cache = CacheInstance;
+            resolver.Transport = TransportInstance;
         }
 
         /// <summary>
@@ -75,29 +93,26 @@ namespace AK.Net.Dns.Configuration
         /// names to absolute names before they are queried.
         /// </summary>
         [ConfigurationProperty("nameSuffix", IsRequired = false)]
-        public DnsName NameSuffix {
-
-            get { return (DnsName)this["nameSuffix"]; }            
-        }
+        public DnsName NameSuffix => (DnsName)this["nameSuffix"];
 
         /// <summary>
         /// Gets the <see cref="AK.Net.Dns.IDnsCache"/> type used by the resolver.
         /// </summary>
         [BaseTypeValidator(typeof(IDnsCache))]
         [ConfigurationProperty("cache", IsRequired = false, DefaultValue = typeof(DnsNullCache))]
-        public Type CacheType {
-
-            get { return (Type)this["cache"]; }
-        }
+        public Type CacheType => (Type)this["cache"];
 
         /// <summary>
         /// Returns the <see cref="AK.Net.Dns.IDnsCache"/> instance used by the resolver.
         /// </summary>
-        public IDnsCache CacheInstance {
-
-            get {
-                if(_cacheInstance == null)
-                    _cacheInstance = (IDnsCache)Activator.CreateInstance(this.CacheType);
+        public IDnsCache CacheInstance
+        {
+            get
+            {
+                if (_cacheInstance == null)
+                {
+                    _cacheInstance = (IDnsCache)Activator.CreateInstance(CacheType);
+                }
                 return _cacheInstance;
             }
         }
@@ -107,36 +122,20 @@ namespace AK.Net.Dns.Configuration
         /// </summary>
         [BaseTypeValidator(typeof(IDnsTransport))]
         [ConfigurationProperty("transport", IsRequired = false, DefaultValue = typeof(DnsSmartTransport))]
-        public Type TransportType {
-
-            get { return (Type)this["transport"]; }
-        }
+        public Type TransportType => (Type)this["transport"];
 
         /// <summary>
         /// Returns the <see cref="AK.Net.Dns.IDnsTransport"/> instance used by the resolver.
         /// </summary>
-        public IDnsTransport TransportInstance {
-
-            get {
-                if(_transportInstance == null)
-                    _transportInstance = (IDnsTransport)Activator.CreateInstance(this.TransportType);
+        public IDnsTransport TransportInstance
+        {
+            get
+            {
+                if (_transportInstance == null)
+                {
+                    _transportInstance = (IDnsTransport)Activator.CreateInstance(TransportType);
+                }
                 return _transportInstance;
-            }
-        }
-
-        #endregion
-
-        #region Protected Interface.
-
-        /// <summary>
-        /// Gets the <see cref="log4net.ILog"/> for this type.
-        /// </summary>
-        protected log4net.ILog Log {
-
-            get {
-                if(_log == null)
-                    _log = log4net.LogManager.GetLogger(GetType());
-                return _log;
             }
         }
 

@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Net;
-
 using AK.Net.Dns.Records;
 
 namespace AK.Net.Dns
@@ -25,6 +23,15 @@ namespace AK.Net.Dns
     /// </summary>
     public static class DnsFuncs
     {
+        #region Private Impl.
+
+        private static bool IsOfType(DnsRecord record, DnsRecordType type)
+        {
+            return record != null && record.Type == type;
+        }
+
+        #endregion
+
         #region Public Interface.
 
         #region Unary Predicates.
@@ -37,8 +44,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.A"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsA(DnsRecord record) {
-
+        public static bool IsA(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.A);
         }
 
@@ -50,8 +57,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.NS"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsNS(DnsRecord record) {
-
+        public static bool IsNS(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.NS);
         }
 
@@ -63,8 +70,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.CName"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsCName(DnsRecord record) {
-
+        public static bool IsCName(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.CName);
         }
 
@@ -76,8 +83,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Soa"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsSoa(DnsRecord record) {
-
+        public static bool IsSoa(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Soa);
         }
 
@@ -89,8 +96,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.MB"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsMB(DnsRecord record) {
-
+        public static bool IsMB(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.MB);
         }
 
@@ -102,8 +109,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.MG"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsMG(DnsRecord record) {
-
+        public static bool IsMG(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.MG);
         }
 
@@ -115,8 +122,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.MR"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsMR(DnsRecord record) {
-
+        public static bool IsMR(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.MR);
         }
 
@@ -128,8 +135,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Null"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsNull(DnsRecord record) {
-
+        public static bool IsNull(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Null);
         }
 
@@ -141,8 +148,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Wks"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsWks(DnsRecord record) {
-
+        public static bool IsWks(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Wks);
         }
 
@@ -154,8 +161,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Ptr"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsPtr(DnsRecord record) {
-
+        public static bool IsPtr(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Ptr);
         }
 
@@ -167,8 +174,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.HInfo"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsHInfo(DnsRecord record) {
-
+        public static bool IsHInfo(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.HInfo);
         }
 
@@ -180,8 +187,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.MInfo"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsMInfo(DnsRecord record) {
-
+        public static bool IsMInfo(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.MInfo);
         }
 
@@ -193,8 +200,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.MX"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsMX(DnsRecord record) {
-
+        public static bool IsMX(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.MX);
         }
 
@@ -206,8 +213,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Txt"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsTxt(DnsRecord record) {
-
+        public static bool IsTxt(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Txt);
         }
 
@@ -219,8 +226,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.RP"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsRP(DnsRecord record) {
-
+        public static bool IsRP(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.RP);
         }
 
@@ -232,8 +239,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.AsfDB"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsAsfDB(DnsRecord record) {
-
+        public static bool IsAsfDB(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.AsfDB);
         }
 
@@ -245,8 +252,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.X25"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsX25(DnsRecord record) {
-
+        public static bool IsX25(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.X25);
         }
 
@@ -258,8 +265,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Isdn"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsIsdn(DnsRecord record) {
-
+        public static bool IsIsdn(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Isdn);
         }
 
@@ -271,8 +278,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.RT"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsRT(DnsRecord record) {
-
+        public static bool IsRT(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.RT);
         }
 
@@ -284,8 +291,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Aaaa"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsAaaa(DnsRecord record) {
-
+        public static bool IsAaaa(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Aaaa);
         }
 
@@ -297,8 +304,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Loc"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsLoc(DnsRecord record) {
-
+        public static bool IsLoc(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Loc);
         }
 
@@ -310,8 +317,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Srv"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsSrv(DnsRecord record) {
-
+        public static bool IsSrv(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Srv);
         }
 
@@ -323,8 +330,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.Spf"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsSpf(DnsRecord record) {
-
+        public static bool IsSpf(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.Spf);
         }
 
@@ -336,8 +343,8 @@ namespace AK.Net.Dns
         /// <returns><see langword="true"/> if the record is of type
         /// <see cref="AK.Net.Dns.DnsRecordType.DN"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsDN(DnsRecord record) {
-
+        public static bool IsDN(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.DN);
         }
 
@@ -351,10 +358,10 @@ namespace AK.Net.Dns
         /// <see cref="AK.Net.Dns.DnsRecordType.A"/> or
         /// <see cref="AK.Net.Dns.DnsRecordType.Aaaa"/>, otherwise;
         /// <see langword="false"/>.</returns>
-        public static bool IsAOrAaaa(DnsRecord record) {
-
+        public static bool IsAOrAaaa(DnsRecord record)
+        {
             return IsOfType(record, DnsRecordType.A) ||
-                IsOfType(record, DnsRecordType.Aaaa);
+                   IsOfType(record, DnsRecordType.Aaaa);
         }
 
         #endregion
@@ -372,8 +379,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.ARecord"/>.</returns>
-        public static ARecord ToA(DnsRecord record) {
-
+        public static ARecord ToA(DnsRecord record)
+        {
             return (ARecord)record;
         }
 
@@ -384,8 +391,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.AaaaRecord"/>.</returns>
-        public static AaaaRecord ToAaaa(DnsRecord record) {
-
+        public static AaaaRecord ToAaaa(DnsRecord record)
+        {
             return (AaaaRecord)record;
         }
 
@@ -396,8 +403,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to wrap.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.CNameRecord"/>.</returns>
-        public static CNameRecord ToCName(DnsRecord record) {
-
+        public static CNameRecord ToCName(DnsRecord record)
+        {
             return (CNameRecord)record;
         }
 
@@ -408,8 +415,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.HInfoRecord"/>.</returns>
-        public static HInfoRecord ToHInfo(DnsRecord record) {
-
+        public static HInfoRecord ToHInfo(DnsRecord record)
+        {
             return (HInfoRecord)record;
         }
 
@@ -420,8 +427,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.MInfoRecord"/>.</returns>
-        public static MInfoRecord ToMInfo(DnsRecord record) {
-
+        public static MInfoRecord ToMInfo(DnsRecord record)
+        {
             return (MInfoRecord)record;
         }
 
@@ -432,8 +439,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to wrap.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.MXRecord"/>.</returns>
-        public static MXRecord ToMX(DnsRecord record) {
-
+        public static MXRecord ToMX(DnsRecord record)
+        {
             return (MXRecord)record;
         }
 
@@ -444,8 +451,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to wrap.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.NSRecord"/>.</returns>
-        public static NSRecord ToNS(DnsRecord record) {
-
+        public static NSRecord ToNS(DnsRecord record)
+        {
             return (NSRecord)record;
         }
 
@@ -456,8 +463,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to wrap.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.DNRecord"/>.</returns>
-        public static DNRecord ToDN(DnsRecord record) {
-
+        public static DNRecord ToDN(DnsRecord record)
+        {
             return (DNRecord)record;
         }
 
@@ -468,8 +475,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to wrap.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.SpfRecord"/>.</returns>
-        public static SpfRecord ToSpf(DnsRecord record) {
-
+        public static SpfRecord ToSpf(DnsRecord record)
+        {
             return (SpfRecord)record;
         }
 
@@ -480,8 +487,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to wrap.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.NullRecord"/>.</returns>
-        public static NullRecord ToNull(DnsRecord record) {
-
+        public static NullRecord ToNull(DnsRecord record)
+        {
             return (NullRecord)record;
         }
 
@@ -492,8 +499,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to wrap.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.PtrRecord"/>.</returns>
-        public static PtrRecord ToPtr(DnsRecord record) {
-
+        public static PtrRecord ToPtr(DnsRecord record)
+        {
             return (PtrRecord)record;
         }
 
@@ -504,8 +511,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.SoaRecord"/>.</returns>
-        public static SoaRecord ToSoa(DnsRecord record) {
-
+        public static SoaRecord ToSoa(DnsRecord record)
+        {
             return (SoaRecord)record;
         }
 
@@ -516,8 +523,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.TxtRecord"/>.</returns>
-        public static TxtRecord ToTxt(DnsRecord record) {
-
+        public static TxtRecord ToTxt(DnsRecord record)
+        {
             return (TxtRecord)record;
         }
 
@@ -528,8 +535,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.WksRecord"/>.</returns>
-        public static WksRecord ToWks(DnsRecord record) {
-
+        public static WksRecord ToWks(DnsRecord record)
+        {
             return (WksRecord)record;
         }
 
@@ -540,8 +547,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.SrvRecord"/>.</returns>
-        public static SrvRecord ToSrv(DnsRecord record) {
-
+        public static SrvRecord ToSrv(DnsRecord record)
+        {
             return (SrvRecord)record;
         }
 
@@ -552,8 +559,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.MBRecord"/>.</returns>
-        public static MBRecord ToMB(DnsRecord record) {
-
+        public static MBRecord ToMB(DnsRecord record)
+        {
             return (MBRecord)record;
         }
 
@@ -564,8 +571,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.MGRecord"/>.</returns>
-        public static MGRecord ToMG(DnsRecord record) {
-
+        public static MGRecord ToMG(DnsRecord record)
+        {
             return (MGRecord)record;
         }
 
@@ -576,8 +583,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.MRRecord"/>.</returns>
-        public static MRRecord ToMR(DnsRecord record) {
-
+        public static MRRecord ToMR(DnsRecord record)
+        {
             return (MRRecord)record;
         }
 
@@ -588,8 +595,8 @@ namespace AK.Net.Dns
         /// <param name="record">The record to cast.</param>
         /// <returns>The specified <paramref name="record"/> cast to type
         /// <see cref="AK.Net.Dns.Records.XRecord"/>.</returns>
-        public static XRecord ToX(DnsRecord record) {
-
+        public static XRecord ToX(DnsRecord record)
+        {
             return (XRecord)record;
         }
 
@@ -603,12 +610,15 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentException">
         /// Thrown when the <paramref name="record"/> cannot be converted to an IP address.
         /// </exception>
-        public static IPAddress ToIP(DnsRecord record) {
-
-            if(record == null)
+        public static IPAddress ToIP(DnsRecord record)
+        {
+            if (record == null)
+            {
                 return null;
+            }
 
-            switch((DnsRecordType)record.Type) {
+            switch (record.Type)
+            {
                 case DnsRecordType.A:
                     return ToA(record).Address;
                 case DnsRecordType.Aaaa:
@@ -619,15 +629,6 @@ namespace AK.Net.Dns
         }
 
         #endregion
-
-        #endregion
-
-        #region Private Impl.
-
-        private static bool IsOfType(DnsRecord record, DnsRecordType type) {
-
-            return record != null && record.Type == type;
-        }
 
         #endregion
     }

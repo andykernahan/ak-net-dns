@@ -13,10 +13,8 @@
 // limitations under the License.
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-using System;
 using System.Configuration;
 using System.Net;
-
 using AK.Net.Dns.Configuration.TypeConversion;
 using AK.Net.Dns.IO;
 
@@ -39,8 +37,8 @@ namespace AK.Net.Dns.Configuration
         /// <summary>
         /// Type initialiser for DnsEndPointElement.
         /// </summary>
-        static DnsEndPointElement() {
-
+        static DnsEndPointElement()
+        {
             IPAddressTypeDescriptionProvider.RegisterProvider();
         }
 
@@ -48,29 +46,26 @@ namespace AK.Net.Dns.Configuration
         /// Gets the end point <see cref="System.Net.IPAddress"/>.
         /// </summary>
         [ConfigurationProperty("address", IsRequired = true)]
-        public IPAddress Address {
-
-            get { return (IPAddress)this["address"]; }
-        }
+        public IPAddress Address => (IPAddress)this["address"];
 
         /// <summary>
         /// Gets the end point port number.
         /// </summary>
         [IntegerValidator(MinValue = IPEndPoint.MinPort, MaxValue = IPEndPoint.MaxPort)]
         [ConfigurationProperty("port", IsRequired = false, DefaultValue = DnsTransport.DnsPort)]
-        public int Port {
-
-            get { return (int)this["port"]; }
-        }
+        public int Port => (int)this["port"];
 
         /// <summary>
         /// Gets the constructed <see cref="System.Net.IPEndPoint"/>.
         /// </summary>
-        public IPEndPoint Endpoint {
-
-            get {
-                if(_endpoint == null)
-                    _endpoint = new IPEndPoint(this.Address, this.Port);
+        public IPEndPoint Endpoint
+        {
+            get
+            {
+                if (_endpoint == null)
+                {
+                    _endpoint = new IPEndPoint(Address, Port);
+                }
                 return _endpoint;
             }
         }

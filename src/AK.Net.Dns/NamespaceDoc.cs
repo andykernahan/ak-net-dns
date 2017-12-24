@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 namespace AK.Net.Dns
 {
 #if BUILD_DOCS
-    /// <summary>
-    /// Contains the library's core classes, structures, interfaces and
-    /// enumerations.
-    /// </summary>
+/// <summary>
+/// Contains the library's core classes, structures, interfaces and
+/// enumerations.
+/// </summary>
     internal sealed class NamespaceDoc { }
 #endif
 }

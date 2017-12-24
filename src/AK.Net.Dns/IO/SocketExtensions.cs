@@ -26,26 +26,29 @@ namespace AK.Net.Dns.IO
     {
         #region Public Interface.
 
-        public static int SendTo(this Socket socket, ArraySegment<byte> buffer, EndPoint endpoint) {
-
+        public static int SendTo(this Socket socket, ArraySegment<byte> buffer, EndPoint endpoint)
+        {
             return socket.SendTo(buffer.Array, buffer.Offset, buffer.Count, SocketFlags.None, endpoint);
         }
 
-        public static int Send(this Socket socket, ArraySegment<byte> buffer) {
-
+        public static int Send(this Socket socket, ArraySegment<byte> buffer)
+        {
             return socket.Send(buffer.Array, buffer.Offset, buffer.Count, SocketFlags.None);
         }
 
-        public static bool TryReceiveBuffer(this Socket socket, byte[] buffer) {
-
+        public static bool TryReceiveBuffer(this Socket socket, byte[] buffer)
+        {
             int read;
-            int remaining = buffer.Length;
+            var remaining = buffer.Length;
 
-            do {
-                if((read = socket.Receive(buffer, buffer.Length - remaining, remaining, SocketFlags.None)) == 0)
+            do
+            {
+                if ((read = socket.Receive(buffer, buffer.Length - remaining, remaining, SocketFlags.None)) == 0)
+                {
                     return false;
+                }
                 remaining -= read;
-            } while(remaining > 0);
+            } while (remaining > 0);
 
             return true;
         }

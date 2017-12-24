@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 
@@ -39,9 +38,9 @@ namespace AK.Net.Dns
         /// <param name="format">The format specification.</param>
         /// <param name="args">The format arguments.</param>
         /// <returns>The formatted <see cref="System.String"/>.</returns>
-        public static string Format(string format, params object[] args) {
-
-            return string.Format(DnsUtility.DnsCulture, format, args);
+        public static string Format(string format, params object[] args)
+        {
+            return string.Format(DnsCulture, format, args);
         }
 
         /// <summary>
@@ -51,9 +50,9 @@ namespace AK.Net.Dns
         /// <param name="value">The span.</param>
         /// <returns>A <see cref="System.String"/> representation of the specified
         /// <paramref name="System.TimeSpan"/>.</returns>
-        public static string ToString(TimeSpan value) {
-
-            return value.TotalSeconds.ToString(DnsUtility.DnsCulture);
+        public static string ToString(TimeSpan value)
+        {
+            return value.TotalSeconds.ToString(DnsCulture);
         }
 
         /// <summary>
@@ -63,9 +62,10 @@ namespace AK.Net.Dns
         /// <param name="value">The type.</param>
         /// <returns>A <see cref="System.String"/> representation of the specified
         /// <see cref="AK.Net.Dns.DnsQueryType"/>.</returns>
-        public static string ToString(DnsQueryType value) {
-
-            switch(value) {
+        public static string ToString(DnsQueryType value)
+        {
+            switch (value)
+            {
                 case DnsQueryType.A:
                     return "A";
                 case DnsQueryType.NS:
@@ -136,9 +136,10 @@ namespace AK.Net.Dns
         /// <param name="value">The class.</param>
         /// <returns>A <see cref="System.String"/> representation of the specified
         /// <see cref="AK.Net.Dns.DnsQueryClass"/>.</returns>
-        public static string ToString(DnsQueryClass value) {
-
-            switch(value) {
+        public static string ToString(DnsQueryClass value)
+        {
+            switch (value)
+            {
                 case DnsQueryClass.IN:
                     return "IN";
                 case DnsQueryClass.CH:
@@ -163,8 +164,8 @@ namespace AK.Net.Dns
         /// <param name="value">The type.</param>
         /// <returns>A <see cref="System.String"/> representation of the specified
         /// <see cref="AK.Net.Dns.DnsRecordType"/>.</returns>
-        public static string ToString(DnsRecordType value) {
-
+        public static string ToString(DnsRecordType value)
+        {
             // All record types are valid query types.
             return ToString((DnsQueryType)value);
         }
@@ -176,9 +177,10 @@ namespace AK.Net.Dns
         /// <param name="value">The class.</param>
         /// <returns>A <see cref="System.String"/> representation of the specified
         /// <see cref="AK.Net.Dns.DnsRecordClass"/>.</returns>
-        public static string ToString(DnsRecordClass value) {
-
-            switch(value) {
+        public static string ToString(DnsRecordClass value)
+        {
+            switch (value)
+            {
                 case DnsRecordClass.IN:
                     return "IN";
                 case DnsRecordClass.CH:
@@ -201,9 +203,10 @@ namespace AK.Net.Dns
         /// <param name="value">The operation code.</param>
         /// <returns>A <see cref="System.String"/> representation of the specified
         /// <see cref="AK.Net.Dns.DnsOpCode"/>.</returns>
-        public static string ToString(DnsOpCode value) {
-
-            switch(value) {
+        public static string ToString(DnsOpCode value)
+        {
+            switch (value)
+            {
                 case DnsOpCode.Query:
                     return "QUERY";
                 case DnsOpCode.IQuery:
@@ -230,8 +233,8 @@ namespace AK.Net.Dns
         /// <param name="buffer">The buffer.</param>
         /// <returns>A <see cref="System.String"/> representation of the specified
         /// <paramref name="buffer"/>.</returns>
-        public static string ToString(byte[] buffer) {
-
+        public static string ToString(byte[] buffer)
+        {
             return Convert.ToBase64String(buffer);
         }
 

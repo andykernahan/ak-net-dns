@@ -35,7 +35,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of HInfoRecord records. This field is readonly.
         /// </summary>
-        new public static readonly HInfoRecord[] EmptyArray = { };
+        public new static readonly HInfoRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the HInfoRecord class and specifies the owner name,
@@ -55,8 +55,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public HInfoRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.HInfo, cls, ttl) {
-
+            : base(owner, DnsRecordType.HInfo, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -80,8 +80,8 @@ namespace AK.Net.Dns.Records
         /// <see langword="null"/>.
         /// </exception>
         public HInfoRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, string cpu, string os)
-            : base(owner, DnsRecordType.HInfo, cls, ttl) {
-
+            : base(owner, DnsRecordType.HInfo, cls, ttl)
+        {
             Guard.NotNull(cpu, "cpu");
             Guard.NotNull(os, "os");
 
@@ -97,21 +97,21 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteCharString(this.Cpu);
-            writer.WriteCharString(this.Os);
+            writer.WriteCharString(Cpu);
+            writer.WriteCharString(Os);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} \"{1}\" \"{2}\"", base.ToString(), this.Cpu, this.Os);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} \"{1}\" \"{2}\"", base.ToString(), Cpu, Os);
         }
 
         /// <summary>
@@ -120,10 +120,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public string Os {
-
-            get {  return _os; }
-            set {
+        public string Os
+        {
+            get => _os;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _os = value;
             }
@@ -135,10 +136,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public string Cpu {
-
-            get {  return _cpu; }
-            set {
+        public string Cpu
+        {
+            get => _cpu;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _cpu = value;
             }

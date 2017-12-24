@@ -37,6 +37,6 @@ namespace AK.Net.Dns
         /// <summary>
         /// Indicates any class.
         /// </summary>
-        Any = 255,
+        Any = 255
     }
 }

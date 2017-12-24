@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.ComponentModel;
 
 namespace AK.Net.Dns.Configuration.TypeConversion
@@ -41,8 +40,8 @@ namespace AK.Net.Dns.Configuration.TypeConversion
         /// The <see cref="System.ComponentModel.TypeConverter"/> for the
         /// described type.
         /// </returns>
-        public override TypeConverter GetConverter() {
-
+        public override TypeConverter GetConverter()
+        {
             return DnsNameConverter.Instance;
         }
 

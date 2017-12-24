@@ -84,31 +84,34 @@ namespace AK.Net.Dns
         /// Thrown when the header could not be read from the
         /// <paramref name="reader"/>.
         /// </exception>
-        public virtual void Read(IDnsReader reader) {
-
+        public virtual void Read(IDnsReader reader)
+        {
             Guard.NotNull(reader, "reader");
 
-            try {
-                this.Id = reader.ReadUInt16();
+            try
+            {
+                Id = reader.ReadUInt16();
 
-                byte b3 = reader.ReadByte();
+                var b3 = reader.ReadByte();
 
-                this.IsQuery = (b3 & 0x80) == 0x00;
-                this.OpCode = (DnsOpCode)(b3 >> 3 & 0x0F);
-                this.IsAuthorative = (b3 & 0x04) == 0x04;
-                this.IsTruncated = (b3 & 0x02) == 0x02;
-                this.IsRecursionDesired = (b3 & 0x01) == 0x01;
+                IsQuery = (b3 & 0x80) == 0x00;
+                OpCode = (DnsOpCode)((b3 >> 3) & 0x0F);
+                IsAuthorative = (b3 & 0x04) == 0x04;
+                IsTruncated = (b3 & 0x02) == 0x02;
+                IsRecursionDesired = (b3 & 0x01) == 0x01;
 
-                byte b4 = reader.ReadByte();
+                var b4 = reader.ReadByte();
 
-                this.IsRecursionAllowed = (b4 & 0x80) == 0x80;
-                this.ResponseCode = (DnsResponseCode)(b4 & 0x0F);
+                IsRecursionAllowed = (b4 & 0x80) == 0x80;
+                ResponseCode = (DnsResponseCode)(b4 & 0x0F);
 
-                this.QuestionCount = reader.ReadUInt16();
-                this.AnswerCount = reader.ReadUInt16();
-                this.AuthorityCount = reader.ReadUInt16();
-                this.AdditionalCount = reader.ReadUInt16();
-            } catch(DnsException exc) {
+                QuestionCount = reader.ReadUInt16();
+                AnswerCount = reader.ReadUInt16();
+                AuthorityCount = reader.ReadUInt16();
+                AdditionalCount = reader.ReadUInt16();
+            }
+            catch (DnsException exc)
+            {
                 throw Guard.InvalidDnsHeaderFormat(exc);
             }
         }
@@ -120,35 +123,45 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public virtual void Write(IDnsWriter writer) {
-
+        public virtual void Write(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteUInt16((ushort)this.Id);
+            writer.WriteUInt16((ushort)Id);
 
             byte b3 = 0;
 
-            if(!this.IsQuery)
+            if (!IsQuery)
+            {
                 b3 |= 0x80;
-            b3 |= (byte)(((byte)this.OpCode & 0x0F) << 3);
-            if(this.IsAuthorative)
+            }
+            b3 |= (byte)(((byte)OpCode & 0x0F) << 3);
+            if (IsAuthorative)
+            {
                 b3 |= 0x04;
-            if(this.IsTruncated)
+            }
+            if (IsTruncated)
+            {
                 b3 |= 0x02;
-            if(this.IsRecursionDesired)
+            }
+            if (IsRecursionDesired)
+            {
                 b3 |= 0x01;
+            }
             writer.WriteByte(b3);
 
-            byte b4 = (byte)this.ResponseCode;
+            var b4 = (byte)ResponseCode;
 
-            if(this.IsRecursionAllowed)
+            if (IsRecursionAllowed)
+            {
                 b4 |= 0x80;
+            }
             writer.WriteByte(b4);
 
-            writer.WriteUInt16(this.QuestionCount);
-            writer.WriteUInt16(this.AnswerCount);
-            writer.WriteUInt16(this.AuthorityCount);
-            writer.WriteUInt16(this.AdditionalCount);
+            writer.WriteUInt16(QuestionCount);
+            writer.WriteUInt16(AnswerCount);
+            writer.WriteUInt16(AuthorityCount);
+            writer.WriteUInt16(AdditionalCount);
         }
 
         /// <summary>
@@ -158,11 +171,12 @@ namespace AK.Net.Dns
         /// Thrown when <paramref name="value"/> is negative or greater than
         /// <see cref="AK.Net.Dns.DnsHeader.MaxSectionCount"/>.
         /// </exception>
-        public int AdditionalCount {
-
-            get { return _additionalCount; }
-            set {
-                Guard.InRange(value >= 0 && value <= DnsHeader.MaxSectionCount, "value");
+        public int AdditionalCount
+        {
+            get => _additionalCount;
+            set
+            {
+                Guard.InRange(value >= 0 && value <= MaxSectionCount, "value");
                 _additionalCount = value;
             }
         }
@@ -174,11 +188,12 @@ namespace AK.Net.Dns
         /// Thrown when <paramref name="value"/> is negative or greater than
         /// <see cref="AK.Net.Dns.DnsHeader.MaxSectionCount"/>.
         /// </exception>
-        public int AuthorityCount {
-
-            get { return _authorityCount; }
-            set {
-                Guard.InRange(value >= 0 && value <= DnsHeader.MaxSectionCount, "value");
+        public int AuthorityCount
+        {
+            get => _authorityCount;
+            set
+            {
+                Guard.InRange(value >= 0 && value <= MaxSectionCount, "value");
                 _authorityCount = value;
             }
         }
@@ -190,11 +205,12 @@ namespace AK.Net.Dns
         /// Thrown when <paramref name="value"/> is negative or greater than
         /// <see cref="AK.Net.Dns.DnsHeader.MaxSectionCount"/>.
         /// </exception>
-        public int AnswerCount {
-
-            get {return _answerCount; }
-            set {
-                Guard.InRange(value >= 0 && value <= DnsHeader.MaxSectionCount, "value");
+        public int AnswerCount
+        {
+            get => _answerCount;
+            set
+            {
+                Guard.InRange(value >= 0 && value <= MaxSectionCount, "value");
                 _answerCount = value;
             }
         }
@@ -206,11 +222,12 @@ namespace AK.Net.Dns
         /// Thrown when <paramref name="value"/> is negative or greater than
         /// <see cref="AK.Net.Dns.DnsHeader.MaxSectionCount"/>.
         /// </exception>
-        public int QuestionCount {
-
-            get { return _questionCount; }
-            set {
-                Guard.InRange(value >= 0 && value <= DnsHeader.MaxSectionCount, "value");
+        public int QuestionCount
+        {
+            get => _questionCount;
+            set
+            {
+                Guard.InRange(value >= 0 && value <= MaxSectionCount, "value");
                 _questionCount = value;
             }
         }
@@ -218,64 +235,64 @@ namespace AK.Net.Dns
         /// <summary>
         /// Gets or sets the response code.
         /// </summary>
-        public DnsResponseCode ResponseCode {
-
-            get { return _responseCode; }
-            set { _responseCode = value; }
+        public DnsResponseCode ResponseCode
+        {
+            get => _responseCode;
+            set => _responseCode = value;
         }
 
         /// <summary>
         /// Gets or sets a value indicating if recursion is allowed.
         /// </summary>
-        public bool IsRecursionAllowed {
-
-            get { return _isRecursionAllowed; }
-            set { _isRecursionAllowed = value; }
+        public bool IsRecursionAllowed
+        {
+            get => _isRecursionAllowed;
+            set => _isRecursionAllowed = value;
         }
 
         /// <summary>
         /// Gets or sets a value indicating if recursion is desired.
         /// </summary>
-        public bool IsRecursionDesired {
-
-            get { return _isRecursionDesired; }
-            set { _isRecursionDesired = value; }
+        public bool IsRecursionDesired
+        {
+            get => _isRecursionDesired;
+            set => _isRecursionDesired = value;
         }
 
         /// <summary>
         /// Gets or sets a value indicating if the message data is truncated.
         /// </summary>
-        public bool IsTruncated {
-
-            get { return _isTruncated; }
-            set { _isTruncated = value; }
+        public bool IsTruncated
+        {
+            get => _isTruncated;
+            set => _isTruncated = value;
         }
 
         /// <summary>
         /// Gets or sets a value indicating if the answer is authoratative.
         /// </summary>
-        public bool IsAuthorative {
-
-            get { return _isAuthorative; }
-            set { _isAuthorative = value; }
+        public bool IsAuthorative
+        {
+            get => _isAuthorative;
+            set => _isAuthorative = value;
         }
 
         /// <summary>
         /// Gers or sets the operation code.
         /// </summary>
-        public DnsOpCode OpCode {
-
-            get { return _opCode; }
-            set { _opCode = value; }
+        public DnsOpCode OpCode
+        {
+            get => _opCode;
+            set => _opCode = value;
         }
 
         /// <summary>
         /// Gets or sets a value indicating if the DNS message is a query.
         /// </summary>
-        public bool IsQuery {
-
-            get { return _isQuery; }
-            set { _isQuery = value; }
+        public bool IsQuery
+        {
+            get => _isQuery;
+            set => _isQuery = value;
         }
 
         /// <summary>
@@ -285,11 +302,12 @@ namespace AK.Net.Dns
         /// Thrown when <paramref name="value"/> is negative or greater than
         /// <see cref="AK.Net.Dns.DnsHeader.MaxId"/>.
         /// </exception>
-        public int Id {
-
-            get { return _id; }
-            set {
-                Guard.InRange(value >= 0 && value <= DnsHeader.MaxId, "value");
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                Guard.InRange(value >= 0 && value <= MaxId, "value");
                 _id = value;
             }
         }

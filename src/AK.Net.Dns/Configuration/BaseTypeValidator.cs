@@ -27,8 +27,6 @@ namespace AK.Net.Dns.Configuration
     {
         #region Private Fields.
 
-        private readonly Type _baseType;
-
         #endregion
 
         #region Public Interface.
@@ -41,11 +39,11 @@ namespace AK.Net.Dns.Configuration
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="baseType"/> is <see langword="null"/>.
         /// </exception>
-        public BaseTypeValidator(Type baseType) {
-
+        public BaseTypeValidator(Type baseType)
+        {
             Guard.NotNull(baseType, "baseType");
 
-            _baseType = baseType;
+            BaseType = baseType;
         }
 
         /// <summary>
@@ -55,8 +53,8 @@ namespace AK.Net.Dns.Configuration
         /// <param name="type">The property value type.</param>
         /// <returns><see langword="true"/> if this validator can validate property
         /// values of the specified type, otherwise; <see langword="false"/>.</returns>
-        public override bool CanValidate(Type type) {
-
+        public override bool CanValidate(Type type)
+        {
             return type != null;
         }
 
@@ -68,24 +66,23 @@ namespace AK.Net.Dns.Configuration
         /// Thrown when the base type is not assignable from the specified
         /// <paramref name="value"/>.
         /// </exception>
-        public override void Validate(object value) {
+        public override void Validate(object value)
+        {
+            var type = value as Type;
 
-            Type type = value as Type;
-
-            if(type != null && this.BaseType.IsAssignableFrom(type))
+            if (type != null && BaseType.IsAssignableFrom(type))
+            {
                 return;
+            }
 
-            throw Guard.ConfigurationTypeIsNotAssignableFrom(this.BaseType, type);
+            throw Guard.ConfigurationTypeIsNotAssignableFrom(BaseType, type);
         }
 
         /// <summary>
         /// Gets the base <see cref="System.Type"/> that the configuration property
         /// value must be assignable to.
         /// </summary>
-        public Type BaseType {
-
-            get { return _baseType; }
-        }
+        public Type BaseType { get; }
 
         #endregion
     }

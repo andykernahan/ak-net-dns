@@ -13,7 +13,6 @@
 // limitations under the License.
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-using System;
 using System.Configuration;
 
 namespace AK.Net.Dns.Configuration
@@ -30,9 +29,9 @@ namespace AK.Net.Dns.Configuration
         /// <summary>
         /// Intialises a new instance of the DnsEndPointElementCollection class.
         /// </summary>
-        public DnsEndPointElementCollection() {
-
-            base.AddElementName = "endpoint";
+        public DnsEndPointElementCollection()
+        {
+            AddElementName = "endpoint";
         }
 
         #endregion
@@ -45,8 +44,8 @@ namespace AK.Net.Dns.Configuration
         /// </summary>
         /// <returns>A new <see cref="AK.Net.Dns.Configuration.DnsEndPointElement"/>
         /// configuration element.</returns>
-        protected override ConfigurationElement CreateNewElement() {
-
+        protected override ConfigurationElement CreateNewElement()
+        {
             return new DnsEndPointElement();
         }
 
@@ -55,8 +54,8 @@ namespace AK.Net.Dns.Configuration
         /// </summary>
         /// <param name="element">The configuration element.</param>
         /// <returns>The key for the specified configuration element.</returns>
-        protected override object GetElementKey(ConfigurationElement element) {
-
+        protected override object GetElementKey(ConfigurationElement element)
+        {
             return ((DnsEndPointElement)element).Endpoint;
         }
 
@@ -64,10 +63,7 @@ namespace AK.Net.Dns.Configuration
         /// Gets a value indicating if duplicate configurations elements should result in a
         /// <see cref="System.Configuration.ConfigurationException"/> being thrown.
         /// </summary>
-        protected override bool ThrowOnDuplicate {
-
-            get { return true; }
-        }
+        protected override bool ThrowOnDuplicate => true;
 
         #endregion
     }

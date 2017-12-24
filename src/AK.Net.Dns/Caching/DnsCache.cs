@@ -13,13 +13,9 @@
 // limitations under the License.
 
 using System;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
 using System.Collections.Generic;
-
-using AK.Net.Dns.Records;
+using System.Diagnostics;
+using System.Threading;
 
 namespace AK.Net.Dns.Caching
 {
@@ -35,7 +31,6 @@ namespace AK.Net.Dns.Caching
         private long _misses;
         private long _questions;
         private readonly DateTime _createdOn;
-        private readonly Dictionary<DnsName, Node> _nodes;
 
         #endregion
 
@@ -44,12 +39,10 @@ namespace AK.Net.Dns.Caching
         /// <summary>
         /// Initialises a new instance of the DnsCache class.
         /// </summary>
-        public DnsCache() {
-
-            
-
+        public DnsCache()
+        {
             _createdOn = DnsClock.Now();
-            _nodes = new Dictionary<DnsName, Node>();
+            Nodes = new Dictionary<DnsName, Node>();
         }
 
         /*/// <summary>
@@ -80,8 +73,8 @@ namespace AK.Net.Dns.Caching
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="question"/> is <see langword="null"/>.
         /// </exception>
-        public DnsCacheResult Get(DnsQuestion question) {
-
+        public DnsCacheResult Get(DnsQuestion question)
+        {
             Guard.NotNull(question, "question");
 
             IncrementQuestions();
@@ -97,46 +90,42 @@ namespace AK.Net.Dns.Caching
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="domain"/> is <see langword="null"/>.
         /// </exception>
-        public void Put(DnsReply reply) {
-
+        public void Put(DnsReply reply)
+        {
             Guard.NotNull(reply, "reply");
         }
 
         /// <summary>
         /// Gets the number of questions this cache has been asked.
         /// </summary>
-        public long Questions {
-
-            get { return _questions; }
-        }
+        public long Questions => _questions;
 
         /// <summary>
         /// Gets the number of cache misses.
         /// </summary>
-        public long Misses {
-
-            get { return _misses; }
-        }
+        public long Misses => _misses;
 
         /// <summary>
         /// Gets the number of cache hits.
         /// </summary>
-        public long Hits {
-
-            get { return _hits; }
-        }
+        public long Hits => _hits;
 
         /// <summary>
         /// Gets the cache hit ratio.
         /// </summary>
-        public double HitRatio {
-
-            get {
-                if(this.Questions == 0)
+        public double HitRatio
+        {
+            get
+            {
+                if (Questions == 0)
+                {
                     return 0.0D;
-                if(this.Misses == 0)
+                }
+                if (Misses == 0)
+                {
                     return 1.0D;
-                return (double)this.Hits / (double)this.Misses;
+                }
+                return Hits / (double)Misses;
             }
         }
 
@@ -144,79 +133,85 @@ namespace AK.Net.Dns.Caching
 
         #region Protected Interface.
 
-        protected virtual Node GetNode(DnsName owner, Type type) {
-
+        protected virtual Node GetNode(DnsName owner, Type type)
+        {
             Node head;
             Node match = null;
-            DateTime now = DnsClock.Now();
+            var now = DnsClock.Now();
 
             IncrementQuestions();
-            lock(this.Nodes) {
-                if(this.Nodes.TryGetValue(owner, out head)) {
+            lock (Nodes)
+            {
+                if (Nodes.TryGetValue(owner, out head))
+                {
                     Node next;
-                    Node cur = head;
+                    var cur = head;
                     // Descend the list and look for a node of the correct type.
-                    do {
+                    do
+                    {
                         next = cur.Next;
-                        if(cur.IsAlive(now)) {
-                            if(cur.Type == type) {
+                        if (cur.IsAlive(now))
+                        {
+                            if (cur.Type == type)
+                            {
                                 Debug.Assert(match == null, "DnsCache::GetNode - duplicate node");
                                 match = cur;
-                                if(match != head) {
+                                if (match != head)
+                                {
                                     // Move to the head of the list.
                                     match.Remove();
                                     head.Previous = match;
                                     match.Next = head;
-                                    this.Nodes[owner] = match;
+                                    Nodes[owner] = match;
                                 }
                                 // Even though we have found a match we still descend the list 
                                 // looking for dead nodes.
                             }
-                        } else
+                        }
+                        else
+                        {
                             cur.Remove();
-                    } while((cur = next) != null);
+                        }
+                    } while ((cur = next) != null);
                 }
             }
-            if(match != null) {
+            if (match != null)
+            {
                 IncrementHits();
                 return match;
-            } else {
-                IncrementMisses();
-                return null;
             }
+            IncrementMisses();
+            return null;
         }
 
         /// <summary>
         /// Increments the number of questions this cache has been asked.
         /// </summary>
-        protected void IncrementQuestions() {
-
+        protected void IncrementQuestions()
+        {
             Interlocked.Increment(ref _questions);
         }
 
         /// <summary>
         /// Increments the number of cache misses for this cache.
         /// </summary>
-        protected void IncrementMisses() {
-
+        protected void IncrementMisses()
+        {
             Interlocked.Increment(ref _misses);
         }
 
         /// <summary>
         /// Increments the number of cache hits for this cache.
         /// </summary>
-        protected void IncrementHits() {
-
+        protected void IncrementHits()
+        {
             Interlocked.Increment(ref _hits);
         }
 
         /// <summary>
         /// Gets the dictionary of cache nodes contained by this cache.
         /// </summary>
-        protected Dictionary<DnsName, Node> Nodes {
-
-            get { return _nodes; }
-        }
+        protected Dictionary<DnsName, Node> Nodes { get; }
 
         #region CacheNode Def.
 
@@ -230,10 +225,6 @@ namespace AK.Net.Dns.Caching
 
             private Node _next;
             private Node _prev;
-            private readonly Type _type;
-            private readonly bool _isAuth;
-            private readonly DnsName _owner;
-            private readonly DnsRecord[] _records;
 
             #endregion
 
@@ -246,14 +237,14 @@ namespace AK.Net.Dns.Caching
             /// <param name="records">The resource records.</param>
             /// <param name="isAuthoratative">True if the records are from an authoratative source, 
             /// otherwise; false.</param>
-            public Node(DnsRecord[] records, bool isAuthoratative) {
+            public Node(DnsRecord[] records, bool isAuthoratative)
+            {
+                Guard.NotNull(records, "records");
 
-                Guard.NotNull(records, "records");  
-
-                _isAuth = isAuthoratative;
-                _records = records;
-                _owner = _records[0].Owner;   
-                _type = _records[0].GetType();                             
+                IsAuthorative = isAuthoratative;
+                Records = records;
+                Owner = Records[0].Owner;
+                Type = Records[0].GetType();
             }
 
             /// <summary>
@@ -261,11 +252,14 @@ namespace AK.Net.Dns.Caching
             /// </summary>
             /// <param name="dt">The current date time.</param>
             /// <returns>True if this node is alive, otherwise; false.</returns>
-            public bool IsAlive(DateTime dt) {
-
-                for(int i = 0; i < this.Records.Length; ++i) {
-                    if(!this.Records[i].IsAlive(dt))
+            public bool IsAlive(DateTime dt)
+            {
+                for (var i = 0; i < Records.Length; ++i)
+                {
+                    if (!Records[i].IsAlive(dt))
+                    {
                         return false;
+                    }
                 }
 
                 return true;
@@ -275,17 +269,21 @@ namespace AK.Net.Dns.Caching
             /// Removes this node from the list.
             /// </summary>
             /// <returns></returns>
-            public Node Remove() {
+            public Node Remove()
+            {
+                var prev = Previous;
+                var next = Next;
 
-                Node prev = this.Previous;
-                Node next = this.Next;
-
-                if(prev != null)
+                if (prev != null)
+                {
                     prev.Next = next;
-                if(next != null)
+                }
+                if (next != null)
+                {
                     next.Previous = prev;
+                }
 
-                this.Next = this.Previous = null;
+                Next = Previous = null;
 
                 return prev ?? next;
             }
@@ -293,51 +291,39 @@ namespace AK.Net.Dns.Caching
             /// <summary>
             /// Gets the owner of the records contained within this node.
             /// </summary>
-            public DnsName Owner {
-
-                get { return _owner; }
-            }
+            public DnsName Owner { get; }
 
             /// <summary>
             /// Gets the records contained by this node.
             /// </summary>
-            public DnsRecord[] Records {
-
-                get { return _records; }
-            }
+            public DnsRecord[] Records { get; }
 
             /// <summary>
             /// Gets a value indicating if this node is from an authoratative source.
             /// </summary>
-            public bool IsAuthorative {
-
-                get { return _isAuth; }
-            }
+            public bool IsAuthorative { get; }
 
             /// <summary>
             /// Gets the type of record contained within this node.
             /// </summary>
-            public Type Type {
-
-                get { return _type; }
-            }
+            public Type Type { get; }
 
             /// <summary>
             /// Gets or sets the previous node is this node list.
             /// </summary>
-            public Node Previous {
-
-                get { return _prev; }
-                set { _prev = !object.ReferenceEquals(this, value) ? value : null; }
+            public Node Previous
+            {
+                get => _prev;
+                set => _prev = !ReferenceEquals(this, value) ? value : null;
             }
 
             /// <summary>
             /// Gets or sets the next node is this node list.
             /// </summary>
-            public Node Next {
-
-                get { return _next; }
-                set { _next = !object.ReferenceEquals(this, value) ? value : null; }
+            public Node Next
+            {
+                get => _next;
+                set => _next = !ReferenceEquals(this, value) ? value : null;
             }
 
             #endregion

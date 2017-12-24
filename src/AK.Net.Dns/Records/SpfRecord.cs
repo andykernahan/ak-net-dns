@@ -34,7 +34,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of SpfRecord records. This field is readonly.
         /// </summary>
-        new public static readonly SpfRecord[] EmptyArray = { };
+        public new static readonly SpfRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the SpfRecord class and specifies the owner name,
@@ -54,8 +54,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public SpfRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.Spf, cls, ttl) {
-
+            : base(owner, DnsRecordType.Spf, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -75,9 +75,9 @@ namespace AK.Net.Dns.Records
         /// <see langword="null"/>.
         /// </exception>
         public SpfRecord(DnsName owner, TimeSpan ttl, string specification)
-            : base(owner, DnsRecordType.Spf, DnsRecordClass.IN, ttl) {
-
-                Guard.NotNull(specification, "specification");
+            : base(owner, DnsRecordType.Spf, DnsRecordClass.IN, ttl)
+        {
+            Guard.NotNull(specification, "specification");
 
             _specification = specification;
         }
@@ -90,20 +90,20 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteCharString(this.Specification);
+            writer.WriteCharString(Specification);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} \"{1}\"", base.ToString(), this.Specification);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} \"{1}\"", base.ToString(), Specification);
         }
 
         /// <summary>
@@ -112,10 +112,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public string Specification {
-
-            get { return _specification; }
-            set {
+        public string Specification
+        {
+            get => _specification;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _specification = value;
             }

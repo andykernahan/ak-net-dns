@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Net;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Net;
 using System.Threading;
-
 using AK.Net.Dns.Configuration;
-using AK.Net.Dns.Records;
 
 namespace AK.Net.Dns.Resolvers
 {
@@ -36,74 +32,6 @@ namespace AK.Net.Dns.Resolvers
     /// <threadsafety static="true" instance="true" />
     public class DnsStubResolver : DnsResolver
     {
-        #region Private Fields.
-
-        private static DnsStubResolver _instance;
-        private readonly IList<IPEndPoint> _servers;
-
-        #endregion
-
-        #region Public Interface.
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="DnsStubResolver"/> class.
-        /// </summary>
-        public DnsStubResolver() {
-
-            _servers = new CopyOnMutateCollection<IPEndPoint>();
-            DnsStubResolverSection.GetSection().Apply(this);
-        }
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="DnsStubResolver"/> class
-        /// and specifies the endpoints of the recursive forward servers.
-        /// </summary>
-        /// <param name="servers">The recursive forward servers.</param>
-        public DnsStubResolver(IEnumerable<IPEndPoint> servers)
-            : this() {
-
-            Guard.NotNull(servers, "servers");
-
-            _servers = new CopyOnMutateCollection<IPEndPoint>(servers);
-        }        
-
-        /// <summary>
-        /// Returns a default <see cref="AK.Net.Dns.Resolvers.DnsStubResolver"/>
-        /// instance.
-        /// </summary>
-        /// <returns>The default <see cref="AK.Net.Dns.Resolvers.DnsStubResolver"/>
-        /// instance.</returns>
-        public static DnsStubResolver Instance() {
-
-            if(_instance == null)
-                Interlocked.CompareExchange(ref _instance, new DnsStubResolver(), null);
-            return _instance;
-        }
-
-        /// <summary>
-        /// Gets the collection of recursive forward servers.
-        /// </summary>
-        /// <remarks>
-        /// Any modifications to the collection MUST be made under an exclusive lock.
-        /// <example>
-        /// <code lang="c#">
-        /// <![CDATA[
-        /// DnsStubResolver resolver = DnsStubResolver.Instance();
-        /// 
-        /// lock(resolver.Servers) {
-        ///     resolver.Servers.Add(new IPEndPoint(IPAddress.Loopback, DnsTransport.DnsPort));
-        /// }
-        /// ]]>
-        /// </code>
-        /// </example>
-        /// </remarks>
-        public IList<IPEndPoint> Servers {
-
-            get { return _servers; }
-        }
-
-        #endregion
-
         #region Protected Interface.
 
         /// <summary>
@@ -125,18 +53,22 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        protected override DnsReply Resolve(DnsQuery query) {
-
+        protected override DnsReply Resolve(DnsQuery query)
+        {
             Guard.NotNull(query, "query");
 
             DnsReply reply;
 
-            foreach(IPEndPoint server in this.Servers) {
-                try {
-                    reply = this.Transport.Send(query, server);
+            foreach (var server in Servers)
+            {
+                try
+                {
+                    reply = Transport.Send(query, server);
                     return reply;
-                } catch(DnsException exc) {
-                    this.Log.Warn("exception whilst forwarding, server=" + server, exc);
+                }
+                catch (DnsException exc)
+                {
+                    Log.Warn("exception whilst forwarding, server=" + server, exc);
                     MoveServerToTail(server);
                 }
             }
@@ -148,21 +80,89 @@ namespace AK.Net.Dns.Resolvers
 
         #region Private Impl.
 
-        private void MoveServerToTail(IPEndPoint server) {
-
+        private void MoveServerToTail(IPEndPoint server)
+        {
             int index;
 
-            lock(this.Servers) {
-                if(this.Servers.Count > 1 && 
-                    (index = this.Servers.IndexOf(server)) > -1 &&
-                    index != this.Servers.Count - 1) {
-                    this.Servers.RemoveAt(index);
-                    this.Servers.Add(server);
-                    this.Log.InfoFormat("moved server to tail, tail={0}, head={1}",
-                        server, this.Servers[0]);
+            lock (Servers)
+            {
+                if (Servers.Count > 1 &&
+                    (index = Servers.IndexOf(server)) > -1 &&
+                    index != Servers.Count - 1)
+                {
+                    Servers.RemoveAt(index);
+                    Servers.Add(server);
+                    Log.InfoFormat("moved server to tail, tail={0}, head={1}",
+                        server, Servers[0]);
                 }
             }
         }
+
+        #endregion
+
+        #region Private Fields.
+
+        private static DnsStubResolver _instance;
+
+        #endregion
+
+        #region Public Interface.
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="DnsStubResolver"/> class.
+        /// </summary>
+        public DnsStubResolver()
+        {
+            Servers = new CopyOnMutateCollection<IPEndPoint>();
+            DnsStubResolverSection.GetSection().Apply(this);
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="DnsStubResolver"/> class
+        /// and specifies the endpoints of the recursive forward servers.
+        /// </summary>
+        /// <param name="servers">The recursive forward servers.</param>
+        public DnsStubResolver(IEnumerable<IPEndPoint> servers)
+            : this()
+        {
+            Guard.NotNull(servers, "servers");
+
+            Servers = new CopyOnMutateCollection<IPEndPoint>(servers);
+        }
+
+        /// <summary>
+        /// Returns a default <see cref="AK.Net.Dns.Resolvers.DnsStubResolver"/>
+        /// instance.
+        /// </summary>
+        /// <returns>The default <see cref="AK.Net.Dns.Resolvers.DnsStubResolver"/>
+        /// instance.</returns>
+        public static DnsStubResolver Instance()
+        {
+            if (_instance == null)
+            {
+                Interlocked.CompareExchange(ref _instance, new DnsStubResolver(), null);
+            }
+            return _instance;
+        }
+
+        /// <summary>
+        /// Gets the collection of recursive forward servers.
+        /// </summary>
+        /// <remarks>
+        /// Any modifications to the collection MUST be made under an exclusive lock.
+        /// <example>
+        /// <code lang="c#">
+        /// <![CDATA[
+        /// DnsStubResolver resolver = DnsStubResolver.Instance();
+        /// 
+        /// lock(resolver.Servers) {
+        ///     resolver.Servers.Add(new IPEndPoint(IPAddress.Loopback, DnsTransport.DnsPort));
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </remarks>
+        public IList<IPEndPoint> Servers { get; }
 
         #endregion
     }

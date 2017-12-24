@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 namespace AK.Net.Dns.Configuration.TypeConversion
 {
 #if BUILD_DOCS
-    /// <summary>
-    /// Contains custom type conversion providers used within the
-    /// <see cref="AK.Net.Dns.Configuration"/> namespace.
-    /// </summary>
+/// <summary>
+/// Contains custom type conversion providers used within the
+/// <see cref="AK.Net.Dns.Configuration"/> namespace.
+/// </summary>
     internal sealed class NamespaceDoc { }
 #endif
 }

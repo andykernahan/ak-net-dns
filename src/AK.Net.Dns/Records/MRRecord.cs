@@ -34,7 +34,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of MRRecord records. This field is readonly.
         /// </summary>
-        new public static readonly MRRecord[] EmptyArray = { };
+        public new static readonly MRRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the MRRecord class and specifies the owner name,
@@ -54,8 +54,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public MRRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.MR, cls, ttl) {
-
+            : base(owner, DnsRecordType.MR, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -77,8 +77,8 @@ namespace AK.Net.Dns.Records
         /// <see langword="null"/>.
         /// </exception>
         public MRRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, DnsName newMailbox)
-            : base(owner, DnsRecordType.MG, cls, ttl) {
-
+            : base(owner, DnsRecordType.MG, cls, ttl)
+        {
             Guard.NotNull(newMailbox, "newMailbox");
 
             _newMailbox = newMailbox;
@@ -92,20 +92,20 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteName(this.NewMailbox);
+            writer.WriteName(NewMailbox);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} {1}", base.ToString(), this.NewMailbox);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} {1}", base.ToString(), NewMailbox);
         }
 
         /// <summary>
@@ -114,10 +114,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName NewMailbox {
-
-            get { return _newMailbox; }
-            set {
+        public DnsName NewMailbox
+        {
+            get => _newMailbox;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _newMailbox = value;
             }

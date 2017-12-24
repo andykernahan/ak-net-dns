@@ -24,6 +24,14 @@ namespace AK.Net.Dns.Records.Builders
     /// <threadsafety static="true" instance="true" />
     public sealed class DnsDefaultRecordBuilder : IDnsRecordBuilder
     {
+        #region Private Impl.
+
+        private DnsDefaultRecordBuilder()
+        {
+        }
+
+        #endregion
+
         #region Public Interface.
 
         /// <summary>
@@ -40,8 +48,8 @@ namespace AK.Net.Dns.Records.Builders
         /// <see langword="true"/> if the bulider can build records of the
         /// specified <paramref name="type"/>, otherwise; <see langword="false"/>.
         /// </returns>
-        public bool CanBuild(DnsRecordType type) {
-
+        public bool CanBuild(DnsRecordType type)
+        {
             return true;
         }
 
@@ -70,16 +78,10 @@ namespace AK.Net.Dns.Records.Builders
         /// <paramref name="reader"/>.
         /// </exception>
         public DnsRecord Build(DnsName owner, DnsRecordType type, DnsRecordClass cls,
-            TimeSpan ttl, IDnsReader reader) {
-
+            TimeSpan ttl, IDnsReader reader)
+        {
             return new XRecord(owner, type, cls, ttl, reader);
         }
-
-        #endregion
-
-        #region Private Impl.
-
-        private DnsDefaultRecordBuilder() { }
 
         #endregion
     }

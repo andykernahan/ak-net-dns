@@ -13,8 +13,8 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.Threading;
+using log4net;
 
 namespace AK.Net.Dns
 {
@@ -25,132 +25,70 @@ namespace AK.Net.Dns
     /// <see cref="System.Type"/>.</typeparam>
     internal class DnsAsyncState<TResult> : IAsyncResult
     {
-        #region Private Fields.
-
-        private volatile bool _isCompleted;
-        private volatile bool _isEndCalled;
-        private volatile bool _completedSynchronously;
-        private Exception _exception;
-        private TResult _result;
-        private volatile ManualResetEvent _waitHandle;
-        private log4net.ILog _log;
-        private readonly object _state;
-        private readonly AsyncCallback _callback;
-        private readonly object _syncRoot = new object();        
-
-        #endregion
-
         /// <summary>
         /// Initialises a new instance of the <see cref="DnsAsyncState&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="callback">The user's callback method.</param>
         /// <param name="state">The user's state object.</param>
-        public DnsAsyncState(AsyncCallback callback, object state) {
-
+        public DnsAsyncState(AsyncCallback callback, object state)
+        {
             _callback = callback;
-            _state = state;
+            AsyncState = state;
         }
 
         /// <summary>
-        /// Attemps to queue the specified operation on the 
-        /// <see cref="System.Threading.ThreadPool"/> and returns a value indicating
-        /// whether the operation has been queued to execute asynchronously or has been
-        /// executed synchronously.
+        /// Gets a value indicating if the End* method has been called.
         /// </summary>
-        /// <param name="callback">The method that represents the operation.</param>
-        /// <returns><see langword="true"/> if the operation was queued to be executed
-        /// asynchronously, otherwise; <see langword="false"/> to indicate that the
-        /// method has been executed synchronously.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when <paramref name="callback"/> is <see langword="null"/>.
-        /// </exception>
-        public bool QueueOperation(WaitCallback callback) {
-
-            Guard.NotNull(callback, "callback");
-
-            bool queued = false;
-
-            try {
-                queued = ThreadPool.QueueUserWorkItem(callback);
-            } catch(NotSupportedException exc) {
-                // According to the documentation, a NotSupportedException is thrown when
-                // the CLR is hosted and the host does not support the thread pool.
-                this.Log.Error(exc);
-            } catch(ApplicationException exc) {
-                // Work item could not be queued.
-                this.Log.Error(exc);
-            }
-
-            if(!queued) {
-                this.Log.Warn("failed to queue an asynchronous operation on the thread " +
-                    "pool, completing synchronously instead");
-                this.CompletedSynchronously = true;
-                callback(this);
-            }
-
-            return queued;
-        }
+        public bool IsEndCalled => _isEndCalled;
 
         /// <summary>
-        /// Waits for the operation to complete, asserts that end has not already been
-        /// called and re-throws any exceptions caught during the operation.
+        /// Gets or sets the exception that ocurred during the operation.
         /// </summary>
-        /// <exception cref="System.InvalidOperationException">
-        /// Thrown when end has already been called on this result.
-        /// </exception>
-        /// <exception cref="System.Exception">
-        /// Any exception that was caught during the operation.
-        /// </exception>
-        public void OnEndCalled() {
-
-            lock(_syncRoot) {            
-                if(!_isCompleted)
-                    Monitor.Wait(_syncRoot);
-                if(_isEndCalled)
-                    throw Guard.AsyncResultEndAlreadyCalled();
-                _isEndCalled = true;
-                if(_exception != null)
-                    throw _exception;
-            }
-        }
+        public Exception Exception { get; set; }
 
         /// <summary>
-        /// Sets the operation as complete, signals the wait handle and invokes
-        /// the user's callback.
+        /// Gets or sets the result of the operation.
         /// </summary>
-        public void OnComplete() {
+        public TResult Result { get; set; }
 
-            lock(_syncRoot) {
-                if(_isCompleted)
-                    return;
-                _isCompleted = true;
-                if(_waitHandle != null)
-                    _waitHandle.Set();
-                // Release any threads waiting in OnEndCalled.
-                Monitor.PulseAll(_syncRoot);
+        #region Protected Interface.
+
+        /// <summary>
+        /// Gets the <see cref="log4net.ILog"/> for this type.
+        /// </summary>
+        protected ILog Log
+        {
+            get
+            {
+                if (_log == null)
+                {
+                    _log = LogManager.GetLogger(GetType());
+                }
+                return _log;
             }
-            if(_callback != null)
-                _callback(this);
         }
+
+        #endregion
 
         /// <summary>
         /// Gets the user's asynchronous operation state object.
         /// </summary>
-        public object AsyncState {
-
-            get { return _state; }
-        }
+        public object AsyncState { get; }
 
         /// <summary>
         /// Gets the <see cref="System.Threading.WaitHandle"/> that can be used
         /// to wait until the asynchronous operation completes.
         /// </summary>
-        public WaitHandle AsyncWaitHandle {
-
-            get {
-                if(_waitHandle == null) {
-                    lock(_syncRoot) {
-                        if(_waitHandle == null) {
+        public WaitHandle AsyncWaitHandle
+        {
+            get
+            {
+                if (_waitHandle == null)
+                {
+                    lock (_syncRoot)
+                    {
+                        if (_waitHandle == null)
+                        {
                             // Set the initial state of the handle to be the completed
                             // state of the operation to ensure we do not lock the caller
                             // if the operation was completed whilst aquiring the lock.
@@ -173,62 +111,129 @@ namespace AK.Net.Dns
         /// <summary>
         /// Gets or sets a value indicating if the operation completed synchronously.
         /// </summary>
-        public bool CompletedSynchronously {
-
-            get { return _completedSynchronously; }
-            set { _completedSynchronously = value; }
+        public bool CompletedSynchronously
+        {
+            get => _completedSynchronously;
+            set => _completedSynchronously = value;
         }
 
         /// <summary>
         /// Gets a value indicating if the operation has completed.
         /// </summary>
-        public bool IsCompleted {
+        public bool IsCompleted => _isCompleted;
 
-            get { return _isCompleted; }
+        /// <summary>
+        /// Attemps to queue the specified operation on the 
+        /// <see cref="System.Threading.ThreadPool"/> and returns a value indicating
+        /// whether the operation has been queued to execute asynchronously or has been
+        /// executed synchronously.
+        /// </summary>
+        /// <param name="callback">The method that represents the operation.</param>
+        /// <returns><see langword="true"/> if the operation was queued to be executed
+        /// asynchronously, otherwise; <see langword="false"/> to indicate that the
+        /// method has been executed synchronously.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown when <paramref name="callback"/> is <see langword="null"/>.
+        /// </exception>
+        public bool QueueOperation(WaitCallback callback)
+        {
+            Guard.NotNull(callback, "callback");
+
+            var queued = false;
+
+            try
+            {
+                queued = ThreadPool.QueueUserWorkItem(callback);
+            }
+            catch (NotSupportedException exc)
+            {
+                // According to the documentation, a NotSupportedException is thrown when
+                // the CLR is hosted and the host does not support the thread pool.
+                Log.Error(exc);
+            }
+            catch (ApplicationException exc)
+            {
+                // Work item could not be queued.
+                Log.Error(exc);
+            }
+
+            if (!queued)
+            {
+                Log.Warn("failed to queue an asynchronous operation on the thread " +
+                         "pool, completing synchronously instead");
+                CompletedSynchronously = true;
+                callback(this);
+            }
+
+            return queued;
         }
 
         /// <summary>
-        /// Gets a value indicating if the End* method has been called.
+        /// Waits for the operation to complete, asserts that end has not already been
+        /// called and re-throws any exceptions caught during the operation.
         /// </summary>
-        public bool IsEndCalled {
-
-            get { return _isEndCalled; }
-        }
-
-        /// <summary>
-        /// Gets or sets the exception that ocurred during the operation.
-        /// </summary>
-        public Exception Exception {
-
-            get { return _exception; }
-            set { _exception = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the result of the operation.
-        /// </summary>
-        public TResult Result {
-
-            get { return _result; }
-            set { _result = value; }
-        }
-
-        #region Protected Interface.
-
-        /// <summary>
-        /// Gets the <see cref="log4net.ILog"/> for this type.
-        /// </summary>
-        protected log4net.ILog Log {
-
-            get {
-                if(_log == null)
-                    _log = log4net.LogManager.GetLogger(GetType());
-                return _log;
+        /// <exception cref="System.InvalidOperationException">
+        /// Thrown when end has already been called on this result.
+        /// </exception>
+        /// <exception cref="System.Exception">
+        /// Any exception that was caught during the operation.
+        /// </exception>
+        public void OnEndCalled()
+        {
+            lock (_syncRoot)
+            {
+                if (!_isCompleted)
+                {
+                    Monitor.Wait(_syncRoot);
+                }
+                if (_isEndCalled)
+                {
+                    throw Guard.AsyncResultEndAlreadyCalled();
+                }
+                _isEndCalled = true;
+                if (Exception != null)
+                {
+                    throw Exception;
+                }
             }
         }
+
+        /// <summary>
+        /// Sets the operation as complete, signals the wait handle and invokes
+        /// the user's callback.
+        /// </summary>
+        public void OnComplete()
+        {
+            lock (_syncRoot)
+            {
+                if (_isCompleted)
+                {
+                    return;
+                }
+                _isCompleted = true;
+                if (_waitHandle != null)
+                {
+                    _waitHandle.Set();
+                }
+                // Release any threads waiting in OnEndCalled.
+                Monitor.PulseAll(_syncRoot);
+            }
+            if (_callback != null)
+            {
+                _callback(this);
+            }
+        }
+
+        #region Private Fields.
+
+        private volatile bool _isCompleted;
+        private volatile bool _isEndCalled;
+        private volatile bool _completedSynchronously;
+        private volatile ManualResetEvent _waitHandle;
+        private ILog _log;
+        private readonly AsyncCallback _callback;
+        private readonly object _syncRoot = new object();
 
         #endregion
     }
 }
-
-

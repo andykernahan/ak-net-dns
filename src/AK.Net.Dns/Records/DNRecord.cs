@@ -34,7 +34,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of DNRecord records. This field is readonly.
         /// </summary>
-        new public static readonly DNRecord[] EmptyArray = { };
+        public new static readonly DNRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the DNRecord class and specifies the owner name,
@@ -54,8 +54,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public DNRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.CName, cls, ttl) {
-
+            : base(owner, DnsRecordType.CName, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -76,8 +76,8 @@ namespace AK.Net.Dns.Records
         /// <see langword="null"/>.
         /// </exception>
         public DNRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, DnsName target)
-            : base(owner, DnsRecordType.CName, cls, ttl) {
-
+            : base(owner, DnsRecordType.CName, cls, ttl)
+        {
             Guard.NotNull(target, "target");
 
             _target = target;
@@ -91,21 +91,21 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
             // The RFC states that the RDATA section should not be compressed.
-            writer.WriteName(this.Target, false);
+            writer.WriteName(Target, false);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} {1}", base.ToString(), this.Target);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} {1}", base.ToString(), Target);
         }
 
         /// <summary>
@@ -114,10 +114,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName Target {
-
-            get { return _target; }
-            set {
+        public DnsName Target
+        {
+            get => _target;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _target = value;
             }

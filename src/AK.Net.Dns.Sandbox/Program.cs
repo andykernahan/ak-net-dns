@@ -28,15 +28,15 @@ namespace AK.Net.Dns.Sandbox
         public static void Main(string[] args)
         {
             var nameServers = AKDns.GetNameServers("rcmap.co.uk.");
-            var mxInfo = AKDns.GetMXInfo("rcmap.co.uk.");            
+            var mxInfo = AKDns.GetMXInfo("rcmap.co.uk.");
 
             IDnsTransport transport = new DnsUdpTransport();
 
-            DnsQuery query = new DnsQuery();
+            var query = new DnsQuery();
 
             query.Questions.Add(new DnsQuestion("rcmap.co.uk.", DnsQueryType.A, DnsQueryClass.IN));
 
-            DnsReply reply = transport.Send(query, new IPEndPoint(IPAddress.Parse("8.8.8.8"), DnsTransport.DnsPort));
+            var reply = transport.Send(query, new IPEndPoint(IPAddress.Parse("8.8.8.8"), DnsTransport.DnsPort));
         }
     }
 }

@@ -13,10 +13,7 @@
 // limitations under the License.
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-using System;
 using System.Configuration;
-using System.Net;
-
 using AK.Net.Dns.IO;
 
 namespace AK.Net.Dns.Configuration
@@ -43,12 +40,12 @@ namespace AK.Net.Dns.Configuration
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="transport"/> is <see langword="null"/>.
         /// </exception>
-        public virtual void Apply(DnsTransport transport) {
-
+        public virtual void Apply(DnsTransport transport)
+        {
             Guard.NotNull(transport, "transport");
 
-            transport.ReceiveTimeout = this.ReceiveTimeout;
-            transport.SendTimeout = this.SendTimeout;
+            transport.ReceiveTimeout = ReceiveTimeout;
+            transport.SendTimeout = SendTimeout;
         }
 
         /// <summary>
@@ -57,10 +54,7 @@ namespace AK.Net.Dns.Configuration
         [IntegerValidator(MinValue = 0)]
         [ConfigurationProperty("sendTimeout", IsRequired = false,
             DefaultValue = DnsTransport.DefaultTimeout)]
-        public int SendTimeout {
-
-            get { return (int)this["sendTimeout"]; }
-        }
+        public int SendTimeout => (int)this["sendTimeout"];
 
         /// <summary>
         /// Gets, in milliseconds, the transport receive timeout
@@ -68,10 +62,7 @@ namespace AK.Net.Dns.Configuration
         [IntegerValidator(MinValue = 0)]
         [ConfigurationProperty("receiveTimeout", IsRequired = false,
             DefaultValue = DnsTransport.DefaultTimeout)]
-        public int ReceiveTimeout {
-
-            get { return (int)this["receiveTimeout"]; }
-        }
+        public int ReceiveTimeout => (int)this["receiveTimeout"];
 
         #endregion
     }

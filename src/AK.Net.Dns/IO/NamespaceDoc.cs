@@ -12,16 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 namespace AK.Net.Dns.IO
 {
 #if BUILD_DOCS
-    /// <summary>
-    /// Contains <see cref="AK.Net.Dns.IDnsReader"/>, 
-    /// <see cref="AK.Net.Dns.IDnsWriter"/> and
-    /// <see cref="AK.Net.Dns.IDnsTransport"/> implementations.
-    /// </summary>
+/// <summary>
+/// Contains <see cref="AK.Net.Dns.IDnsReader"/>, 
+/// <see cref="AK.Net.Dns.IDnsWriter"/> and
+/// <see cref="AK.Net.Dns.IDnsTransport"/> implementations.
+/// </summary>
     internal sealed class NamespaceDoc { }
 #endif
 }

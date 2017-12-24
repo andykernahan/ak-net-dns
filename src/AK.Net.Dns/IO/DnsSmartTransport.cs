@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Net;
-
 using AK.Net.Dns.Configuration;
 
 namespace AK.Net.Dns.IO
@@ -30,10 +28,45 @@ namespace AK.Net.Dns.IO
     /// <threadsafety static="true" instance="true" />
     public class DnsSmartTransport : DnsTransport
     {
+        #region Protected Interface.
+
+        /// <summary>
+        /// Selects the best transport for the specified <paramref name="query"/>.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>The best <see cref="AK.Net.Dns.IDnsTransport"/> for the specified
+        /// <paramref name="query"/>.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown when <paramref name="query"/> is <see langword="null"/>.
+        /// </exception>
+        protected virtual IDnsTransport SelectTransport(DnsQuery query)
+        {
+            Guard.NotNull(query, "query");
+
+            var transport = UdpTransport;
+
+            if (query.Questions.Count > 0)
+            {
+                // TODO does this code belong here?
+                switch (query.Questions[0].Type)
+                {
+                    case DnsQueryType.Axfr:
+                        transport = TcpTransport;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return transport;
+        }
+
+        #endregion
+
         #region Private Fields.
 
         private IDnsTransport _udpTransport;
-        private IDnsTransport _tcpTransport;        
+        private IDnsTransport _tcpTransport;
 
         #endregion
 
@@ -42,8 +75,8 @@ namespace AK.Net.Dns.IO
         /// <summary>
         /// Initialises a new instance of the DnsSmartTransport class.
         /// </summary>
-        public DnsSmartTransport() {
-
+        public DnsSmartTransport()
+        {
             DnsSmartTransportSection.GetSection().Apply(this);
         }
 
@@ -62,31 +95,39 @@ namespace AK.Net.Dns.IO
         /// <exception cref="AK.Net.Dns.DnsTransportException">
         /// Thrown when a transport error occurs.
         /// </exception>
-        public override DnsReply Send(DnsQuery query, IPEndPoint endpoint) {
-
+        public override DnsReply Send(DnsQuery query, IPEndPoint endpoint)
+        {
             Guard.NotNull(endpoint, "endpoint");
 
             DnsReply reply = null;
-            IDnsTransport transport = SelectTransport(query);
+            var transport = SelectTransport(query);
 
-            try {
+            try
+            {
                 reply = transport.Send(query, endpoint);
-            } catch(DnsTransportException exc) {
+            }
+            catch (DnsTransportException exc)
+            {
                 // If the selected transport was TCP, we cannot fail over.
                 // NOTE this comparison is not thread safe, but at worst it would mean
                 // the query being sent again.
-                if(transport == this.TcpTransport)
-                    throw;                
-                this.Log.Warn("UDP transport failure, failing over to TCP:", exc);
+                if (transport == TcpTransport)
+                {
+                    throw;
+                }
+                Log.Warn("UDP transport failure, failing over to TCP:", exc);
             }
 
-            if(reply != null) {
-                if(!reply.Header.IsTruncated)
+            if (reply != null)
+            {
+                if (!reply.Header.IsTruncated)
+                {
                     return reply;
-                this.Log.InfoFormat("message truncated, failing over to TCP, question={0}", query.Question);
+                }
+                Log.InfoFormat("message truncated, failing over to TCP, question={0}", query.Question);
             }
 
-            return this.TcpTransport.Send(query, endpoint);
+            return TcpTransport.Send(query, endpoint);
         }
 
         /// <summary>
@@ -95,10 +136,11 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public IDnsTransport UdpTransport {
-
-            get { return _udpTransport; }
-            set {
+        public IDnsTransport UdpTransport
+        {
+            get => _udpTransport;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _udpTransport = value;
             }
@@ -110,50 +152,16 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public IDnsTransport TcpTransport {
-
-            get { return _tcpTransport; }
-            set {
+        public IDnsTransport TcpTransport
+        {
+            get => _tcpTransport;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _tcpTransport = value;
             }
         }
 
         #endregion
-
-        #region Protected Interface.
-
-        /// <summary>
-        /// Selects the best transport for the specified <paramref name="query"/>.
-        /// </summary>
-        /// <param name="query">The query.</param>
-        /// <returns>The best <see cref="AK.Net.Dns.IDnsTransport"/> for the specified
-        /// <paramref name="query"/>.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when <paramref name="query"/> is <see langword="null"/>.
-        /// </exception>
-        protected virtual IDnsTransport SelectTransport(DnsQuery query) {
-
-            Guard.NotNull(query, "query");
-            
-            IDnsTransport transport = this.UdpTransport;
-
-            if(query.Questions.Count > 0) {
-                // TODO does this code belong here?
-                switch(query.Questions[0].Type) {
-                    case DnsQueryType.Axfr:
-                        transport = this.TcpTransport;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return transport;
-        }
-
-        #endregion
     }
 }
-
-

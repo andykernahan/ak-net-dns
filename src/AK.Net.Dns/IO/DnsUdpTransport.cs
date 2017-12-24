@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Net;
 using System.Net.Sockets;
-
 using AK.Net.Dns.Configuration;
 
 namespace AK.Net.Dns.IO
@@ -33,7 +31,7 @@ namespace AK.Net.Dns.IO
     {
         #region Private Fields.
 
-        private int _transmitRetries = DnsUdpTransport.DefaultTransmitRetries;
+        private int _transmitRetries = DefaultTransmitRetries;
 
         private const int MILLIS_IN_MICRO = 1000;
 
@@ -55,8 +53,8 @@ namespace AK.Net.Dns.IO
         /// <summary>
         /// Initialises a new instance of the DnsUdpTransport class.
         /// </summary>
-        public DnsUdpTransport() {
-
+        public DnsUdpTransport()
+        {
             DnsUdpTransportSection.GetSection().Apply(this);
         }
 
@@ -76,43 +74,56 @@ namespace AK.Net.Dns.IO
         /// <exception cref="AK.Net.Dns.DnsTransportException">
         /// Thrown when a transport error occurs.
         /// </exception>
-        public override DnsReply Send(DnsQuery query, IPEndPoint endpoint) {
-
+        public override DnsReply Send(DnsQuery query, IPEndPoint endpoint)
+        {
             Guard.NotNull(query, "query");
             Guard.NotNull(endpoint, "endpoint");
 
             int read;
-            int retries = this.TransmitRetries;
+            var retries = TransmitRetries;
             DnsReply reply;
             EndPoint recvEndPoint = endpoint;
-            byte[] readBuffer = CreateReadBuffer(query);
-            ArraySegment<byte> writeBuffer = WriteQuery(query);            
+            var readBuffer = CreateReadBuffer(query);
+            var writeBuffer = WriteQuery(query);
 
-            using(Socket socket = CreateSocket(endpoint.AddressFamily)) {
-                do {
-                    try {
+            using (var socket = CreateSocket(endpoint.AddressFamily))
+            {
+                do
+                {
+                    try
+                    {
                         socket.SendTo(writeBuffer, endpoint);
-                        if(!socket.Poll(MillisToMicros(socket.ReceiveTimeout), SelectMode.SelectRead))
-                            continue;
-                        if((read = socket.ReceiveFrom(readBuffer, ref recvEndPoint)) == 0)
-                            continue;
-                        // Sanity check.
-                        if(!((IPEndPoint)recvEndPoint).Address.Equals(endpoint.Address)) {
-                            this.Log.WarnFormat("received reply from non-queried server, server={0}", endpoint);
+                        if (!socket.Poll(MillisToMicros(socket.ReceiveTimeout), SelectMode.SelectRead))
+                        {
                             continue;
                         }
-                        if(!TryReadReply(readBuffer, 0, read, out reply)) {
-                            this.Log.WarnFormat("received malformed reply, server={0}", endpoint);
+                        if ((read = socket.ReceiveFrom(readBuffer, ref recvEndPoint)) == 0)
+                        {
                             continue;
                         }
                         // Sanity check.
-                        if(QueriesAreEqual(reply, query))
+                        if (!((IPEndPoint)recvEndPoint).Address.Equals(endpoint.Address))
+                        {
+                            Log.WarnFormat("received reply from non-queried server, server={0}", endpoint);
+                            continue;
+                        }
+                        if (!TryReadReply(readBuffer, 0, read, out reply))
+                        {
+                            Log.WarnFormat("received malformed reply, server={0}", endpoint);
+                            continue;
+                        }
+                        // Sanity check.
+                        if (QueriesAreEqual(reply, query))
+                        {
                             return reply;
-                    } catch(SocketException exc) {
-                        this.Log.Warn(exc);
+                        }
+                    }
+                    catch (SocketException exc)
+                    {
+                        Log.Warn(exc);
                         throw Guard.DnsTransportFailed(exc);
                     }
-                } while(--retries > 0);
+                } while (--retries > 0);
             }
 
             throw Guard.DnsTransportNoEndPointsReplied();
@@ -124,10 +135,11 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when <paramref name="value"/> is not a positive number.
         /// </exception>
-        public int TransmitRetries {
-
-            get { return _transmitRetries; }
-            set {
+        public int TransmitRetries
+        {
+            get => _transmitRetries;
+            set
+            {
                 Guard.InRange(value > 0, "value");
                 _transmitRetries = value;
             }
@@ -137,27 +149,25 @@ namespace AK.Net.Dns.IO
 
         #region Private Impl.
 
-        private Socket CreateSocket(AddressFamily addressFamily) {
-
-            Socket socket = new Socket(addressFamily, SocketType.Dgram, ProtocolType.Udp);
+        private Socket CreateSocket(AddressFamily addressFamily)
+        {
+            var socket = new Socket(addressFamily, SocketType.Dgram, ProtocolType.Udp);
 
             ConfigureSocket(socket);
 
             return socket;
         }
 
-        private static byte[] CreateReadBuffer(DnsQuery query) {
-
-            return new byte[DnsUdpTransport.UdpDataSize];
+        private static byte[] CreateReadBuffer(DnsQuery query)
+        {
+            return new byte[UdpDataSize];
         }
 
-        private static int MillisToMicros(int value) {
-
+        private static int MillisToMicros(int value)
+        {
             return value * MILLIS_IN_MICRO;
         }
 
         #endregion
     }
 }
-
-

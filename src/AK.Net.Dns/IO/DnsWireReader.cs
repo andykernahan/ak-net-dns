@@ -13,11 +13,9 @@
 // limitations under the License.
 
 using System;
-using System.IO;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
-
-using IPAddress = System.Net.IPAddress;
-using AddressFamily = System.Net.Sockets.AddressFamily;
 
 namespace AK.Net.Dns.IO
 {
@@ -35,33 +33,33 @@ namespace AK.Net.Dns.IO
         private readonly int _length;
         private readonly byte[] _buffer;
 
-        private static readonly bool IS_LITTLE_ENDIAN = BitConverter.IsLittleEndian;
+        private static readonly bool s_isLittleEndian = BitConverter.IsLittleEndian;
 
         /// <summary>
         /// Defines the maximim recursion depth whilst uncompressing a single
         /// qname label. This field is constant.
         /// </summary>
-        private const int MAX_RECUR_DEPTH = 30;
+        private const int MaxRecurDepth = 30;
 
         /// <summary>
         /// Label type mask. This field is constant.
         /// </summary>
-        private const int LABEL_TYPE_MASK = 0xC0;
+        private const int LabelTypeMask = 0xC0;
 
         /// <summary>
         /// Label length mask. This field is constant.
         /// </summary>
-        private const int LABEL_LEN_MASK = 0x3F;
+        private const int LabelLenMask = 0x3F;
 
         /// <summary>
         /// Compress label type. This field is constant.
         /// </summary>
-        private const int LABEL_TYPE_COMP = 0xC0;
+        private const int LabelTypeComp = 0xC0;
 
         /// <summary>
         /// Normal label type. This field is constant.
         /// </summary>
-        private const int LABEL_TYPE_NORM = 0;        
+        private const int LabelTypeNorm = 0;
 
         #endregion
 
@@ -75,8 +73,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="buffer"/> is <see langword="null"/>.
         /// </exception>
-        public DnsWireReader(byte[] buffer) {
-
+        public DnsWireReader(byte[] buffer)
+        {
             Guard.NotNull(buffer, "buffer");
 
             _buffer = buffer;
@@ -111,8 +109,8 @@ namespace AK.Net.Dns.IO
         /// </item>
         /// </list>
         /// </exception>
-        public DnsWireReader(byte[] buffer, int offset, int count) {
-
+        public DnsWireReader(byte[] buffer, int offset, int count)
+        {
             Guard.IsValidBufferArgs(buffer, offset, count);
 
             _buffer = buffer;
@@ -132,8 +130,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public DnsName ReadName() {
-
+        public DnsName ReadName()
+        {
             CheckDisposed();
             AssertRemaining(1);
 
@@ -153,12 +151,12 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public DnsRecord ReadRecord() {
-
-            DnsName owner = ReadName();
-            DnsRecordType type = ReadRecordType();
-            DnsRecordClass cls = ReadRecordClass();
-            TimeSpan ttl = ReadTtl();
+        public DnsRecord ReadRecord()
+        {
+            var owner = ReadName();
+            var type = ReadRecordType();
+            var cls = ReadRecordClass();
+            var ttl = ReadTtl();
 
             return DnsRecord.GetBuilder(type).Build(owner, type, cls, ttl, this);
         }
@@ -174,8 +172,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public byte ReadByte() {
-
+        public byte ReadByte()
+        {
             CheckDisposed();
             AssertRemaining(1);
 
@@ -201,13 +199,13 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public byte[] ReadBytes(int count) {
-
-            Guard.InRange(count >= 0 && count <= this.Remaining, "count");
+        public byte[] ReadBytes(int count)
+        {
+            Guard.InRange(count >= 0 && count <= Remaining, "count");
 
             CheckDisposed();
 
-            byte[] buf = new byte[count];
+            var buf = new byte[count];
 
             ReadBytes(buf, 0, count);
 
@@ -244,8 +242,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public void ReadBytes(byte[] buffer, int offset, int count) {
-
+        public void ReadBytes(byte[] buffer, int offset, int count)
+        {
             Guard.IsValidBufferArgs(buffer, offset, count);
 
             CheckDisposed();
@@ -264,15 +262,17 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public int ReadUInt16() {
-
+        public int ReadUInt16()
+        {
             CheckDisposed();
             AssertRemaining(2);
 
-            if(IS_LITTLE_ENDIAN)
-                return (ushort)(_buffer[_pos++] << 8 | _buffer[_pos++]);
+            if (s_isLittleEndian)
+            {
+                return (ushort)((_buffer[_pos++] << 8) | _buffer[_pos++]);
+            }
 
-            return (ushort)(_buffer[_pos++] | _buffer[_pos++] << 8);
+            return (ushort)(_buffer[_pos++] | (_buffer[_pos++] << 8));
         }
 
         /// <summary>
@@ -286,15 +286,17 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public short ReadInt16() {
-
+        public short ReadInt16()
+        {
             CheckDisposed();
             AssertRemaining(2);
 
-            if(IS_LITTLE_ENDIAN)
-                return (short)(_buffer[_pos++] << 8 | _buffer[_pos++]);
+            if (s_isLittleEndian)
+            {
+                return (short)((_buffer[_pos++] << 8) | _buffer[_pos++]);
+            }
 
-            return (short)(_buffer[_pos++] | _buffer[_pos++] << 8);
+            return (short)(_buffer[_pos++] | (_buffer[_pos++] << 8));
         }
 
         /// <summary>
@@ -308,15 +310,17 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public int ReadInt32() {
-
+        public int ReadInt32()
+        {
             CheckDisposed();
             AssertRemaining(4);
 
-            if(IS_LITTLE_ENDIAN)
-                return (int)(_buffer[_pos++] << 24 | _buffer[_pos++] << 16 | _buffer[_pos++] << 8 | _buffer[_pos++]);
+            if (s_isLittleEndian)
+            {
+                return (_buffer[_pos++] << 24) | (_buffer[_pos++] << 16) | (_buffer[_pos++] << 8) | _buffer[_pos++];
+            }
 
-            return (int)(_buffer[_pos++] | _buffer[_pos++] << 8 | _buffer[_pos++] << 16 | _buffer[_pos++] << 24);
+            return _buffer[_pos++] | (_buffer[_pos++] << 8) | (_buffer[_pos++] << 16) | (_buffer[_pos++] << 24);
         }
 
         /// <summary>
@@ -330,15 +334,17 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public long ReadUInt32() {
-
+        public long ReadUInt32()
+        {
             CheckDisposed();
             AssertRemaining(4);
 
-            if(IS_LITTLE_ENDIAN)
-                return (uint)(_buffer[_pos++] << 24 | _buffer[_pos++] << 16 | _buffer[_pos++] << 8 | _buffer[_pos++]);
+            if (s_isLittleEndian)
+            {
+                return (uint)((_buffer[_pos++] << 24) | (_buffer[_pos++] << 16) | (_buffer[_pos++] << 8) | _buffer[_pos++]);
+            }
 
-            return (uint)(_buffer[_pos++] | _buffer[_pos++] << 8 | _buffer[_pos++] << 16 | _buffer[_pos++] << 24);
+            return (uint)(_buffer[_pos++] | (_buffer[_pos++] << 8) | (_buffer[_pos++] << 16) | (_buffer[_pos++] << 24));
         }
 
         /// <summary>
@@ -353,8 +359,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public DnsQueryClass ReadQueryClass() {
-
+        public DnsQueryClass ReadQueryClass()
+        {
             return (DnsQueryClass)ReadUInt16();
         }
 
@@ -370,8 +376,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public DnsQueryType ReadQueryType() {
-
+        public DnsQueryType ReadQueryType()
+        {
             return (DnsQueryType)ReadUInt16();
         }
 
@@ -387,8 +393,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public DnsOpCode ReadOpCode() {
-
+        public DnsOpCode ReadOpCode()
+        {
             return (DnsOpCode)ReadUInt16();
         }
 
@@ -404,8 +410,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public DnsRecordClass ReadRecordClass() {
-
+        public DnsRecordClass ReadRecordClass()
+        {
             return (DnsRecordClass)ReadUInt16();
         }
 
@@ -421,8 +427,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public DnsRecordType ReadRecordType() {
-
+        public DnsRecordType ReadRecordType()
+        {
             return (DnsRecordType)ReadUInt16();
         }
 
@@ -433,9 +439,9 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public string ReadString() {
-
-            return ReadString(this.Remaining);
+        public string ReadString()
+        {
+            return ReadString(Remaining);
         }
 
         /// <summary>
@@ -460,19 +466,23 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public string ReadString(int count) {
-
-            Guard.InRange(count >= 0 && count <= this.Remaining, "count");
+        public string ReadString(int count)
+        {
+            Guard.InRange(count >= 0 && count <= Remaining, "count");
 
             CheckDisposed();
 
-            if(count == 0)
+            if (count == 0)
+            {
                 return string.Empty;
+            }
 
-            StringBuilder sb = new StringBuilder(count);
+            var sb = new StringBuilder(count);
 
-            while(count-- > 0)
+            while (count-- > 0)
+            {
                 sb.Append((char)_buffer[_pos++]);
+            }
 
             return sb.ToString();
         }
@@ -489,8 +499,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public string ReadCharString() {
-
+        public string ReadCharString()
+        {
             return ReadString(ReadByte());
         }
 
@@ -505,8 +515,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public TimeSpan ReadTtl() {
-
+        public TimeSpan ReadTtl()
+        {
             return ConvertTtl(ReadUInt32());
         }
 
@@ -522,8 +532,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public IPAddress ReadIPv4Address() {
-
+        public IPAddress ReadIPv4Address()
+        {
             return ReadIPAddress(AddressFamily.InterNetwork);
         }
 
@@ -539,8 +549,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public IPAddress ReadIPv6Address() {
-
+        public IPAddress ReadIPv6Address()
+        {
             return ReadIPAddress(AddressFamily.InterNetworkV6);
         }
 
@@ -557,11 +567,12 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the reader has been disposed of.
         /// </exception>
-        public IPAddress ReadIPAddress(AddressFamily family) {
+        public IPAddress ReadIPAddress(AddressFamily family)
+        {
+            byte[] buf;
 
-            byte[] buf = null;
-
-            switch(family) {
+            switch (family)
+            {
                 case AddressFamily.InterNetwork:
                     buf = new byte[DnsWireWriter.IPv4AddrLength];
                     break;
@@ -586,9 +597,9 @@ namespace AK.Net.Dns.IO
         /// Thrown when <paramref name="ttl"/> greater than the maximum allowable TTL value
         /// (<see cref="System.UInt32.MaxValue"/>).
         /// </exception>
-        public static TimeSpan ConvertTtl(long ttl) {
-
-            Guard.InRange(ttl >= 0 && ttl <= uint.MaxValue, "ttl");            
+        public static TimeSpan ConvertTtl(long ttl)
+        {
+            Guard.InRange(ttl >= 0 && ttl <= uint.MaxValue, "ttl");
 
             return (ttl & 0x80000000) == 0 ? new TimeSpan(ttl * TimeSpan.TicksPerSecond) : TimeSpan.Zero;
         }
@@ -597,73 +608,87 @@ namespace AK.Net.Dns.IO
 
         #region Private Impl.
 
-        private void AssertRemaining(int count) {
-
-            if(this.Remaining < count)
+        private void AssertRemaining(int count)
+        {
+            if (Remaining < count)
+            {
                 throw Guard.EndOfDnsStreamReached();
+            }
         }
 
-        private int Remaining {
+        private int Remaining => _length - _pos;
 
-            get { return _length - _pos; }
-        }
+        private static DnsName ReadName(byte[] buffer, int offset, out int next)
+        {
+            var sb = new StringBuilder();
 
-        private static DnsName ReadName(byte[] buffer, int offset, out int next) {            
-
-            StringBuilder sb = new StringBuilder();
-
-            ReadName(sb, buffer, offset, 0, out next);            
+            ReadName(sb, buffer, offset, 0, out next);
 
             return DnsName.Parse(sb.ToString());
         }
 
-        private static void ReadName(StringBuilder sb, byte[] buffer, int offset, int depth, out int next) {
+        private static void ReadName(StringBuilder sb, byte[] buffer, int offset, int depth, out int next)
+        {
+            if (depth > MaxRecurDepth)
+            {
+                throw Guard.DnsNameHasTooManyRefs(MaxRecurDepth);
+            }
 
-            if(depth > MAX_RECUR_DEPTH)
-                throw Guard.DnsNameHasTooManyRefs(MAX_RECUR_DEPTH);
-            
-            int len;
-            int end;
-            int type;
-            int ignore = 0;
-            int pos = offset;
+            var pos = offset;
 
-            while(pos < buffer.Length) {
-                type = buffer[pos] & LABEL_TYPE_MASK;
-                if(type == LABEL_TYPE_COMP) {
-                    ReadName(sb, buffer, GetPtrOffset(buffer, pos, out pos), depth + 1, out ignore);
+            while (pos < buffer.Length)
+            {
+                var type = buffer[pos] & LabelTypeMask;
+                if (type == LabelTypeComp)
+                {
+                    ReadName(sb, buffer, GetPtrOffset(buffer, pos, out pos), depth + 1, out _);
                     break;
-                } else if(type == LABEL_TYPE_NORM) {
-                    len = buffer[pos++] & LABEL_LEN_MASK;
-                    if(len != 0) {
-                        end = len + pos;
-                        if(end > buffer.Length)
+                }
+                if (type == LabelTypeNorm)
+                {
+                    var len = buffer[pos++] & LabelLenMask;
+                    if (len != 0)
+                    {
+                        var end = len + pos;
+                        if (end > buffer.Length)
+                        {
                             throw Guard.EndOfDnsStreamReached();
-                        if(sb.Length > 0)
+                        }
+                        if (sb.Length > 0)
+                        {
                             sb.Append('.');
-                        do {
+                        }
+                        do
+                        {
                             sb.Append((char)buffer[pos++]);
-                        } while(pos < end);
-                    } else {
-                        sb.Append('.');                        
+                        } while (pos < end);
+                    }
+                    else
+                    {
+                        sb.Append('.');
                         break;
                     }
-                } else
+                }
+                else
+                {
                     throw Guard.UnsupportedDnsNameLabelType(type);
+                }
             }
 
             next = pos;
         }
 
-        private static int GetPtrOffset(byte[] buffer, int offset, out int next) {
+        private static int GetPtrOffset(byte[] buffer, int offset, out int next)
+        {
+            var pos = offset;
+            var b0 = buffer[pos++];
 
-            int pos = offset;
-            byte b0 = buffer[pos++];
+            if (pos < buffer.Length)
+            {
+                var labelOffset = ((b0 & LabelLenMask) << 8) | buffer[pos++];
 
-            if(pos < buffer.Length) {
-                int labelOffset = (b0 & LABEL_LEN_MASK) << 8 | buffer[pos++];
-
-                if(labelOffset < buffer.Length) {
+                if (labelOffset < buffer.Length)
+                {
                     next = pos;
                     return labelOffset;
                 }

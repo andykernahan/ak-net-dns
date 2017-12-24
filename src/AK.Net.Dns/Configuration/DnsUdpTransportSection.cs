@@ -13,10 +13,7 @@
 // limitations under the License.
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-using System;
 using System.Configuration;
-using System.Net;
-
 using AK.Net.Dns.IO;
 
 namespace AK.Net.Dns.Configuration
@@ -61,7 +58,7 @@ namespace AK.Net.Dns.Configuration
         /// Defines the default location of the DnsUdpTransportSection. This field is
         /// constant.
         /// </summary>
-        public const string DefaultLocation = DnsTransportSection.BaseLocation + "/udp";
+        public const string DefaultLocation = BaseLocation + "/udp";
 
         /// <summary>
         /// Applies this configuration to the specified <paramref name="transport"/>.
@@ -70,20 +67,20 @@ namespace AK.Net.Dns.Configuration
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="transport"/> is <see langword="null"/>.
         /// </exception>
-        public override void Apply(DnsTransport transport) {
-
+        public override void Apply(DnsTransport transport)
+        {
             base.Apply(transport);
-            ((DnsUdpTransport)transport).TransmitRetries = this.TransmitRetries;
+            ((DnsUdpTransport)transport).TransmitRetries = TransmitRetries;
         }
 
         /// <summary>
         /// Gets the DnsUdpTransportSection from its default location.
         /// </summary>
         /// <returns>The DnsUdpTransportSection from its default location.</returns>
-        public static DnsUdpTransportSection GetSection() {
-
+        public static DnsUdpTransportSection GetSection()
+        {
             return (DnsUdpTransportSection)ConfigurationManager.GetSection(
-                DnsUdpTransportSection.DefaultLocation) ?? new DnsUdpTransportSection();
+                       DefaultLocation) ?? new DnsUdpTransportSection();
         }
 
         /// <summary>
@@ -92,10 +89,7 @@ namespace AK.Net.Dns.Configuration
         [IntegerValidator(MinValue = 1)]
         [ConfigurationProperty("transmitRetries", IsRequired = false,
             DefaultValue = DnsUdpTransport.DefaultTransmitRetries)]
-        public int TransmitRetries {
-
-            get { return (int)this["transmitRetries"]; }
-        }
+        public int TransmitRetries => (int)this["transmitRetries"];
 
         #endregion
     }

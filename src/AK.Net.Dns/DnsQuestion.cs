@@ -13,11 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Net;
-using System.Text;
-using System.Collections.Generic;
-
-using AK.Net.Dns.Records;
 
 namespace AK.Net.Dns
 {
@@ -28,10 +23,6 @@ namespace AK.Net.Dns
     public class DnsQuestion : IEquatable<DnsQuestion>
     {
         #region Private Fields.
-
-        private readonly DnsQueryClass _class;
-        private readonly DnsQueryType _type;
-        private readonly DnsName _name;
 
         #endregion
 
@@ -47,13 +38,13 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="name"/> is <see langword="null"/>.
         /// </exception>
-        public DnsQuestion(DnsName name, DnsQueryType type, DnsQueryClass cls) {
-
+        public DnsQuestion(DnsName name, DnsQueryType type, DnsQueryClass cls)
+        {
             Guard.NotNull(name, "name");
 
-            _class = cls;
-            _type = type;
-            _name = name;
+            Class = cls;
+            Type = type;
+            Name = name;
         }
 
         /// <summary>
@@ -68,15 +59,18 @@ namespace AK.Net.Dns
         /// Thrown when question data could not be read from the
         /// <paramref name="reader"/>.
         /// </exception>
-        public DnsQuestion(IDnsReader reader) {
-
+        public DnsQuestion(IDnsReader reader)
+        {
             Guard.NotNull(reader, "reader");
 
-            try {
-                _name = reader.ReadName();
-                _type = reader.ReadQueryType();
-                _class = reader.ReadQueryClass();
-            } catch(DnsException exc) {
+            try
+            {
+                Name = reader.ReadName();
+                Type = reader.ReadQueryType();
+                Class = reader.ReadQueryClass();
+            }
+            catch (DnsException exc)
+            {
                 throw Guard.InvalidDnsQuestionFormat(exc);
             }
         }
@@ -89,13 +83,13 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public virtual void Write(IDnsWriter writer) {
-
+        public virtual void Write(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteName(this.Name);
-            writer.WriteQueryType(this.Type);
-            writer.WriteQueryClass(this.Class);            
+            writer.WriteName(Name);
+            writer.WriteQueryType(Type);
+            writer.WriteQueryClass(Class);
         }
 
         /// <summary>
@@ -105,12 +99,12 @@ namespace AK.Net.Dns
         /// <param name="other">The question to compare with this instance.</param>
         /// <returns><see langword="true"/> if equal, otherwise;
         /// <see langword="false"/>.</returns>
-        public bool Equals(DnsQuestion other) {
-
+        public bool Equals(DnsQuestion other)
+        {
             return other != null &&
-                other.Type == this.Type &&
-                other.Class == this.Class &&
-                other.Name.Equals(this.Name);
+                   other.Type == Type &&
+                   other.Class == Class &&
+                   other.Name.Equals(Name);
         }
 
         /// <summary>
@@ -119,20 +113,20 @@ namespace AK.Net.Dns
         /// <param name="obj">The object to compare with this instance.</param>
         /// <returns><see langword="true"/> if equal, otherwise;
         /// <see langword="false"/>.</returns>
-        public override bool Equals(object obj) {
-
-            return this.Equals(obj as DnsQuestion);
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as DnsQuestion);
         }
 
         /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance.</returns>
-        public override int GetHashCode() {
-
-            return this.Class.GetHashCode() ^
-                this.Type.GetHashCode() ^
-                this.Name.GetHashCode();
+        public override int GetHashCode()
+        {
+            return Class.GetHashCode() ^
+                   Type.GetHashCode() ^
+                   Name.GetHashCode();
         }
 
         /// <summary>
@@ -141,35 +135,26 @@ namespace AK.Net.Dns
         /// <returns>
         /// A <see cref="System.String"/> representation of this instance.
         /// </returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0,-32} {1,-6} {2,-6}", this.Name,
-                DnsUtility.ToString(this.Class), DnsUtility.ToString(this.Type));
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0,-32} {1,-6} {2,-6}", Name,
+                DnsUtility.ToString(Class), DnsUtility.ToString(Type));
         }
 
         /// <summary>
         /// Gets the class of query.
         /// </summary>
-        public DnsQueryClass Class {
-
-            get { return _class; }
-        }
+        public DnsQueryClass Class { get; }
 
         /// <summary>
         /// Gets the type of query.
         /// </summary>
-        public DnsQueryType Type {
-
-            get { return _type; }
-        }
+        public DnsQueryType Type { get; }
 
         /// <summary>
         /// Gets the domain name which is being queried.
         /// </summary>
-        public DnsName Name {
-
-            get { return _name; }
-        }
+        public DnsName Name { get; }
 
         #endregion
     }

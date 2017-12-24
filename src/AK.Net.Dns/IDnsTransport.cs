@@ -102,4 +102,3 @@ namespace AK.Net.Dns
         DnsReply EndSend(IAsyncResult iar);
     }
 }
-

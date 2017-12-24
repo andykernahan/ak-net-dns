@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
-using AK.Net.Dns.Records;
-
 namespace AK.Net.Dns.Caching
 {
     /// <summary>
@@ -35,8 +31,8 @@ namespace AK.Net.Dns.Caching
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="question"/> is <see langword="null"/>.
         /// </exception>
-        public DnsCacheResult Get(DnsQuestion question) {
-
+        public DnsCacheResult Get(DnsQuestion question)
+        {
             Guard.NotNull(question, "question");
 
             return DnsCacheResult.Failed;
@@ -49,8 +45,8 @@ namespace AK.Net.Dns.Caching
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="reply"/> is <see langword="null"/>.
         /// </exception>
-        public void Put(DnsReply reply) {
-
+        public void Put(DnsReply reply)
+        {
             Guard.NotNull(reply, "reply");
         }
 

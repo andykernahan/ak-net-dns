@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace AK.Net.Dns
 {
@@ -25,15 +24,21 @@ namespace AK.Net.Dns
     [Serializable]
     public sealed class DnsName : IEquatable<DnsName>, IComparable<DnsName>, IComparable
     {
+        #region Explit Interface.
+
+        int IComparable.CompareTo(object obj)
+        {
+            return CompareTo(obj as DnsName);
+        }
+
+        #endregion
+
         #region Private Fields.
 
         private string _absName;
-        private readonly string _name;
-        private readonly DnsNameKind _kind;        
         private IList<string> _labels;
 
-        private static readonly char[] LABEL_DELIMS =
-            DnsName.LabelSeperator.ToCharArray();
+        private static readonly char[] s_labelDelims = LabelSeperator.ToCharArray();
 
         #endregion
 
@@ -71,7 +76,7 @@ namespace AK.Net.Dns
         /// <summary>
         /// Defines the root DNS name. This field is <see langword="readonly"/>.
         /// </summary>
-        public static readonly DnsName Root = new DnsName(DnsName.LabelSeperator);
+        public static readonly DnsName Root = new DnsName(LabelSeperator);
 
         /// <summary>
         /// Creates a new name instance that represents this name made relative to
@@ -87,22 +92,28 @@ namespace AK.Net.Dns
         /// Thrown when this name is not a sub-domain of the specified <paramref name="name"/>
         /// and therefore cannot be made relative to it.
         /// </exception>
-        public DnsName MakeRelative(DnsName name) {
-
+        public DnsName MakeRelative(DnsName name)
+        {
             Guard.NotNull(name, "name");
-            if(!IsChildOf(name))
+            if (!IsChildOf(name))
+            {
                 throw Guard.UnableToMakeRelativeNotAChildOfName(this, name, "name");
+            }
 
             // All domains are relative to the root domain.
-            if(name.Equals(DnsName.Root))
+            if (name.Equals(Root))
+            {
                 return this;
+            }
 
-            int length = this.Name.Length - name.Name.Length - 1;
+            var length = Name.Length - name.Name.Length - 1;
 
-            if(this.Kind != name.Kind)
+            if (Kind != name.Kind)
+            {
                 length = name.Kind == DnsNameKind.Absolute ? length + 1 : length - 1;
+            }
 
-            return new DnsName(this.Name.Substring(0, length));
+            return new DnsName(Name.Substring(0, length));
         }
 
         /// <summary>
@@ -115,16 +126,21 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="name"/> is <see langword="null"/>.
         /// </exception>
-        public bool IsParentOf(DnsName name) {
-
+        public bool IsParentOf(DnsName name)
+        {
             Guard.NotNull(name, "name");
 
-            if(this.Labels.Count >= name.Labels.Count)
+            if (Labels.Count >= name.Labels.Count)
+            {
                 return false;
+            }
 
-            for(int i = this.Labels.Count - 1, j = name.Labels.Count - 1; i >= 0; --i, --j) {
-                if(!DnsName.LabelComparer.Equals(this.Labels[i], name.Labels[j]))
+            for (int i = Labels.Count - 1, j = name.Labels.Count - 1; i >= 0; --i, --j)
+            {
+                if (!LabelComparer.Equals(Labels[i], name.Labels[j]))
+                {
                     return false;
+                }
             }
 
             return true;
@@ -140,8 +156,8 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="name"/> is <see langword="null"/>.
         /// </exception>
-        public bool IsChildOf(DnsName name) {
-
+        public bool IsChildOf(DnsName name)
+        {
             Guard.NotNull(name, "name");
 
             return name.IsParentOf(this);
@@ -160,13 +176,15 @@ namespace AK.Net.Dns
         /// <exception cref="System.InvalidOperationException">
         /// Thrown when <see langword="this"/> is absolute.
         /// </exception>
-        public DnsName Concat(DnsName name) {
-
+        public DnsName Concat(DnsName name)
+        {
             Guard.NotNull(name, "name");
-            if(this.Kind == DnsNameKind.Absolute)
-                throw Guard.UnableToConcatToAbsoluteDnsName();            
+            if (Kind == DnsNameKind.Absolute)
+            {
+                throw Guard.UnableToConcatToAbsoluteDnsName();
+            }
 
-            return new DnsName(this.Name + DnsName.LabelSeperator + name.Name);
+            return new DnsName(Name + LabelSeperator + name.Name);
         }
 
         /// <summary>
@@ -175,12 +193,16 @@ namespace AK.Net.Dns
         /// <param name="obj">The object.</param>
         /// <returns><see langword="true"/> if this instance is considered equal to the
         /// specified object, otherwise; <see langword="false"/>.</returns>
-        public override bool Equals(object obj) {
-
-            if(obj == null)
-                return false;            
-            if(obj.GetType() != GetType())
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
                 return false;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
 
             return Equals((DnsName)obj);
         }
@@ -191,21 +213,23 @@ namespace AK.Net.Dns
         /// <param name="other">The other name.</param>
         /// <returns><see langword="true"/> if this instance is considered equal to the
         /// other instance, otherwise; <see langword="false"/>.</returns>
-        public bool Equals(DnsName other) {
-
-            if(other == null)
+        public bool Equals(DnsName other)
+        {
+            if (other == null)
+            {
                 return false;
+            }
 
-            return DnsName.LabelComparer.Equals(this.AbsName, other.AbsName);
+            return LabelComparer.Equals(AbsName, other.AbsName);
         }
 
         /// <summary>
         /// Returns a hash code based on the values of this instance.
         /// </summary>
         /// <returns>A hash code based on the values of this instance.</returns>
-        public override int GetHashCode() {
-
-            return DnsName.LabelComparer.GetHashCode(this.AbsName);
+        public override int GetHashCode()
+        {
+            return LabelComparer.GetHashCode(AbsName);
         }
 
         /// <summary>
@@ -213,45 +237,41 @@ namespace AK.Net.Dns
         /// </summary>
         /// <param name="other">The other name.</param>
         /// <returns>A value indicating relative equality with the other DnsName.</returns>
-        public int CompareTo(DnsName other) {
-
-            return other != null ? DnsName.LabelComparer.Compare(this.AbsName, other.AbsName) : 1;
+        public int CompareTo(DnsName other)
+        {
+            return other != null ? LabelComparer.Compare(AbsName, other.AbsName) : 1;
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return this.Name;
+        public override string ToString()
+        {
+            return Name;
         }
 
         /// <summary>
         /// Gets the full name.
         /// </summary>
-        public string Name {
-
-            get { return _name; }
-        }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the <see cref="AK.Net.Dns.DnsNameKind"/> if this name.
         /// </summary>
-        public DnsNameKind Kind {
-
-            get { return _kind; }
-        }
+        public DnsNameKind Kind { get; }
 
         /// <summary>
         /// Gets the labels of this name.
         /// </summary>
-        public IList<string> Labels {
-
-            get {
-                if(_labels == null) {
-                    _labels = new ReadOnlyCollection<string>(this.Name.Split(
-                        LABEL_DELIMS, StringSplitOptions.RemoveEmptyEntries));
+        public IList<string> Labels
+        {
+            get
+            {
+                if (_labels == null)
+                {
+                    _labels = new ReadOnlyCollection<string>(Name.Split(
+                        s_labelDelims, StringSplitOptions.RemoveEmptyEntries));
                 }
                 return _labels;
             }
@@ -276,11 +296,13 @@ namespace AK.Net.Dns
         /// <exception cref="AK.Net.Dns.DnsFormatException">
         /// Thrown when <paramref name="name"/> is not correctly formatted.
         /// </exception>
-        public static DnsName Parse(string name) {
-
+        public static DnsName Parse(string name)
+        {
             Guard.NotEmpty(name, "name");
-            if(!IsValid(name))
+            if (!IsValid(name))
+            {
                 throw Guard.MustBeAValidDnsName("name", name);
+            }
 
             return new DnsName(name);
         }
@@ -299,9 +321,10 @@ namespace AK.Net.Dns
         /// <see langword="true"/> if a name was sucessfuly parsed, otherwise;
         /// <see langword="false"/>.
         /// </returns>
-        public static bool TryParse(string name, out DnsName result) {
-            
-            if(IsValid(name)) {
+        public static bool TryParse(string name, out DnsName result)
+        {
+            if (IsValid(name))
+            {
                 result = new DnsName(name);
                 return true;
             }
@@ -320,9 +343,9 @@ namespace AK.Net.Dns
         /// <exception cref="AK.Net.Dns.DnsFormatException">
         /// Thrown when <paramref name="name"/> is not correctly formatted.
         /// </exception>
-        public static implicit operator DnsName(string name) {
-
-            return name != null ? DnsName.Parse(name) : null;
+        public static implicit operator DnsName(string name)
+        {
+            return name != null ? Parse(name) : null;
         }
 
         /// <summary>
@@ -333,8 +356,8 @@ namespace AK.Net.Dns
         /// <exception cref="System.NullReferenceException">
         /// Thrown when <paramref name="name"/> is <see langword="null"/>.
         /// </exception>
-        public static implicit operator string(DnsName name) {
-
+        public static implicit operator string(DnsName name)
+        {
             return name != null ? name.Name : null;
         }
 
@@ -345,50 +368,68 @@ namespace AK.Net.Dns
         /// <returns>
         /// <see langword="true"/> if canonical, otherwise; <see langword="false"/>.
         /// </returns>
-        public static bool IsValid(string name) {
-
-            if(string.IsNullOrEmpty(name) || name.Length > DnsName.MaxLength)
+        public static bool IsValid(string name)
+        {
+            if (string.IsNullOrEmpty(name) || name.Length > MaxLength)
+            {
                 return false;
+            }
 
             // Root domain.
-            if(name.Equals("."))
+            if (name.Equals("."))
+            {
                 return true;
+            }
 
-            char ch;            
-            int labelLen = 0;
-            int labelCount = 0;
-            
-            for(int i = 0; i < name.Length; ++i) {
+            char ch;
+            var labelLen = 0;
+            var labelCount = 0;
+
+            for (var i = 0; i < name.Length; ++i)
+            {
                 ch = name[i];
-                switch(ch) {
+                switch (ch)
+                {
                     case '.':
                         // Empty labels are illegal.
-                        if(labelLen == 0)
-                            return false;                        
-                        if(++labelCount > DnsName.MaxLabels)
+                        if (labelLen == 0)
+                        {
                             return false;
+                        }
+                        if (++labelCount > MaxLabels)
+                        {
+                            return false;
+                        }
                         labelLen = 0;
                         break;
                     case '-':
                         // Empty labels are illegal.
-                        if(labelLen == 0)
+                        if (labelLen == 0)
+                        {
                             return false;
+                        }
                         // Labels ending with '-' are illegal.
-                        if(i >= name.Length - 1 || name[i + 1] == '.')
+                        if (i >= name.Length - 1 || name[i + 1] == '.')
+                        {
                             return false;
+                        }
                         ++labelLen;
                         break;
                     case '_':
                         // In order to support SRV [RFC2782] we allow labels to start with
                         // an underscore, but they are illegal anywhere else.
-                        if(labelLen != 0)
+                        if (labelLen != 0)
+                        {
                             return false;
+                        }
                         break;
                     default:
-                        if(!IsAlhaNum(ch) || ++labelLen > DnsName.MaxLabelLength)
+                        if (!IsAlhaNum(ch) || ++labelLen > MaxLabelLength)
+                        {
                             return false;
+                        }
                         break;
-                }                
+                }
             }
             return true;
         }
@@ -406,33 +447,23 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="name"/> is <see langword="null"/>.
         /// </exception>
-        public static DnsNameKind ClassifyKind(string name) {
-
+        public static DnsNameKind ClassifyKind(string name)
+        {
             Guard.NotNull(name, "name");
 
-            return name.EndsWith(DnsName.LabelSeperator, StringComparison.Ordinal) ?
-                DnsNameKind.Absolute : DnsNameKind.Relative;
-        }
-
-        #endregion
-
-        #region Explit Interface.
-
-        int IComparable.CompareTo(object obj) {
-
-            return CompareTo(obj as DnsName);
+            return name.EndsWith(LabelSeperator, StringComparison.Ordinal) ? DnsNameKind.Absolute : DnsNameKind.Relative;
         }
 
         #endregion
 
         #region Private Impl.
 
-        private DnsName(string name) {
-
-            _name = name;
-            _kind = ClassifyKind(name);
+        private DnsName(string name)
+        {
+            Name = name;
+            Kind = ClassifyKind(name);
         }
-        
+
         /// <summary>
         /// Returns the absolute version of this name.
         /// </summary>
@@ -440,20 +471,21 @@ namespace AK.Net.Dns
         /// This is used during comparison and equality testing to ensure that kind is
         /// not considered.
         /// </remarks>
-        private string AbsName {
-
-            get {
-                if(_absName == null) {                    
-                    _absName = this.Kind == DnsNameKind.Absolute ? 
-                        this.Name : this.Name + DnsName.LabelSeperator;
+        private string AbsName
+        {
+            get
+            {
+                if (_absName == null)
+                {
+                    _absName = Kind == DnsNameKind.Absolute ? Name : Name + LabelSeperator;
                 }
                 return _absName;
             }
         }
 
-        private static bool IsAlhaNum(char ch) {
-
-            return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9');
+        private static bool IsAlhaNum(char ch)
+        {
+            return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9';
         }
 
         #endregion

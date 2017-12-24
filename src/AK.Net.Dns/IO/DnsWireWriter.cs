@@ -13,14 +13,11 @@
 // limitations under the License.
 
 using System;
-using System.IO;
-using System.Text;
 using System.Collections.Generic;
-
-using Debug = System.Diagnostics.Debug;
-using IPAddress = System.Net.IPAddress;
-
-using AK.Net.Dns.Records;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Text;
 
 namespace AK.Net.Dns.IO
 {
@@ -40,9 +37,9 @@ namespace AK.Net.Dns.IO
         /// allow most queries to be encoded without the MemoryStream needing to
         /// re-allocate it's internal buffer.
         /// </summary>
-        private const int INIT_BUF_CAPACITY = 64;
+        private const int InitBufCapacity = 64;
 
-        private static readonly bool IS_LITTLE_ENDIAN = BitConverter.IsLittleEndian;
+        private static readonly bool s_isLittleEndian = BitConverter.IsLittleEndian;
 
         #endregion
 
@@ -67,10 +64,10 @@ namespace AK.Net.Dns.IO
         /// <summary>
         /// Initialises a new instance of the <see cref="DnsWireWriter"/> class.
         /// </summary>
-        public DnsWireWriter() {
-
-            this.Buffer = new MemoryStream(INIT_BUF_CAPACITY);
-            this.References = new Dictionary<string, int>(DnsName.LabelComparer);
+        public DnsWireWriter()
+        {
+            Buffer = new MemoryStream(InitBufCapacity);
+            References = new Dictionary<string, int>(DnsName.LabelComparer);
         }
 
         /// <summary>
@@ -84,8 +81,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteName(DnsName name) {
-
+        public void WriteName(DnsName name)
+        {
             WriteName(name, true);
         }
 
@@ -102,46 +99,60 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteName(DnsName name, bool compress) {
-
+        public void WriteName(DnsName name, bool compress)
+        {
             Guard.NotNull(name, "name");
 
             CheckDisposed();
 
-            if(!compress) {
+            if (!compress)
+            {
                 // Do not cache references to names that should not be compressed.
-                foreach(string label in name.Labels)
+                foreach (var label in name.Labels)
+                {
                     WriteLabel(label);
-                this.Buffer.WriteByte(0);
-            } else if(this.References.ContainsKey(name.Name))
-                WritePtr(this.References[name.Name]);
-            else {
-                bool terminate = true;
-                string subDomain = name.Name;
-                IList<string> labels = name.Labels;
+                }
+                Buffer.WriteByte(0);
+            }
+            else if (References.ContainsKey(name.Name))
+            {
+                WritePtr(References[name.Name]);
+            }
+            else
+            {
+                var terminate = true;
+                var subDomain = name.Name;
+                var labels = name.Labels;
 
-                if(labels.Count > 0) {
+                if (labels.Count > 0)
+                {
                     SaveReference(subDomain);
                     WriteLabel(labels[0]);
-                    if(labels.Count > 1) {
+                    if (labels.Count > 1)
+                    {
                         subDomain = subDomain.Substring(labels[0].Length + 1);
-                        for(int i = 1; i < labels.Count; ++i) {
-                            if(this.References.ContainsKey(subDomain)) {
-                                WritePtr(this.References[subDomain]);
+                        for (var i = 1; i < labels.Count; ++i)
+                        {
+                            if (References.ContainsKey(subDomain))
+                            {
+                                WritePtr(References[subDomain]);
                                 // Pointers aren't terminated.
                                 terminate = false;
                                 break;
-                            } else {
-                                SaveReference(subDomain);
-                                WriteLabel(labels[i]);
-                                if(i < labels.Count - 1)
-                                    subDomain = subDomain.Substring(labels[i].Length + 1);
+                            }
+                            SaveReference(subDomain);
+                            WriteLabel(labels[i]);
+                            if (i < labels.Count - 1)
+                            {
+                                subDomain = subDomain.Substring(labels[i].Length + 1);
                             }
                         }
                     }
                 }
-                if(terminate)
-                    this.Buffer.WriteByte(0);
+                if (terminate)
+                {
+                    Buffer.WriteByte(0);
+                }
             }
         }
 
@@ -153,16 +164,17 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="domain"/> is <see langword="null"/>.
         /// </exception>
-        public static byte[] EncodeName(DnsName domain) {
-
+        public static byte[] EncodeName(DnsName domain)
+        {
             Guard.NotNull(domain, "domain");
 
-            int pos = 0;
-            Encoding ascii = Encoding.ASCII;
-            byte[] buf = new byte[domain.Name.Length + 2];
-            IList<string> labels = domain.Labels;
+            var pos = 0;
+            var ascii = Encoding.ASCII;
+            var buf = new byte[domain.Name.Length + 2];
+            var labels = domain.Labels;
 
-            for(int i = 0; i < labels.Count; ++i) {
+            for (var i = 0; i < labels.Count; ++i)
+            {
                 buf[pos++] = (byte)labels[i].Length;
                 pos += ascii.GetBytes(labels[i], 0, labels[i].Length, buf, pos);
             }
@@ -180,8 +192,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteRecord(DnsRecord record) {
-
+        public void WriteRecord(DnsRecord record)
+        {
             Guard.NotNull(record, "record");
 
             int rdlPos;
@@ -191,14 +203,14 @@ namespace AK.Net.Dns.IO
             WriteRecordType(record.Type);
             WriteRecordClass(record.Class);
             WriteTtl(record.Ttl);
-            rdlPos = this.Position;
+            rdlPos = Position;
             // Reserve RDLENGTH.
-            this.Position += sizeof(ushort);
+            Position += sizeof(ushort);
             record.WriteData(this);
-            endPos = this.Position;
-            this.Position = rdlPos;
+            endPos = Position;
+            Position = rdlPos;
             WriteUInt16(endPos - rdlPos - sizeof(ushort));
-            this.Position = endPos;            
+            Position = endPos;
         }
 
         /// <summary>
@@ -208,11 +220,11 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteByte(byte value) {
-
+        public void WriteByte(byte value)
+        {
             CheckDisposed();
 
-            this.Buffer.WriteByte(value);
+            Buffer.WriteByte(value);
         }
 
         /// <summary>
@@ -226,16 +238,16 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteBytes(byte[] buffer) {
-
+        public void WriteBytes(byte[] buffer)
+        {
             Guard.NotNull(buffer, "buffer");
 
             CheckDisposed();
 
-            this.Buffer.Write(buffer, 0, buffer.Length);
+            Buffer.Write(buffer, 0, buffer.Length);
         }
 
-         /// <summary>
+        /// <summary>
         /// Writes a sequence of bytes to the underlying stream read from the
         /// specified <paramref name="buffer"/>.
         /// </summary>
@@ -262,11 +274,11 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteBytes(byte[] buffer, int offset, int count) {
-
+        public void WriteBytes(byte[] buffer, int offset, int count)
+        {
             CheckDisposed();
 
-            this.Buffer.Write(buffer, offset, count);
+            Buffer.Write(buffer, offset, count);
         }
 
         /// <summary>
@@ -280,18 +292,21 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteUInt16(int value) {
-
+        public void WriteUInt16(int value)
+        {
             Guard.IsUInt16(value, "value");
 
             CheckDisposed();
 
-            if(IS_LITTLE_ENDIAN) {
-                this.Buffer.WriteByte((byte)(value >> 8));
-                this.Buffer.WriteByte((byte)value);
-            } else {                
-                this.Buffer.WriteByte((byte)value);
-                this.Buffer.WriteByte((byte)(value >> 8));
+            if (s_isLittleEndian)
+            {
+                Buffer.WriteByte((byte)(value >> 8));
+                Buffer.WriteByte((byte)value);
+            }
+            else
+            {
+                Buffer.WriteByte((byte)value);
+                Buffer.WriteByte((byte)(value >> 8));
             }
         }
 
@@ -302,16 +317,19 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteInt16(short value) {
-
+        public void WriteInt16(short value)
+        {
             CheckDisposed();
 
-            if(IS_LITTLE_ENDIAN) {
-                this.Buffer.WriteByte((byte)(value >> 8));
-                this.Buffer.WriteByte((byte)value);
-            } else {
-                this.Buffer.WriteByte((byte)value);
-                this.Buffer.WriteByte((byte)(value >> 8));                
+            if (s_isLittleEndian)
+            {
+                Buffer.WriteByte((byte)(value >> 8));
+                Buffer.WriteByte((byte)value);
+            }
+            else
+            {
+                Buffer.WriteByte((byte)value);
+                Buffer.WriteByte((byte)(value >> 8));
             }
         }
 
@@ -322,20 +340,23 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteInt32(int value) {
-
+        public void WriteInt32(int value)
+        {
             CheckDisposed();
 
-            if(IS_LITTLE_ENDIAN) {
-                this.Buffer.WriteByte((byte)(value >> 24));
-                this.Buffer.WriteByte((byte)(value >> 16));
-                this.Buffer.WriteByte((byte)(value >> 8));
-                this.Buffer.WriteByte((byte)value);
-            } else {
-                this.Buffer.WriteByte((byte)value);
-                this.Buffer.WriteByte((byte)(value >> 8));
-                this.Buffer.WriteByte((byte)(value >> 16));
-                this.Buffer.WriteByte((byte)(value >> 24));
+            if (s_isLittleEndian)
+            {
+                Buffer.WriteByte((byte)(value >> 24));
+                Buffer.WriteByte((byte)(value >> 16));
+                Buffer.WriteByte((byte)(value >> 8));
+                Buffer.WriteByte((byte)value);
+            }
+            else
+            {
+                Buffer.WriteByte((byte)value);
+                Buffer.WriteByte((byte)(value >> 8));
+                Buffer.WriteByte((byte)(value >> 16));
+                Buffer.WriteByte((byte)(value >> 24));
             }
         }
 
@@ -350,22 +371,25 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteUInt32(long value) {
-
+        public void WriteUInt32(long value)
+        {
             Guard.IsUInt32(value, "value");
 
             CheckDisposed();
 
-            if(IS_LITTLE_ENDIAN) {
-                this.Buffer.WriteByte((byte)(value >> 24));
-                this.Buffer.WriteByte((byte)(value >> 16));
-                this.Buffer.WriteByte((byte)(value >> 8));
-                this.Buffer.WriteByte((byte)value);
-            } else {
-                this.Buffer.WriteByte((byte)value);
-                this.Buffer.WriteByte((byte)(value >> 8));
-                this.Buffer.WriteByte((byte)(value >> 16));
-                this.Buffer.WriteByte((byte)(value >> 24));
+            if (s_isLittleEndian)
+            {
+                Buffer.WriteByte((byte)(value >> 24));
+                Buffer.WriteByte((byte)(value >> 16));
+                Buffer.WriteByte((byte)(value >> 8));
+                Buffer.WriteByte((byte)value);
+            }
+            else
+            {
+                Buffer.WriteByte((byte)value);
+                Buffer.WriteByte((byte)(value >> 8));
+                Buffer.WriteByte((byte)(value >> 16));
+                Buffer.WriteByte((byte)(value >> 24));
             }
         }
 
@@ -376,8 +400,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteQueryClass(DnsQueryClass value) {
-
+        public void WriteQueryClass(DnsQueryClass value)
+        {
             WriteUInt16((ushort)value);
         }
 
@@ -388,8 +412,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteQueryType(DnsQueryType value) {
-
+        public void WriteQueryType(DnsQueryType value)
+        {
             WriteUInt16((ushort)value);
         }
 
@@ -400,8 +424,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteOpCode(DnsOpCode value) {
-
+        public void WriteOpCode(DnsOpCode value)
+        {
             WriteUInt16((ushort)value);
         }
 
@@ -412,8 +436,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteRecordClass(DnsRecordClass value) {
-
+        public void WriteRecordClass(DnsRecordClass value)
+        {
             WriteUInt16((ushort)value);
         }
 
@@ -424,8 +448,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteRecordType(DnsRecordType value) {
-
+        public void WriteRecordType(DnsRecordType value)
+        {
             WriteUInt16((ushort)value);
         }
 
@@ -434,13 +458,13 @@ namespace AK.Net.Dns.IO
         /// </summary>
         /// <param name="value">The value to write.</param>
         /// <exception cref="System.ArgumentNullException">
-        /// Thrown when <paramref name="domain"/> is <see langword="null"/>.
+        /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteIPAddress(IPAddress value) {
-
+        public void WriteIPAddress(IPAddress value)
+        {
             Guard.NotNull(value, "value");
 
             WriteBytes(value.GetAddressBytes());
@@ -456,8 +480,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteTtl(TimeSpan value) {
-
+        public void WriteTtl(TimeSpan value)
+        {
             Guard.InRange(value >= TimeSpan.Zero, "value");
 
             WriteUInt32((uint)value.TotalSeconds);
@@ -468,17 +492,19 @@ namespace AK.Net.Dns.IO
         /// </summary>
         /// <param name="value">The value to write.</param>
         /// <exception cref="System.ArgumentNullException">
-        /// Thrown when <paramref name="domain"/> is <see langword="null"/>.
+        /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteString(string value) {
-
+        public void WriteString(string value)
+        {
             Guard.NotNull(value, "value");
 
-            for(int i = 0; i < value.Length; ++i)
-                this.Buffer.WriteByte((byte)value[i]);
+            for (var i = 0; i < value.Length; ++i)
+            {
+                Buffer.WriteByte((byte)value[i]);
+            }
         }
 
         /// <summary>
@@ -486,7 +512,7 @@ namespace AK.Net.Dns.IO
         /// </summary>
         /// <param name="value">The value to write.</param>
         /// <exception cref="System.ArgumentNullException">
-        /// Thrown when <paramref name="domain"/> is <see langword="null"/>.
+        /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="System.ArgumentException">
         /// Thrown when the length of <paramref name="value"/> has exceeded the maximim
@@ -495,13 +521,15 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public void WriteCharString(string value) {
-
+        public void WriteCharString(string value)
+        {
             Guard.NotNull(value, "value");
-            if(value.Length > DnsWireWriter.MaxCharStringLength - 1)
+            if (value.Length > MaxCharStringLength - 1)
+            {
                 throw Guard.CharStringTooLong("value");
+            }
 
-            this.Buffer.WriteByte((byte)value.Length);
+            Buffer.WriteByte((byte)value.Length);
             WriteString(value);
         }
 
@@ -512,15 +540,15 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        public ArraySegment<byte> GetBuffer() {
-
+        public ArraySegment<byte> GetBuffer()
+        {
             CheckDisposed();
 
-            ArraySegment<byte> buf = new ArraySegment<byte>(this.Buffer.GetBuffer(),
-                0, (int)this.Buffer.Length);
+            var buf = new ArraySegment<byte>(Buffer.GetBuffer(),
+                0, (int)Buffer.Length);
 
             Debug.WriteLine(string.Format("DnsWireWriter::GetBuffer - length={0}, initialCapacity={1}",
-                buf.Count, INIT_BUF_CAPACITY));
+                buf.Count, InitBufCapacity));
 
             return buf;
         }
@@ -535,13 +563,14 @@ namespace AK.Net.Dns.IO
         /// <param name="disposing"><see langword="true"/> if being called explicitly,
         /// otherwise; <see langword="false"/> to indicate being called implicitly by
         /// the GC.</param>
-        protected override void Dispose(bool disposing) {
-
-            if(!this.IsDisposed && disposing) {
-                this.References.Clear();
-                this.References = null;
-                ((IDisposable)this.Buffer).Dispose();
-                this.Buffer = null;
+        protected override void Dispose(bool disposing)
+        {
+            if (!IsDisposed && disposing)
+            {
+                References.Clear();
+                References = null;
+                ((IDisposable)Buffer).Dispose();
+                Buffer = null;
             }
             base.Dispose(disposing);
         }
@@ -549,10 +578,10 @@ namespace AK.Net.Dns.IO
         /// <summary>
         /// Gets or sets the underlying stream.
         /// </summary>
-        protected MemoryStream Buffer {
-
-            get { return _buffer; }
-            set { _buffer = value; }
+        protected MemoryStream Buffer
+        {
+            get => _buffer;
+            set => _buffer = value;
         }
 
         /// <summary>
@@ -565,15 +594,17 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when the writer has been disposed of.
         /// </exception>
-        protected int Position {
-
-            get {
+        protected int Position
+        {
+            get
+            {
                 CheckDisposed();
-                return (int)this.Buffer.Position;
+                return (int)Buffer.Position;
             }
-            set {
+            set
+            {
                 CheckDisposed();
-                this.Buffer.Position = value;
+                Buffer.Position = value;
             }
         }
 
@@ -581,36 +612,32 @@ namespace AK.Net.Dns.IO
 
         #region Private Impl.
 
-        private bool SaveReference(string domain) {
+        private void SaveReference(string domain)
+        {
+            const int minLen = 3;
 
-            const int MIN_LEN = 3;
-
-            bool cached = false;
-
-            if(domain.Length >= MIN_LEN && !this.References.ContainsKey(domain)) {
-                this.References.Add(domain, this.Position);
-                cached = true;
+            if (domain.Length >= minLen && !References.ContainsKey(domain))
+            {
+                References.Add(domain, Position);
             }
-
-            return cached;
         }
 
-        private void WritePtr(int pos) {
-            
-            Debug.Assert((pos & 0xC000) == 0);            
-            WriteUInt16((ushort)((0xC0 | ((pos & 0x3F00) >> 8)) | pos & 0xFF));            
+        private void WritePtr(int pos)
+        {
+            Debug.Assert((pos & 0xC000) == 0);
+            WriteUInt16((ushort)(0xC0 | ((pos & 0x3F00) >> 8) | (pos & 0xFF)));
         }
 
-        private void WriteLabel(string label) {
-
+        private void WriteLabel(string label)
+        {
             Debug.Assert(label.Length <= DnsName.MaxLabelLength);
             WriteCharString(label);
         }
 
-        private Dictionary<string, int> References {
-
-            get { return _references; }
-            set { _references = value; }
+        private Dictionary<string, int> References
+        {
+            get => _references;
+            set => _references = value;
         }
 
         #endregion

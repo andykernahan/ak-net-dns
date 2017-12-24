@@ -27,14 +27,6 @@ namespace AK.Net.Dns
         #region Public Interface.
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="DnsQuestionCollection"/>
-        /// class.
-        /// </summary>
-        public DnsQuestionCollection()
-            : base() {
-        }
-
-        /// <summary>
         /// Reads the specified number of questions from the specified reader.
         /// </summary>
         /// <param name="reader">The query reader.</param>
@@ -49,14 +41,16 @@ namespace AK.Net.Dns
         /// Thrown when one of the questions could not be read from the
         /// <paramref name="reader"/>.
         /// </exception>
-        public void Read(IDnsReader reader, int count) {
-
+        public void Read(IDnsReader reader, int count)
+        {
             Guard.NotNull(reader, "reader");
             Guard.InRange(count >= 0, "count");
 
             ClearItems();
-            while(count-- > 0)
+            while (count-- > 0)
+            {
                 Add(new DnsQuestion(reader));
+            }
         }
 
         /// <summary>
@@ -67,12 +61,14 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="reader"/> is <see langword="null"/>.
         /// </exception>
-        public void Write(IDnsWriter writer) {
-
+        public void Write(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            foreach(DnsQuestion question in this)
-                question.Write(writer);                    
+            foreach (var question in this)
+            {
+                question.Write(writer);
+            }
         }
 
         /// <summary>
@@ -82,18 +78,27 @@ namespace AK.Net.Dns
         /// <param name="right">The second collection.</param>
         /// <returns><see langword="true"/> if the collections are considered equal,
         /// otherwise; <see langword="false"/>.</returns>
-        public static bool Equals(DnsQuestionCollection left, DnsQuestionCollection right) {
-
-            if(left == right)
+        public static bool Equals(DnsQuestionCollection left, DnsQuestionCollection right)
+        {
+            if (left == right)
+            {
                 return true;
-            if(left == null || right == null)
+            }
+            if (left == null || right == null)
+            {
                 return false;
-            if(left.Count != right.Count)
+            }
+            if (left.Count != right.Count)
+            {
                 return false;
+            }
 
-            for(int i = 0; i < left.Count; ++i) {
-                if(!left[i].Equals(right[i]))
+            for (var i = 0; i < left.Count; ++i)
+            {
+                if (!left[i].Equals(right[i]))
+                {
                     return false;
+                }
             }
 
             return true;
@@ -111,8 +116,8 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="item"/> is <see langword="null"/>.
         /// </exception>
-        protected override void InsertItem(int index, DnsQuestion item) {
-
+        protected override void InsertItem(int index, DnsQuestion item)
+        {
             ValidateItem(item);
             base.InsertItem(index, item);
         }
@@ -125,8 +130,8 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="item"/> is <see langword="null"/>.
         /// </exception>
-        protected override void SetItem(int index, DnsQuestion item) {
-
+        protected override void SetItem(int index, DnsQuestion item)
+        {
             ValidateItem(item);
             base.SetItem(index, item);
         }
@@ -142,11 +147,13 @@ namespace AK.Net.Dns
         /// Thrown when the specified <paramref name="item"/> already exists within
         /// this collection.
         /// </exception>
-        protected virtual void ValidateItem(DnsQuestion item) {
-
+        protected virtual void ValidateItem(DnsQuestion item)
+        {
             Guard.NotNull(item, "item");
-            if(base.Contains(item))
+            if (Contains(item))
+            {
                 throw Guard.DnsQuestionAlreadyAMember("item");
+            }
         }
 
         #endregion

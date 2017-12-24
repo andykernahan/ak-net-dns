@@ -15,9 +15,6 @@
 
 using System;
 using System.Configuration;
-using System.Collections.Generic;
-using System.Net;
-
 using AK.Net.Dns.IO;
 
 namespace AK.Net.Dns.Configuration
@@ -41,7 +38,7 @@ namespace AK.Net.Dns.Configuration
         /// Defines the default location of the DnsSmartTransportSection. This field is
         /// constant.
         /// </summary>
-        public const string DefaultLocation = DnsTransportSection.BaseLocation + "/smart";
+        public const string DefaultLocation = BaseLocation + "/smart";
 
         /// <summary>
         /// Applies this configuration to the specified <paramref name="transport"/>.
@@ -50,23 +47,23 @@ namespace AK.Net.Dns.Configuration
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="transport"/> is <see langword="null"/>.
         /// </exception>
-        public override void Apply(DnsTransport transport) {
-
-            DnsSmartTransport smart = (DnsSmartTransport)transport;
+        public override void Apply(DnsTransport transport)
+        {
+            var smart = (DnsSmartTransport)transport;
 
             base.Apply(transport);
-            smart.UdpTransport = this.UdpTransportInstance;
-            smart.TcpTransport = this.TcpTransportInstance;            
+            smart.UdpTransport = UdpTransportInstance;
+            smart.TcpTransport = TcpTransportInstance;
         }
 
         /// <summary>
         /// Gets the DnsSmartTransportSection from its default location.
         /// </summary>
         /// <returns>The DnsSmartTransportSection from its default location.</returns>
-        public static DnsSmartTransportSection GetSection() {
-
+        public static DnsSmartTransportSection GetSection()
+        {
             return (DnsSmartTransportSection)ConfigurationManager.GetSection(
-                DnsSmartTransportSection.DefaultLocation) ?? new DnsSmartTransportSection();
+                       DefaultLocation) ?? new DnsSmartTransportSection();
         }
 
         /// <summary>
@@ -74,19 +71,19 @@ namespace AK.Net.Dns.Configuration
         /// </summary>
         [BaseTypeValidator(typeof(IDnsTransport))]
         [ConfigurationProperty("udpTransport", IsRequired = false, DefaultValue = typeof(DnsUdpTransport))]
-        public Type UdpTransportType {
-
-            get { return (Type)this["udpTransport"]; }
-        }
+        public Type UdpTransportType => (Type)this["udpTransport"];
 
         /// <summary>
         /// Returns the UDP <see cref="AK.Net.Dns.IDnsTransport"/> instance used by the transport.
         /// </summary>
-        public IDnsTransport UdpTransportInstance {
-
-            get {
-                if(_udpTransportInstance == null)
-                    _udpTransportInstance = (IDnsTransport)Activator.CreateInstance(this.UdpTransportType);
+        public IDnsTransport UdpTransportInstance
+        {
+            get
+            {
+                if (_udpTransportInstance == null)
+                {
+                    _udpTransportInstance = (IDnsTransport)Activator.CreateInstance(UdpTransportType);
+                }
                 return _udpTransportInstance;
             }
         }
@@ -96,19 +93,19 @@ namespace AK.Net.Dns.Configuration
         /// </summary>
         [BaseTypeValidator(typeof(IDnsTransport))]
         [ConfigurationProperty("tcpTransport", IsRequired = false, DefaultValue = typeof(DnsTcpTransport))]
-        public Type TcpTransportType {
-
-            get { return (Type)this["tcpTransport"]; }
-        }
+        public Type TcpTransportType => (Type)this["tcpTransport"];
 
         /// <summary>
         /// Returns the TCP <see cref="AK.Net.Dns.IDnsTransport"/> instance used by the transport.
         /// </summary>
-        public IDnsTransport TcpTransportInstance {
-
-            get {
-                if(_tcpTransportInstance == null)
-                    _tcpTransportInstance = (IDnsTransport)Activator.CreateInstance(this.TcpTransportType);
+        public IDnsTransport TcpTransportInstance
+        {
+            get
+            {
+                if (_tcpTransportInstance == null)
+                {
+                    _tcpTransportInstance = (IDnsTransport)Activator.CreateInstance(TcpTransportType);
+                }
                 return _tcpTransportInstance;
             }
         }

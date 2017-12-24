@@ -23,12 +23,21 @@ namespace AK.Net.Dns.Records
     [Serializable]
     public class SrvRecord : DnsRecord, IComparable<SrvRecord>, IComparable
     {
+        #region Explicit Interface.
+
+        int IComparable.CompareTo(object obj)
+        {
+            return CompareTo(obj as SrvRecord);
+        }
+
+        #endregion
+
         #region Private Fields.
 
         private int _port;
-        private int _weight;        
-        private int _priority;        
-        private DnsName _target;        
+        private int _weight;
+        private int _priority;
+        private DnsName _target;
 
         #endregion
 
@@ -37,7 +46,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of SrvRecord records. This field is readonly.
         /// </summary>
-        new public static readonly SrvRecord[] EmptyArray = { };
+        public new static readonly SrvRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the SrvRecord class and specifies the owner name,
@@ -57,8 +66,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public SrvRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.Srv, cls, ttl) {
-
+            : base(owner, DnsRecordType.Srv, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -88,10 +97,10 @@ namespace AK.Net.Dns.Records
         /// </exception>
         public SrvRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, int priority, int weight,
             int port, DnsName target)
-            : base(owner, DnsRecordType.Srv, cls, ttl) {
-
+            : base(owner, DnsRecordType.Srv, cls, ttl)
+        {
             Guard.NotNull(target, "target");
-            
+
             _priority = priority;
             _weight = weight;
             _port = port;
@@ -124,8 +133,8 @@ namespace AK.Net.Dns.Records
         /// <see cref="AK.Net.Dns.DnsName.MaxLength"/></item>
         /// </list>
         /// </exception>
-        public static DnsName MakeName(string service, string protocol, DnsName name) {
-
+        public static DnsName MakeName(string service, string protocol, DnsName name)
+        {
             Guard.NotNull(service, "service");
             Guard.NotNull(protocol, "protocol");
             Guard.NotNull(name, "name");
@@ -141,14 +150,14 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteUInt16(this.Priority);
-            writer.WriteUInt16(this.Weight);
-            writer.WriteUInt16(this.Port);
-            writer.WriteName(this.Target);
+            writer.WriteUInt16(Priority);
+            writer.WriteUInt16(Weight);
+            writer.WriteUInt16(Port);
+            writer.WriteName(Target);
         }
 
         /// <summary>
@@ -158,24 +167,26 @@ namespace AK.Net.Dns.Records
         /// <param name="other">The other instance.</param>
         /// <returns>A value indicating relative eqaulity with the 
         /// <paramref name="other"/> instance.</returns>
-        public int CompareTo(SrvRecord other) {
-
-            if(other == null)
+        public int CompareTo(SrvRecord other)
+        {
+            if (other == null)
+            {
                 return 1;
+            }
 
-            int res = this.Priority.CompareTo(other.Priority);
+            var res = Priority.CompareTo(other.Priority);
 
-            return res != 0 ? res : other.Weight.CompareTo(this.Weight);
+            return res != 0 ? res : other.Weight.CompareTo(Weight);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() {
-
+        public override string ToString()
+        {
             return DnsUtility.Format("{0} {1,-2} {2,-2} {3,-2} {4,-2}", base.ToString(),
-                this.Priority, this.Weight, this.Port, this.Target);
+                Priority, Weight, Port, Target);
         }
 
         /// <summary>
@@ -184,10 +195,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName Target {
-
-            get { return _target; }
-            set {
+        public DnsName Target
+        {
+            get => _target;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _target = value;
             }
@@ -201,10 +213,11 @@ namespace AK.Net.Dns.Records
         /// Thrown when <paramref name="value"/> is not a valid
         /// <see cref="System.UInt16"/> value.
         /// </exception>
-        public int Priority {
-
-            get { return _priority; }
-            set {
+        public int Priority
+        {
+            get => _priority;
+            set
+            {
                 Guard.IsUInt16(value, "value");
                 _priority = value;
             }
@@ -218,10 +231,11 @@ namespace AK.Net.Dns.Records
         /// Thrown when <paramref name="value"/> is not a valid
         /// <see cref="System.UInt16"/> value.
         /// </exception>
-        public int Weight {
-
-            get { return _weight; }
-            set {
+        public int Weight
+        {
+            get => _weight;
+            set
+            {
                 Guard.IsUInt16(value, "value");
                 _weight = value;
             }
@@ -234,22 +248,14 @@ namespace AK.Net.Dns.Records
         /// Thrown when <paramref name="value"/> is not a valid
         /// <see cref="System.UInt16"/> value.
         /// </exception>
-        public int Port {
-
-            get { return _port; }
-            set {
+        public int Port
+        {
+            get => _port;
+            set
+            {
                 Guard.IsUInt16(value, "value");
                 _port = value;
             }
-        }
-
-        #endregion
-
-        #region Explicit Interface.
-
-        int IComparable.CompareTo(object obj) {
-
-            return CompareTo(obj as SrvRecord);            
         }
 
         #endregion

@@ -27,10 +27,10 @@ namespace AK.Net.Dns
         /// <summary>
         /// Initialises a new instance of the <see cref="DnsQuery"/> class.
         /// </summary>
-        public DnsQuery() {
-            
-            this.Header.IsQuery = true;
-            this.Header.OpCode = DnsOpCode.Query;
+        public DnsQuery()
+        {
+            Header.IsQuery = true;
+            Header.OpCode = DnsOpCode.Query;
         }
 
         /// <summary>
@@ -44,22 +44,21 @@ namespace AK.Net.Dns
         /// Thrown when the <see cref="DnsQuery"/> could not be read from the
         /// <paramref name="reader"/>.
         /// </exception>
-        public override void Read(IDnsReader reader) {
-
+        public override void Read(IDnsReader reader)
+        {
             Guard.NotNull(reader, "reader");
 
             base.Read(reader);
-            if(!this.Header.IsQuery)
+            if (!Header.IsQuery)
+            {
                 throw Guard.DnsQueryExpected();
+            }
         }
 
         /// <summary>
         /// Gets the primary question asked by this <see cref="DnsQuery"/>.
         /// </summary>
-        public DnsQuestion Question {
-
-            get { return this.Questions.Count > 0 ? this.Questions[0] : null; }
-        }
+        public DnsQuestion Question => Questions.Count > 0 ? Questions[0] : null;
 
         #endregion
     }

@@ -14,11 +14,10 @@
 
 using System;
 using System.Net;
-
 using AK.Net.Dns.Resolvers;
 
 namespace AK.Net.Dns
-{    
+{
     /// <summary>
     /// Provides a facade interface to the <see cref="AK.Net.Dns"/> library.
     /// This class is <see langword="static"/>.
@@ -45,9 +44,9 @@ namespace AK.Net.Dns
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public static DnsReply Resolve(DnsQuestion question) {
-
-            return AKDns.Resolver.Resolve(question);
+        public static DnsReply Resolve(DnsQuestion question)
+        {
+            return Resolver.Resolve(question);
         }
 
         /// <summary>
@@ -64,9 +63,9 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="question"/> is <see langword="null"/>.
         /// </exception>
-        public static IAsyncResult BeginResolve(DnsQuestion question, AsyncCallback callback, object state) {
-
-            return AKDns.Resolver.BeginResolve(question, callback, state);
+        public static IAsyncResult BeginResolve(DnsQuestion question, AsyncCallback callback, object state)
+        {
+            return Resolver.BeginResolve(question, callback, state);
         }
 
         /// <summary>
@@ -94,9 +93,9 @@ namespace AK.Net.Dns
         /// Thrown when an error occurred during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public static DnsReply EndResolve(IAsyncResult iar) {
-
-            return AKDns.Resolver.EndResolve(iar);
+        public static DnsReply EndResolve(IAsyncResult iar)
+        {
+            return Resolver.EndResolve(iar);
         }
 
         /// <summary>
@@ -122,9 +121,9 @@ namespace AK.Net.Dns
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public static IPHostEntry GetHostEntry(string hostOrAddress) {
-
-            return AKDns.Resolver.GetHostEntry(hostOrAddress);
+        public static IPHostEntry GetHostEntry(string hostOrAddress)
+        {
+            return Resolver.GetHostEntry(hostOrAddress);
         }
 
         /// <summary>
@@ -144,9 +143,9 @@ namespace AK.Net.Dns
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public static IPHostEntry GetHostEntry(IPAddress address) {
-
-            return AKDns.Resolver.GetHostEntry(address);
+        public static IPHostEntry GetHostEntry(IPAddress address)
+        {
+            return Resolver.GetHostEntry(address);
         }
 
         /// <summary>
@@ -163,9 +162,9 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="address"/> is <see langword="null"/>.
         /// </exception>
-        public static IAsyncResult BeginGetHostEntry(IPAddress address, AsyncCallback callback, object state) {
-
-            return AKDns.Resolver.BeginGetHostEntry(address, callback, state);
+        public static IAsyncResult BeginGetHostEntry(IPAddress address, AsyncCallback callback, object state)
+        {
+            return Resolver.BeginGetHostEntry(address, callback, state);
         }
 
         /// <summary>
@@ -193,9 +192,9 @@ namespace AK.Net.Dns
         /// Thrown when an error occurred during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public static IPHostEntry EndGetHostEntry(IAsyncResult iar) {
-
-            return AKDns.Resolver.EndGetHostEntry(iar);
+        public static IPHostEntry EndGetHostEntry(IAsyncResult iar)
+        {
+            return Resolver.EndGetHostEntry(iar);
         }
 
         /// <summary>
@@ -215,9 +214,9 @@ namespace AK.Net.Dns
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public static MXInfo GetMXInfo(DnsName domain) {
-
-            return AKDns.Resolver.GetMXInfo(domain);
+        public static MXInfo GetMXInfo(DnsName domain)
+        {
+            return Resolver.GetMXInfo(domain);
         }
 
         /// <summary>
@@ -233,9 +232,9 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="domain"/> is <see langword="null"/>.
         /// </exception>
-        public static IAsyncResult BeginGetMXInfo(DnsName domain, AsyncCallback callback, object state) {
-
-            return AKDns.Resolver.BeginGetMXInfo(domain, callback, state);
+        public static IAsyncResult BeginGetMXInfo(DnsName domain, AsyncCallback callback, object state)
+        {
+            return Resolver.BeginGetMXInfo(domain, callback, state);
         }
 
         /// <summary>
@@ -262,9 +261,9 @@ namespace AK.Net.Dns
         /// Thrown when an error occurred during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public static MXInfo EndGetMXInfo(IAsyncResult iar) {
-
-            return AKDns.Resolver.EndGetMXInfo(iar);
+        public static MXInfo EndGetMXInfo(IAsyncResult iar)
+        {
+            return Resolver.EndGetMXInfo(iar);
         }
 
         /// <summary>
@@ -287,9 +286,9 @@ namespace AK.Net.Dns
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public static DnsName[] GetNameServers(DnsName domain) {
-
-            return AKDns.Resolver.GetNameServers(domain);
+        public static DnsName[] GetNameServers(DnsName domain)
+        {
+            return Resolver.GetNameServers(domain);
         }
 
         /// <summary>
@@ -306,9 +305,9 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="domain"/> is <see langword="null"/>.
         /// </exception>
-        public static IAsyncResult BeginGetNameServers(DnsName domain, AsyncCallback callback, object state) {
-
-            return AKDns.Resolver.BeginGetNameServers(domain, callback, state);
+        public static IAsyncResult BeginGetNameServers(DnsName domain, AsyncCallback callback, object state)
+        {
+            return Resolver.BeginGetNameServers(domain, callback, state);
         }
 
         /// <summary>
@@ -319,7 +318,7 @@ namespace AK.Net.Dns
         /// <param name="iar">The asynchronous operation result.</param>
         /// <returns>
         /// The list of <see cref="AK.Net.Dns.DnsName"/> instances for each of the
-        /// authoritative name servers for the specified <paramref name="domain"/>.
+        /// authoritative name servers for the specified domain.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="iar"/> is <see langword="null"/>.
@@ -339,21 +338,15 @@ namespace AK.Net.Dns
         /// Thrown when an error occurred during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public static DnsName[] EndGetNameServers(IAsyncResult iar) {
-
-            return AKDns.Resolver.EndGetNameServers(iar);
+        public static DnsName[] EndGetNameServers(IAsyncResult iar)
+        {
+            return Resolver.EndGetNameServers(iar);
         }
 
         /// <summary>
         /// Gets the underlying <see cref="AK.Net.Dns.IDnsResolver"/>.
         /// </summary>
-        public static IDnsResolver Resolver {
-
-            get { 
-                // TODO this should be configurable.
-                return DnsStubResolver.Instance(); 
-            }
-        }
+        public static IDnsResolver Resolver => DnsStubResolver.Instance();
 
         #endregion
     }

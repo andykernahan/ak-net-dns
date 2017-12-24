@@ -40,7 +40,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of SoaRecord records. This field is readonly.
         /// </summary>
-        new public static readonly SoaRecord[] EmptyArray = { };
+        public new static readonly SoaRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the SoaRecord class and specifies the owner name,
@@ -61,8 +61,8 @@ namespace AK.Net.Dns.Records
         /// </exception>
         public SoaRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl,
             IDnsReader reader)
-            : base(owner, DnsRecordType.Soa, cls, ttl) {
-
+            : base(owner, DnsRecordType.Soa, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -102,8 +102,8 @@ namespace AK.Net.Dns.Records
         /// </exception>
         public SoaRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, DnsName master, DnsName rMbox,
             long serial, TimeSpan refresh, TimeSpan retry, TimeSpan expire, TimeSpan minimum)
-            : base(owner, DnsRecordType.Soa, cls, ttl) {
-
+            : base(owner, DnsRecordType.Soa, cls, ttl)
+        {
             Guard.NotNull(master, "master");
             Guard.NotNull(rMbox, "rMbox");
 
@@ -124,29 +124,28 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteName(this.Master);
-            writer.WriteName(this.RMbox);
-            writer.WriteUInt32(this.Serial);
-            writer.WriteTtl(this.Refresh);
-            writer.WriteTtl(this.Retry);
-            writer.WriteTtl(this.Expire);
-            writer.WriteTtl(this.Minimum);
+            writer.WriteName(Master);
+            writer.WriteName(RMbox);
+            writer.WriteUInt32(Serial);
+            writer.WriteTtl(Refresh);
+            writer.WriteTtl(Retry);
+            writer.WriteTtl(Expire);
+            writer.WriteTtl(Minimum);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
+        public override string ToString()
+        {
             return DnsUtility.Format("{0} {1} {2} {3} {4} {5} {6} {7}",
-                base.ToString(), this.Master, this.RMbox, this.Serial, DnsUtility.ToString(this.Refresh),
-                DnsUtility.ToString(this.Retry), DnsUtility.ToString(this.Expire), DnsUtility.ToString(this.Minimum));
-
+                base.ToString(), Master, RMbox, Serial, DnsUtility.ToString(Refresh),
+                DnsUtility.ToString(Retry), DnsUtility.ToString(Expire), DnsUtility.ToString(Minimum));
         }
 
         /// <summary>
@@ -155,10 +154,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName Master {
-
-            get { return _master; }
-            set {
+        public DnsName Master
+        {
+            get => _master;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _master = value;
             }
@@ -171,10 +171,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName RMbox {
-
-            get { return _rMbox; }
-            set {
+        public DnsName RMbox
+        {
+            get => _rMbox;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _rMbox = value;
             }
@@ -187,10 +188,11 @@ namespace AK.Net.Dns.Records
         /// Thrown when <paramref name="value"/> is negative or greater than
         /// <see cref="System.UInt32.MaxValue"/>.
         /// </exception>
-        public long Serial {
-
-            get { return _serial; }
-            set {
+        public long Serial
+        {
+            get => _serial;
+            set
+            {
                 Guard.IsUInt32(value, "value");
                 _serial = value;
             }
@@ -199,38 +201,38 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Gets or sets the interval at which the zone refreshed.
         /// </summary>
-        public TimeSpan Refresh {
-
-            get { return _refresh; }
-            set { _refresh = value; }
+        public TimeSpan Refresh
+        {
+            get => _refresh;
+            set => _refresh = value;
         }
 
         /// <summary>
         /// Gets or sets the interval at which a failed domain refresh should be retried.
         /// </summary>
-        public TimeSpan Retry {
-
-            get { return _retry; }
-            set { _retry = value; }
+        public TimeSpan Retry
+        {
+            get => _retry;
+            set => _retry = value;
         }
 
         /// <summary>
         /// Gets or sets the upper limit on the time interval that can elapse before the zone
         /// is no longer authoritative
         /// </summary>
-        public TimeSpan Expire {
-
-            get { return _expire; }
-            set { _expire = value; }
+        public TimeSpan Expire
+        {
+            get => _expire;
+            set => _expire = value;
         }
 
         /// <summary>
         /// Gets or sets the minimum TTL value for any resource record exported by the zone.
         /// </summary>
-        public TimeSpan Minimum {
-
-            get { return _minimum; }
-            set { _minimum = value; }
+        public TimeSpan Minimum
+        {
+            get => _minimum;
+            set => _minimum = value;
         }
 
         #endregion

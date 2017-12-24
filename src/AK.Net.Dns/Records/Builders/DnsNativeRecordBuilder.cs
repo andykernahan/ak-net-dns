@@ -24,6 +24,14 @@ namespace AK.Net.Dns.Records.Builders
     /// <threadsafety static="true" instance="true" />
     public sealed class DnsNativeRecordBuilder : IDnsRecordBuilder
     {
+        #region Private Impl.
+
+        private DnsNativeRecordBuilder()
+        {
+        }
+
+        #endregion
+
         #region Public Interface.
 
         /// <summary>
@@ -41,9 +49,10 @@ namespace AK.Net.Dns.Records.Builders
         /// <see langword="true"/> if the bulider can build records of the
         /// specified <paramref name="type"/>, otherwise; <see langword="false"/>.
         /// </returns>
-        public bool CanBuild(DnsRecordType type) {
-
-            switch(type) {
+        public bool CanBuild(DnsRecordType type)
+        {
+            switch (type)
+            {
                 case DnsRecordType.A:
                 case DnsRecordType.Aaaa:
                 case DnsRecordType.NS:
@@ -52,9 +61,9 @@ namespace AK.Net.Dns.Records.Builders
                 case DnsRecordType.Null:
                 case DnsRecordType.Wks:
                 case DnsRecordType.Ptr:
-                case DnsRecordType.HInfo:                
+                case DnsRecordType.HInfo:
                 case DnsRecordType.MB:
-                case DnsRecordType.MG:                
+                case DnsRecordType.MG:
                 case DnsRecordType.MInfo:
                 case DnsRecordType.MR:
                 case DnsRecordType.MX:
@@ -93,9 +102,10 @@ namespace AK.Net.Dns.Records.Builders
         /// <paramref name="reader"/>.
         /// </exception>
         public DnsRecord Build(DnsName owner, DnsRecordType type, DnsRecordClass cls,
-            TimeSpan ttl, IDnsReader reader) {
-
-            switch(type) {
+            TimeSpan ttl, IDnsReader reader)
+        {
+            switch (type)
+            {
                 case DnsRecordType.A:
                     return new ARecord(owner, ttl, reader);
                 case DnsRecordType.Aaaa:
@@ -136,12 +146,6 @@ namespace AK.Net.Dns.Records.Builders
                     throw Guard.NotSupported();
             }
         }
-
-        #endregion
-
-        #region Private Impl.
-
-        private DnsNativeRecordBuilder() { }
 
         #endregion
     }

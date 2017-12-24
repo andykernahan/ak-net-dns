@@ -83,7 +83,7 @@ namespace AK.Net.Dns
         /// </exception>
         void WriteBytes(byte[] buffer);
 
-         /// <summary>
+        /// <summary>
         /// Writes a sequence of bytes to the underlying stream read from the
         /// specified <paramref name="buffer"/>.
         /// </summary>

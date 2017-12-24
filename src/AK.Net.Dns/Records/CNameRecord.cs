@@ -34,7 +34,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of CNameRecord records. This field is readonly.
         /// </summary>
-        new public static readonly CNameRecord[] EmptyArray = { };
+        public new static readonly CNameRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the CNameRecord class and specifies the owner name,
@@ -54,8 +54,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public CNameRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.CName, cls, ttl) {
-
+            : base(owner, DnsRecordType.CName, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -77,8 +77,8 @@ namespace AK.Net.Dns.Records
         /// <see langword="null"/>.
         /// </exception>
         public CNameRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, DnsName canonical)
-            : base(owner, DnsRecordType.CName, cls, ttl) {
-
+            : base(owner, DnsRecordType.CName, cls, ttl)
+        {
             Guard.NotNull(canonical, "canonical");
 
             _canonical = canonical;
@@ -92,20 +92,20 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteName(this.Canonical);
+            writer.WriteName(Canonical);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} {1}", base.ToString(), this.Canonical);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} {1}", base.ToString(), Canonical);
         }
 
         /// <summary>
@@ -114,10 +114,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName Canonical {
-
-            get { return _canonical; }
-            set {
+        public DnsName Canonical
+        {
+            get => _canonical;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _canonical = value;
             }

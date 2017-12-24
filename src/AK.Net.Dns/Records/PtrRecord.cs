@@ -26,7 +26,7 @@ namespace AK.Net.Dns.Records
     [Serializable]
     public class PtrRecord : DnsRecord
     {
-       #region Private Fields.
+        #region Private Fields.
 
         private DnsName _domain;
 
@@ -47,7 +47,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of PtrRecord records. This field is readonly.
         /// </summary>
-        new public static readonly PtrRecord[] EmptyArray = { };
+        public new static readonly PtrRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the PtrRecord class and specifies the owner name,
@@ -67,8 +67,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public PtrRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.Ptr, cls, ttl) {
-
+            : base(owner, DnsRecordType.Ptr, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -90,8 +90,8 @@ namespace AK.Net.Dns.Records
         /// <see langword="null"/>.
         /// </exception>
         public PtrRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, DnsName domain)
-            : base(owner, DnsRecordType.Ptr, cls, ttl) {
-
+            : base(owner, DnsRecordType.Ptr, cls, ttl)
+        {
             Guard.NotNull(domain, "domain");
 
             _domain = domain;
@@ -111,11 +111,12 @@ namespace AK.Net.Dns.Records
         /// <see cref="System.Net.Sockets.AddressFamily.InterNetwork"/> or
         /// <see cref="System.Net.Sockets.AddressFamily.InterNetworkV6"/> address.
         /// </exception>
-        public static DnsName MakeName(IPAddress address) {
+        public static DnsName MakeName(IPAddress address)
+        {
+            Guard.NotNull(address, "address");
 
-            Guard.NotNull(address, "address");   
-
-            switch(address.AddressFamily) {
+            switch (address.AddressFamily)
+            {
                 case AddressFamily.InterNetwork:
                     return MakeIPv4Name(address);
                 case AddressFamily.InterNetworkV6:
@@ -133,20 +134,20 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteName(this.Domain);
+            writer.WriteName(Domain);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} {1}", base.ToString(), this.Domain);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} {1}", base.ToString(), Domain);
         }
 
         /// <summary>
@@ -155,10 +156,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName Domain {
-
-            get { return _domain; }
-            set {
+        public DnsName Domain
+        {
+            get => _domain;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _domain = value;
             }
@@ -168,28 +170,31 @@ namespace AK.Net.Dns.Records
 
         #region Private Impl.
 
-        private static DnsName MakeIPv4Name(IPAddress address) {
-            
-            byte[] bytes = address.GetAddressBytes();
-            StringBuilder sb = new StringBuilder();
+        private static DnsName MakeIPv4Name(IPAddress address)
+        {
+            var bytes = address.GetAddressBytes();
+            var sb = new StringBuilder();
 
-            for(int i = bytes.Length - 1; i >= 0; --i)
+            for (var i = bytes.Length - 1; i >= 0; --i)
+            {
                 sb.Append(bytes[i].ToString(DnsUtility.DnsCulture)).Append('.');
-            sb.Append(PtrRecord.IPv4NameSuffix);
+            }
+            sb.Append(IPv4NameSuffix);
 
             return DnsName.Parse(sb.ToString());
         }
 
-        private static DnsName MakeIPv6Name(IPAddress address) {            
+        private static DnsName MakeIPv6Name(IPAddress address)
+        {
+            var bytes = address.GetAddressBytes();
+            var sb = new StringBuilder();
 
-            byte[] bytes = address.GetAddressBytes();
-            StringBuilder sb = new StringBuilder();            
-
-            for(int i = bytes.Length - 1; i >= 0; --i) {                
+            for (var i = bytes.Length - 1; i >= 0; --i)
+            {
                 sb.Append((bytes[i] & 0x0F).ToString("x", DnsUtility.DnsCulture)).Append('.');
                 sb.Append((bytes[i] >> 4).ToString("x", DnsUtility.DnsCulture)).Append('.');
             }
-            sb.Append(PtrRecord.IPv6NameSuffix);
+            sb.Append(IPv6NameSuffix);
 
             return DnsName.Parse(sb.ToString());
         }

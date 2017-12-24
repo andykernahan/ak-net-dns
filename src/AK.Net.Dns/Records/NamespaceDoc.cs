@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 namespace AK.Net.Dns.Records
 {
 #if BUILD_DOCS
-    /// <summary>
-    /// Contains the DNS records natively supported by this library.
-    /// </summary>
+/// <summary>
+/// Contains the DNS records natively supported by this library.
+/// </summary>
     internal sealed class NamespaceDoc { }
 #endif
 }

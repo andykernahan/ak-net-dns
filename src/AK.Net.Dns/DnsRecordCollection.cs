@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AK.Net.Dns
@@ -31,13 +30,6 @@ namespace AK.Net.Dns
         #region Public Interface.
 
         /// <summary>
-        /// Initialises a new instance of the DnsRecordCollection class.
-        /// </summary>
-        public DnsRecordCollection()
-            : base() {
-        }
-
-        /// <summary>
         /// Writes this collection of records using the specified
         /// <see cref="AK.Net.Dns.IDnsWriter"/>.
         /// </summary>
@@ -45,12 +37,14 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public void Write(IDnsWriter writer) {
-
+        public void Write(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            foreach(T record in this)
+            foreach (var record in this)
+            {
                 writer.WriteRecord(record);
+            }
         }
 
         #endregion
@@ -65,8 +59,8 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="item"/> is <see langword="null"/>.
         /// </exception>
-        protected override void InsertItem(int index, T item) {
-
+        protected override void InsertItem(int index, T item)
+        {
             ValidateItem(item);
             base.InsertItem(index, item);
         }
@@ -79,8 +73,8 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="item"/> is <see langword="null"/>.
         /// </exception>
-        protected override void SetItem(int index, T item) {
-
+        protected override void SetItem(int index, T item)
+        {
             ValidateItem(item);
             base.SetItem(index, item);
         }
@@ -92,8 +86,8 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="item"/> is <see langword="null"/>.
         /// </exception>
-        protected virtual void ValidateItem(T item) {
-
+        protected virtual void ValidateItem(T item)
+        {
             Guard.NotNull(item, "item");
         }
 
@@ -109,14 +103,6 @@ namespace AK.Net.Dns
     {
         #region Public Interface.
 
-        /// <summary>
-        /// Initialises a new instance of the DnsRecordCollection class.
-        /// </summary>
-        public DnsRecordCollection()
-            : base() {
-        }
-
         #endregion
     }
 }
-

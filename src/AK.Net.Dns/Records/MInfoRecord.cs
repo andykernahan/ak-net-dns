@@ -35,7 +35,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of MInfoRecord records. This field is readonly.
         /// </summary>
-        new public static readonly MInfoRecord[] EmptyArray = { };
+        public new static readonly MInfoRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the MInfoRecord class and specifies the owner name,
@@ -55,8 +55,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public MInfoRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.HInfo, cls, ttl) {
-
+            : base(owner, DnsRecordType.HInfo, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -81,8 +81,8 @@ namespace AK.Net.Dns.Records
         /// <see langword="null"/>.
         /// </exception>
         public MInfoRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, DnsName rMbox, DnsName eMbox)
-            : base(owner, DnsRecordType.HInfo, cls, ttl) {
-
+            : base(owner, DnsRecordType.HInfo, cls, ttl)
+        {
             Guard.NotNull(rMbox, "rMbox");
             Guard.NotNull(eMbox, "eMbox");
 
@@ -98,21 +98,21 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteName(this.RMbox);
-            writer.WriteName(this.EMbox);
+            writer.WriteName(RMbox);
+            writer.WriteName(EMbox);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} {1} {2}", base.ToString(), this.RMbox, this.EMbox);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} {1} {2}", base.ToString(), RMbox, EMbox);
         }
 
         /// <summary>
@@ -121,10 +121,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName EMbox {
-
-            get { return _eMbox; }
-            set {
+        public DnsName EMbox
+        {
+            get => _eMbox;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _eMbox = value;
             }
@@ -137,10 +138,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName RMbox {
-
-            get { return _rMbox; }
-            set {
+        public DnsName RMbox
+        {
+            get => _rMbox;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _rMbox = value;
             }

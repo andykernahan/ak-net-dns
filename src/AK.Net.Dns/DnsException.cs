@@ -24,13 +24,27 @@ namespace AK.Net.Dns
     [Serializable]
     public class DnsException : Exception
     {
+        #region Protected Interface.
+
+        /// <summary>
+        /// De-serialization constructor.
+        /// </summary>
+        /// <param name="info">The serialization info.</param>
+        /// <param name="context">The serialization context.</param>
+        protected DnsException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
+        #endregion
+
         #region Public Interface.
 
         /// <summary>
         /// Initialises a new instance of the DnsException class.
         /// </summary>
         public DnsException()
-            : base() {
+        {
         }
 
         /// <summary>
@@ -39,7 +53,8 @@ namespace AK.Net.Dns
         /// </summary>
         /// <param name="message">A message describing the error.</param>
         public DnsException(string message)
-            : base(message) {
+            : base(message)
+        {
         }
 
         /// <summary>
@@ -51,20 +66,8 @@ namespace AK.Net.Dns
         /// <param name="innerException">The inner exception which is the cause of
         /// this exception.</param>
         public DnsException(string message, Exception innerException)
-            : base(message, innerException) {
-        }
-
-        #endregion
-
-        #region Protected Interface.
-
-        /// <summary>
-        /// De-serialization constructor.
-        /// </summary>
-        /// <param name="info">The serialization info.</param>
-        /// <param name="context">The serialization context.</param>
-        protected DnsException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
+            : base(message, innerException)
+        {
         }
 
         #endregion

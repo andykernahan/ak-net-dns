@@ -15,6 +15,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using log4net;
 
 namespace AK.Net.Dns.IO
 {
@@ -27,11 +28,23 @@ namespace AK.Net.Dns.IO
     /// <threadsafety static="true" instance="true" />
     public abstract class DnsTransport : IDnsTransport
     {
+        #region Private Impl.
+
+        private sealed class SendAsyncState : DnsAsyncState<DnsReply>
+        {
+            public SendAsyncState(AsyncCallback callback, object state)
+                : base(callback, state)
+            {
+            }
+        }
+
+        #endregion
+
         #region Private Fields.
 
-        private log4net.ILog _log;
-        private int _sendTimeout = DnsTransport.DefaultTimeout;
-        private int _receiveTimeout = DnsTransport.DefaultTimeout;
+        private ILog _log;
+        private int _sendTimeout = DefaultTimeout;
+        private int _receiveTimeout = DefaultTimeout;
 
         #endregion
 
@@ -85,19 +98,25 @@ namespace AK.Net.Dns.IO
         /// <paramref name="callback"/> is <see langword="null"/>.
         /// </exception>
         public virtual IAsyncResult BeginSend(DnsQuery query, IPEndPoint endpoint,
-            AsyncCallback callback, object state) {
-
+            AsyncCallback callback, object state)
+        {
             Guard.NotNull(endpoint, "endpoint");
             Guard.NotNull(callback, "callback");
 
-            SendAsyncState asyncState = new SendAsyncState(callback, state);
+            var asyncState = new SendAsyncState(callback, state);
 
-            asyncState.QueueOperation(delegate {
-                try {
+            asyncState.QueueOperation(delegate
+            {
+                try
+                {
                     asyncState.Result = Send(query, endpoint);
-                } catch(DnsTransportException exc) {
+                }
+                catch (DnsTransportException exc)
+                {
                     asyncState.Exception = exc;
-                } finally {
+                }
+                finally
+                {
                     asyncState.OnComplete();
                 }
             });
@@ -126,16 +145,16 @@ namespace AK.Net.Dns.IO
         /// <exception cref="AK.Net.Dns.DnsTransportException">
         /// Thrown when a transport error occurred during the asynchronous operation.
         /// </exception>
-        public virtual DnsReply EndSend(IAsyncResult iar) {
-
+        public virtual DnsReply EndSend(IAsyncResult iar)
+        {
             Guard.NotNull(iar, "iar");
 
-            SendAsyncState state = iar as SendAsyncState;
-
-            if(state == null)
+            if (!(iar is SendAsyncState state))
+            {
                 throw Guard.InvalidAsyncResult("iar");
-            
-            state.OnEndCalled();            
+            }
+
+            state.OnEndCalled();
 
             return state.Result;
         }
@@ -146,10 +165,11 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when <paramref name="value"/> is not a positive number.
         /// </exception>
-        public int SendTimeout {
-
-            get { return _sendTimeout; }
-            set {
+        public int SendTimeout
+        {
+            get => _sendTimeout;
+            set
+            {
                 Guard.InRange(value > 0, "value");
                 _sendTimeout = value;
             }
@@ -161,10 +181,11 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when <paramref name="value"/> is not a positive number.
         /// </exception>
-        public int ReceiveTimeout {
-
-            get { return _receiveTimeout; }
-            set {
+        public int ReceiveTimeout
+        {
+            get => _receiveTimeout;
+            set
+            {
                 Guard.InRange(value > 0, "value");
                 _receiveTimeout = value;
             }
@@ -188,18 +209,20 @@ namespace AK.Net.Dns.IO
         /// Thrown when <paramref name="sent"/> or <paramref name="received"/> is
         /// <see langword="null"/>.
         /// </exception>
-        protected virtual bool QueriesAreEqual(DnsMessage received, DnsMessage sent) {
-
+        protected virtual bool QueriesAreEqual(DnsMessage received, DnsMessage sent)
+        {
             Guard.NotNull(received, "received");
             Guard.NotNull(sent, "send");
-            
-            if(sent.Header.Id != received.Header.Id) {
-                this.Log.Warn("received reply with mismatching id");
+
+            if (sent.Header.Id != received.Header.Id)
+            {
+                Log.Warn("received reply with mismatching id");
                 return false;
             }
 
-            if(!DnsQuestionCollection.Equals(sent.Questions, received.Questions)) {
-                this.Log.Warn("received reply with mismatching question section");                    
+            if (!DnsQuestionCollection.Equals(sent.Questions, received.Questions))
+            {
+                Log.Warn("received reply with mismatching question section");
                 return false;
             }
 
@@ -214,11 +237,12 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="query"/> is <see langword="null"/>.
         /// </exception>
-        protected ArraySegment<byte> WriteQuery(DnsQuery query) {
-
+        protected ArraySegment<byte> WriteQuery(DnsQuery query)
+        {
             Guard.NotNull(query, "query");
 
-            using(DnsWireWriter writer = new DnsWireWriter()) {
+            using (var writer = new DnsWireWriter())
+            {
                 query.Write(writer);
                 return writer.GetBuffer();
             }
@@ -238,8 +262,8 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="buffer"/> is <see langword="null"/>.
         /// </exception>
-        protected virtual bool TryReadReply(byte[] buffer, out DnsReply reply) {
-
+        protected virtual bool TryReadReply(byte[] buffer, out DnsReply reply)
+        {
             Guard.NotNull(buffer, "buffer");
 
             return TryReadReply(buffer, 0, buffer.Length, out reply);
@@ -277,15 +301,20 @@ namespace AK.Net.Dns.IO
         /// </list>
         /// </exception>
         protected virtual bool TryReadReply(byte[] buffer, int offset, int count,
-            out DnsReply reply) {
-
+            out DnsReply reply)
+        {
             reply = new DnsReply();
 
-            try {
-                using(DnsWireReader reader = new DnsWireReader(buffer, offset, count))
+            try
+            {
+                using (var reader = new DnsWireReader(buffer, offset, count))
+                {
                     reply.Read(reader);
-            } catch(DnsFormatException) {
-                reply = null;                
+                }
+            }
+            catch (DnsFormatException)
+            {
+                reply = null;
             }
 
             return reply != null;
@@ -298,39 +327,30 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="socket"/> is <see langword="null"/>.
         /// </exception>
-        protected virtual void ConfigureSocket(Socket socket) {
-
+        protected virtual void ConfigureSocket(Socket socket)
+        {
             Guard.NotNull(socket, "socket");
 
-            socket.ReceiveTimeout = this.ReceiveTimeout;
-            socket.SendTimeout = this.SendTimeout;
+            socket.ReceiveTimeout = ReceiveTimeout;
+            socket.SendTimeout = SendTimeout;
             socket.Blocking = true;
         }
 
         /// <summary>
         /// Gets the <see cref="log4net.ILog"/> for this type.
         /// </summary>
-        protected log4net.ILog Log {
-
-            get {
-                if(_log == null)
-                    _log = log4net.LogManager.GetLogger(GetType());
+        protected ILog Log
+        {
+            get
+            {
+                if (_log == null)
+                {
+                    _log = LogManager.GetLogger(GetType());
+                }
                 return _log;
             }
         }
 
         #endregion
-
-        #region Private Impl.
-
-        private sealed class SendAsyncState : DnsAsyncState<DnsReply>
-        {
-            public SendAsyncState(AsyncCallback callback, object state)
-                : base(callback, state) { }
-        }
-
-        #endregion
     }
 }
-
-

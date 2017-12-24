@@ -17,7 +17,7 @@ using System;
 using System.Configuration;
 
 namespace AK.Net.Dns.Configuration
-{    
+{
     /// <summary>
     /// Validates that the <see cref="System.Type"/> specified by a configuration
     /// property is assignable to the base type specified by the attribute. This
@@ -42,11 +42,11 @@ namespace AK.Net.Dns.Configuration
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="baseType"/> is <see langword="null"/>.
         /// </exception>
-        public BaseTypeValidatorAttribute(Type baseType) {
-
+        public BaseTypeValidatorAttribute(Type baseType)
+        {
             Guard.NotNull(baseType, "baseType");
 
-            _baseType = baseType;            
+            _baseType = baseType;
         }
 
         /// <summary>
@@ -56,10 +56,11 @@ namespace AK.Net.Dns.Configuration
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public Type BaseType {
-
-            get { return _baseType; }
-            set {
+        public Type BaseType
+        {
+            get => _baseType;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _baseType = value;
             }
@@ -68,10 +69,7 @@ namespace AK.Net.Dns.Configuration
         /// <summary>
         /// Gets the attribute validator instance.
         /// </summary>
-        public override ConfigurationValidatorBase ValidatorInstance {
-
-            get { return new BaseTypeValidator(this.BaseType); }
-        }
+        public override ConfigurationValidatorBase ValidatorInstance => new BaseTypeValidator(BaseType);
 
         #endregion
     }

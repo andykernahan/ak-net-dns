@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
-using AK.Net.Dns.Records;
-
 namespace AK.Net.Dns
 {
     /// <summary>

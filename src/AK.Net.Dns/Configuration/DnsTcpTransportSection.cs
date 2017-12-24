@@ -13,9 +13,7 @@
 // limitations under the License.
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-using System;
 using System.Configuration;
-using System.Net;
 using AK.Net.Dns.IO;
 
 namespace AK.Net.Dns.Configuration
@@ -60,7 +58,7 @@ namespace AK.Net.Dns.Configuration
         /// Defines the default location of the <see cref="DnsTcpTransportSection"/>.
         /// This field is constant.
         /// </summary>
-        public const string DefaultLocation = DnsTransportSection.BaseLocation + "/tcp";
+        public const string DefaultLocation = BaseLocation + "/tcp";
 
         /// <summary>
         /// Applies this configuration to the specified <paramref name="transport"/>.
@@ -69,20 +67,20 @@ namespace AK.Net.Dns.Configuration
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="transport"/> is <see langword="null"/>.
         /// </exception>
-        public override void Apply(DnsTransport transport) {
-
+        public override void Apply(DnsTransport transport)
+        {
             base.Apply(transport);
-            ((DnsTcpTransport)transport).MaxIncomingMessageSize = this.MaxIncomingMessageSize;
+            ((DnsTcpTransport)transport).MaxIncomingMessageSize = MaxIncomingMessageSize;
         }
 
         /// <summary>
         /// Gets the <see cref="DnsTcpTransportSection"/> from its default location.
         /// </summary>
         /// <returns>The <see cref="DnsTcpTransportSection"/> from its default location.</returns>
-        public static DnsTcpTransportSection GetSection() {
-
+        public static DnsTcpTransportSection GetSection()
+        {
             return (DnsTcpTransportSection)ConfigurationManager.GetSection(
-                DnsTcpTransportSection.DefaultLocation) ?? new DnsTcpTransportSection();
+                       DefaultLocation) ?? new DnsTcpTransportSection();
         }
 
         /// <summary>
@@ -93,10 +91,7 @@ namespace AK.Net.Dns.Configuration
         [IntegerValidator(MinValue = 1)]
         [ConfigurationProperty("maxIncomingMessageSize", IsRequired = false,
             DefaultValue = 5 * 1024 * 1024)]
-        public int MaxIncomingMessageSize {
-
-            get { return (int)this["maxIncomingMessageSize"]; }
-        }
+        public int MaxIncomingMessageSize => (int)this["maxIncomingMessageSize"];
 
         #endregion
     }

@@ -13,10 +13,8 @@
 // limitations under the License.
 
 using System;
-using System.Net;
 using System.Collections;
-using AddressFamily = System.Net.Sockets.AddressFamily;
-
+using System.Net;
 using AK.Net.Dns.IO;
 
 namespace AK.Net.Dns.Records
@@ -31,7 +29,6 @@ namespace AK.Net.Dns.Records
         #region Private Fields.
 
         private byte _protocol;
-        private BitArray _bitmap;
         private IPAddress _address;
 
         #endregion
@@ -41,7 +38,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of WksRecord records. This field is readonly.
         /// </summary>
-        new public static readonly WksRecord[] EmptyArray = { };
+        public new static readonly WksRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the WksRecord class and specifies the owner name,
@@ -60,18 +57,18 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public WksRecord(DnsName owner, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.Wks, DnsRecordClass.IN, ttl) {
-
+            : base(owner, DnsRecordType.Wks, DnsRecordClass.IN, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             byte[] buf;
-            int rdl = reader.ReadUInt16();
+            var rdl = reader.ReadUInt16();
 
             _address = reader.ReadIPv4Address();
             _protocol = reader.ReadByte();
             buf = new byte[rdl - DnsWireWriter.IPv4AddrLength - 1];
             reader.ReadBytes(buf, 0, buf.Length);
-            _bitmap = new BitArray(buf);
+            Bitmap = new BitArray(buf);
         }
 
         /// <summary>
@@ -93,14 +90,14 @@ namespace AK.Net.Dns.Records
         /// <see cref="System.Net.Sockets.AddressFamily.InterNetwork"/> family.
         /// </exception>
         public WksRecord(DnsName owner, TimeSpan ttl, IPAddress address, byte protocol, BitArray bitmap)
-            : base(owner, DnsRecordType.Wks, DnsRecordClass.IN, ttl) {
-
+            : base(owner, DnsRecordType.Wks, DnsRecordClass.IN, ttl)
+        {
             Guard.IsIPv4(address, "address");
             Guard.NotNull(bitmap, "bitmap");
 
             _address = address;
             _protocol = protocol;
-            _bitmap = bitmap;
+            Bitmap = bitmap;
         }
 
         /// <summary>
@@ -111,20 +108,22 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
             const int BITS_IN_BYTE = 8;
 
             byte[] buf;
 
-            writer.WriteIPAddress(this.Address);
-            writer.WriteByte(this.Protocol);
-            if(this.Bitmap.Count % BITS_IN_BYTE != 0)
-                this.Bitmap.Length = this.Bitmap.Count + (this.Bitmap.Count % BITS_IN_BYTE);
-            buf = new byte[this.Bitmap.Length / BITS_IN_BYTE];
-            this.Bitmap.CopyTo(buf, 0);
+            writer.WriteIPAddress(Address);
+            writer.WriteByte(Protocol);
+            if (Bitmap.Count % BITS_IN_BYTE != 0)
+            {
+                Bitmap.Length = Bitmap.Count + Bitmap.Count % BITS_IN_BYTE;
+            }
+            buf = new byte[Bitmap.Length / BITS_IN_BYTE];
+            Bitmap.CopyTo(buf, 0);
             writer.WriteBytes(buf);
         }
 
@@ -138,10 +137,11 @@ namespace AK.Net.Dns.Records
         /// Thrown when <paramref name="value"/> is not of the
         /// <see cref="System.Net.Sockets.AddressFamily.InterNetwork"/> family.
         /// </exception>
-        public IPAddress Address {
-
-            get { return _address; }
-            set {
+        public IPAddress Address
+        {
+            get => _address;
+            set
+            {
                 Guard.IsIPv4(value, "value");
                 _address = value;
             }
@@ -150,19 +150,16 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Gets or sets the protocol number.
         /// </summary>
-        public byte Protocol {
-
-            get { return _protocol; }
-            set { _protocol = value; }
+        public byte Protocol
+        {
+            get => _protocol;
+            set => _protocol = value;
         }
 
         /// <summary>
         /// Gets the service bitmap.
         /// </summary>
-        public BitArray Bitmap {
-
-            get { return _bitmap; }
-        }
+        public BitArray Bitmap { get; }
 
         #endregion
     }

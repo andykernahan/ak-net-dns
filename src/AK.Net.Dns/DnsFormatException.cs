@@ -24,13 +24,27 @@ namespace AK.Net.Dns
     [Serializable]
     public class DnsFormatException : DnsException
     {
+        #region Protected Interface.
+
+        /// <summary>
+        /// De-serialization constructor.
+        /// </summary>
+        /// <param name="info">The serialization info.</param>
+        /// <param name="context">The serialization context.</param>
+        protected DnsFormatException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
+        #endregion
+
         #region Public Interface.
 
         /// <summary>
         /// Initialises a new instance of the DnsFormatException class.
         /// </summary>
         public DnsFormatException()
-            : base() {
+        {
         }
 
         /// <summary>
@@ -39,7 +53,8 @@ namespace AK.Net.Dns
         /// </summary>
         /// <param name="message">A message describing the error.</param>
         public DnsFormatException(string message)
-            : base(message) {
+            : base(message)
+        {
         }
 
         /// <summary>
@@ -50,20 +65,8 @@ namespace AK.Net.Dns
         /// <param name="message">A message describing the error.</param>
         /// <param name="innerException">The inner exception which is the cause of this exception.</param>
         public DnsFormatException(string message, Exception innerException)
-            : base(message, innerException) {
-        }
-
-        #endregion
-
-        #region Protected Interface.
-
-        /// <summary>
-        /// De-serialization constructor.
-        /// </summary>
-        /// <param name="info">The serialization info.</param>
-        /// <param name="context">The serialization context.</param>
-        protected DnsFormatException(SerializationInfo info, StreamingContext context)
-            : base(info, context) {
+            : base(message, innerException)
+        {
         }
 
         #endregion

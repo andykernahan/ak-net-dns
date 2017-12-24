@@ -15,8 +15,6 @@
 using System;
 using System.Collections.Generic;
 
-using AK.Net.Dns.Records;
-
 namespace AK.Net.Dns
 {
     /// <summary>
@@ -27,7 +25,6 @@ namespace AK.Net.Dns
     {
         #region Private Fields.
 
-        private DnsHeader _header;
         private DnsQuestionCollection _questions;
         private DnsRecordCollection _answers;
         private DnsRecordCollection _authorities;
@@ -40,9 +37,9 @@ namespace AK.Net.Dns
         /// <summary>
         /// Initialises a new instance of the <see cref="DnsMessage"/> class.
         /// </summary>
-        public DnsMessage() {
-            
-            _header = new DnsHeader();            
+        public DnsMessage()
+        {
+            Header = new DnsHeader();
         }
 
         /// <summary>
@@ -57,25 +54,36 @@ namespace AK.Net.Dns
         /// Thrown when the <see cref="DnsMessage"/> could not be read from the 
         /// <paramref name="reader"/>.
         /// </exception>
-        public virtual void Read(IDnsReader reader) {
-
+        public virtual void Read(IDnsReader reader)
+        {
             Guard.NotNull(reader, "reader");
 
             PreRead();
-            try {                
-                this.Header.Read(reader);
-                for(int i = 0, len = this.Header.QuestionCount; i < len; ++i)
-                    this.Questions.Add(new DnsQuestion(reader));
-                for(int i = 0, len = this.Header.AnswerCount; i < len; ++i)
-                    this.Answers.Add(reader.ReadRecord());
-                for(int i = 0, len = this.Header.AuthorityCount; i < len; ++i)
-                    this.Authorities.Add(reader.ReadRecord());
-                for(int i = 0, len = this.Header.AdditionalCount; i < len; ++i)
-                    this.Additionals.Add(reader.ReadRecord());
-            } catch(DnsException exc) {
+            try
+            {
+                Header.Read(reader);
+                for (int i = 0, len = Header.QuestionCount; i < len; ++i)
+                {
+                    Questions.Add(new DnsQuestion(reader));
+                }
+                for (int i = 0, len = Header.AnswerCount; i < len; ++i)
+                {
+                    Answers.Add(reader.ReadRecord());
+                }
+                for (int i = 0, len = Header.AuthorityCount; i < len; ++i)
+                {
+                    Authorities.Add(reader.ReadRecord());
+                }
+                for (int i = 0, len = Header.AdditionalCount; i < len; ++i)
+                {
+                    Additionals.Add(reader.ReadRecord());
+                }
+            }
+            catch (DnsException exc)
+            {
                 throw Guard.InvalidDnsMessageFormat(exc);
             }
-        }        
+        }
 
         /// <summary>
         /// Writes the values of this <see cref="DnsMessage"/> using the specified
@@ -85,12 +93,12 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public virtual void Write(IDnsWriter writer) {
-
+        public virtual void Write(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
             PreWrite();
-            this.Header.Write(writer);
+            Header.Write(writer);
             Write(_questions, writer);
             Write(_answers, writer);
             Write(_authorities, writer);
@@ -101,19 +109,19 @@ namespace AK.Net.Dns
         /// Gets the <see cref="AK.Net.Dns.DnsHeader"/> for this
         /// <see cref="DnsMessage"/>.
         /// </summary>
-        public DnsHeader Header {
-
-            get { return _header; }
-        }
+        public DnsHeader Header { get; }
 
         /// <summary>
         /// Gets the collection of questions.
         /// </summary>
-        public DnsQuestionCollection Questions {
-
-            get {
-                if(_questions == null)
+        public DnsQuestionCollection Questions
+        {
+            get
+            {
+                if (_questions == null)
+                {
                     _questions = new DnsQuestionCollection();
+                }
                 return _questions;
             }
         }
@@ -121,11 +129,14 @@ namespace AK.Net.Dns
         /// <summary>
         /// Gets the collection of answers records.
         /// </summary>
-        public DnsRecordCollection Answers {
-
-            get {
-                if(_answers == null)
+        public DnsRecordCollection Answers
+        {
+            get
+            {
+                if (_answers == null)
+                {
                     _answers = new DnsRecordCollection();
+                }
                 return _answers;
             }
         }
@@ -133,11 +144,14 @@ namespace AK.Net.Dns
         /// <summary>
         /// Gets the collection of authority records.
         /// </summary>
-        public DnsRecordCollection Authorities {
-
-            get {
-                if(_authorities == null)
+        public DnsRecordCollection Authorities
+        {
+            get
+            {
+                if (_authorities == null)
+                {
                     _authorities = new DnsRecordCollection();
+                }
                 return _authorities;
             }
         }
@@ -145,11 +159,14 @@ namespace AK.Net.Dns
         /// <summary>
         /// Gets the collection of additional records.
         /// </summary>
-        public DnsRecordCollection Additionals {
-
-            get {
-                if(_additionals == null)
+        public DnsRecordCollection Additionals
+        {
+            get
+            {
+                if (_additionals == null)
+                {
                     _additionals = new DnsRecordCollection();
+                }
                 return _additionals;
             }
         }
@@ -162,20 +179,20 @@ namespace AK.Net.Dns
         /// Performs any operations required before this <see cref="DnsMessage"/>
         /// is written.
         /// </summary>
-        protected virtual void PreWrite() {
-
-            this.Header.QuestionCount = Count(_questions);
-            this.Header.AnswerCount = Count(_answers);
-            this.Header.AuthorityCount = Count(_authorities);
-            this.Header.AdditionalCount = Count(_additionals);
+        protected virtual void PreWrite()
+        {
+            Header.QuestionCount = Count(_questions);
+            Header.AnswerCount = Count(_answers);
+            Header.AuthorityCount = Count(_authorities);
+            Header.AdditionalCount = Count(_additionals);
         }
 
         /// <summary>
         /// Performs any operations required before this <see cref="DnsMessage"/>
         /// is read.
         /// </summary>
-        protected virtual void PreRead() {
-
+        protected virtual void PreRead()
+        {
             Clear(_questions);
             Clear(_answers);
             Clear(_authorities);
@@ -186,27 +203,33 @@ namespace AK.Net.Dns
 
         #region Private Impl.
 
-        private static void Clear<T>(ICollection<T> collection) {
-
-            if(collection != null)
+        private static void Clear<T>(ICollection<T> collection)
+        {
+            if (collection != null)
+            {
                 collection.Clear();
+            }
         }
 
-        private static int Count<T>(ICollection<T> collection) {
-
+        private static int Count<T>(ICollection<T> collection)
+        {
             return collection != null ? collection.Count : 0;
         }
 
-        private static void Write(DnsQuestionCollection collection, IDnsWriter writer) {
-
-            if(collection != null)
+        private static void Write(DnsQuestionCollection collection, IDnsWriter writer)
+        {
+            if (collection != null)
+            {
                 collection.Write(writer);
+            }
         }
 
-        private static void Write(DnsRecordCollection collection, IDnsWriter writer) {
-
-            if(collection != null)
+        private static void Write(DnsRecordCollection collection, IDnsWriter writer)
+        {
+            if (collection != null)
+            {
                 collection.Write(writer);
+            }
         }
 
         #endregion

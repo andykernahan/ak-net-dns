@@ -24,8 +24,6 @@ namespace AK.Net.Dns
     {
         #region Private Fields.
 
-        private bool _isDisposed;
-
         #endregion
 
         #region Public Interface.
@@ -33,10 +31,15 @@ namespace AK.Net.Dns
         /// <summary>
         /// Gets a value indicating if this instance has been disposed of.
         /// </summary>
-        public bool IsDisposed {
+        public bool IsDisposed { get; private set; }
 
-            get { return _isDisposed; }
-            private set { _isDisposed = value; }
+        #endregion
+
+        #region Explicit Interface.
+
+        void IDisposable.Dispose()
+        {
+            Dispose(true);
         }
 
         #endregion
@@ -49,14 +52,17 @@ namespace AK.Net.Dns
         /// <param name="disposing"><see langword="true"/> if being called explicitly,
         /// otherwise; <see langword="false"/> to indicate being called implicitly by
         /// the GC.</param>
-        protected virtual void Dispose(bool disposing) {
-
-            if(!this.IsDisposed) {
-                this.IsDisposed = true;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!IsDisposed)
+            {
+                IsDisposed = true;
                 // No point calling SuppressFinalize if were are being called from
                 // the finalizer.
-                if(disposing)
+                if (disposing)
+                {
                     GC.SuppressFinalize(this);
+                }
             }
         }
 
@@ -67,19 +73,12 @@ namespace AK.Net.Dns
         /// <exception cref="System.ObjectDisposedException">
         /// Thrown when this instance has been disposed of.
         /// </exception>
-        protected void CheckDisposed() {
-
-            if(this.IsDisposed)
+        protected void CheckDisposed()
+        {
+            if (IsDisposed)
+            {
                 throw Guard.ObjectDisposed(GetType().FullName);
-        }
-
-        #endregion
-
-        #region Explicit Interface.
-
-        void IDisposable.Dispose() {
-
-            Dispose(true);
+            }
         }
 
         #endregion

@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Net;
 using System.Net.Sockets;
-
 using AK.Net.Dns.Configuration;
 
 namespace AK.Net.Dns.IO
@@ -42,8 +40,8 @@ namespace AK.Net.Dns.IO
         /// <summary>
         /// Initialises a new instance of the DnsTcpTransport class.
         /// </summary>
-        public DnsTcpTransport() {
-
+        public DnsTcpTransport()
+        {
             DnsTcpTransportSection.GetSection().Apply(this);
         }
 
@@ -63,37 +61,46 @@ namespace AK.Net.Dns.IO
         /// <exception cref="AK.Net.Dns.DnsTransportException">
         /// Thrown when a transport error occurs.
         /// </exception>
-        public override DnsReply Send(DnsQuery query, IPEndPoint endpoint) {
-
+        public override DnsReply Send(DnsQuery query, IPEndPoint endpoint)
+        {
             Guard.NotNull(query, "query");
             Guard.NotNull(endpoint, "endpoint");
 
             int length;
             DnsReply reply;
             byte[] readBuffer;
-            ArraySegment<byte> writeBuffer = WriteQuery(query);
-            byte[] lengthBuffer = WriteUInt16(writeBuffer.Count);
+            var writeBuffer = WriteQuery(query);
+            var lengthBuffer = WriteUInt16(writeBuffer.Count);
 
-            using(Socket socket = CreateSocket(endpoint.AddressFamily)) {
-                try {
+            using (var socket = CreateSocket(endpoint.AddressFamily))
+            {
+                try
+                {
                     socket.Connect(endpoint);
                     socket.Send(lengthBuffer);
                     socket.Send(writeBuffer);
-                    if(socket.TryReceiveBuffer(lengthBuffer)) {
+                    if (socket.TryReceiveBuffer(lengthBuffer))
+                    {
                         length = ReadUInt16(lengthBuffer);
                         CheckIncomingMessageSize(length, endpoint);
                         readBuffer = new byte[length];
-                        if(socket.TryReceiveBuffer(readBuffer)) {
-                            if(!TryReadReply(readBuffer, out reply)) {
-                                this.Log.WarnFormat("received malformed reply, server={0}", endpoint);
-                            } else if(QueriesAreEqual(reply, query)) {
-                                this.Log.DebugFormat("query answered, server={0}", endpoint);
+                        if (socket.TryReceiveBuffer(readBuffer))
+                        {
+                            if (!TryReadReply(readBuffer, out reply))
+                            {
+                                Log.WarnFormat("received malformed reply, server={0}", endpoint);
+                            }
+                            else if (QueriesAreEqual(reply, query))
+                            {
+                                Log.DebugFormat("query answered, server={0}", endpoint);
                                 return reply;
                             }
                         }
                     }
-                } catch(SocketException exc) {
-                    this.Log.Warn(exc);
+                }
+                catch (SocketException exc)
+                {
+                    Log.Warn(exc);
                     throw Guard.DnsTransportFailed(exc);
                 }
             }
@@ -108,10 +115,11 @@ namespace AK.Net.Dns.IO
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// Thrown when <paramref name="value"/> is not a positive number.
         /// </exception>
-        public int MaxIncomingMessageSize {
-
-            get { return _maxIncomingMessageSize; }
-            set {
+        public int MaxIncomingMessageSize
+        {
+            get => _maxIncomingMessageSize;
+            set
+            {
                 Guard.InRange(value > 0, "value");
                 _maxIncomingMessageSize = value;
             }
@@ -121,40 +129,40 @@ namespace AK.Net.Dns.IO
 
         #region Private Impl.
 
-        private Socket CreateSocket(AddressFamily addressFamily) {
-
-            Socket socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
+        private Socket CreateSocket(AddressFamily addressFamily)
+        {
+            var socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             ConfigureSocket(socket);
 
             return socket;
         }
 
-        private void CheckIncomingMessageSize(int size, IPEndPoint endpoint) {
-
-            if(size < 1) {
-                this.Log.WarnFormat("received empty message, server={0}", endpoint);
+        private void CheckIncomingMessageSize(int size, IPEndPoint endpoint)
+        {
+            if (size < 1)
+            {
+                Log.WarnFormat("received empty message, server={0}", endpoint);
                 throw Guard.DnsTransportReceivedEmptyMessage();
             }
-            if(size > this.MaxIncomingMessageSize) {
-                this.Log.WarnFormat("incoming message size exceeded maximum, size={0}, maximum={1}, server={2}",
-                    size, this.MaxIncomingMessageSize, endpoint);
-                throw Guard.DnsTransportIncomingMessageToLarge(size, this.MaxIncomingMessageSize);
+            if (size > MaxIncomingMessageSize)
+            {
+                Log.WarnFormat("incoming message size exceeded maximum, size={0}, maximum={1}, server={2}",
+                    size, MaxIncomingMessageSize, endpoint);
+                throw Guard.DnsTransportIncomingMessageToLarge(size, MaxIncomingMessageSize);
             }
         }
 
-        private static int ReadUInt16(byte[] buffer) {
-
-            return buffer[0] << 8 | buffer[1];
+        private static int ReadUInt16(byte[] buffer)
+        {
+            return (buffer[0] << 8) | buffer[1];
         }
 
-        private static byte[] WriteUInt16(int value) {
-
-            return new byte[] { (byte)(value >> 8), (byte)value };
+        private static byte[] WriteUInt16(int value)
+        {
+            return new[] {(byte)(value >> 8), (byte)value};
         }
 
         #endregion
     }
 }
-
-

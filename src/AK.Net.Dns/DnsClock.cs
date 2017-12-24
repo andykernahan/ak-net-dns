@@ -28,8 +28,8 @@ namespace AK.Net.Dns
         /// Returns the current system time.
         /// </summary>
         /// <returns>The current system time.</returns>
-        public static DateTime Now() {
-
+        public static DateTime Now()
+        {
             return DateTime.UtcNow;
         }
 

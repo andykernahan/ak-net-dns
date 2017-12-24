@@ -34,7 +34,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of NSRecord records. This field is readonly.
         /// </summary>
-        new public static readonly NSRecord[] EmptyArray = { };
+        public new static readonly NSRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the NSRecord class and specifies the owner name,
@@ -54,8 +54,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public NSRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.NS, cls, ttl) {
-
+            : base(owner, DnsRecordType.NS, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -78,8 +78,8 @@ namespace AK.Net.Dns.Records
         /// <see langword="null"/>.
         /// </exception>
         public NSRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, DnsName domain)
-            : base(owner, DnsRecordType.NS, cls, ttl) {
-
+            : base(owner, DnsRecordType.NS, cls, ttl)
+        {
             Guard.NotNull(domain, "domain");
 
             _domain = domain;
@@ -93,20 +93,20 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteName(this.Domain);
+            writer.WriteName(Domain);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} {1}", base.ToString(), this.Domain);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} {1}", base.ToString(), Domain);
         }
 
         /// <summary>
@@ -115,10 +115,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName Domain {
-
-            get {  return _domain; }
-            set {
+        public DnsName Domain
+        {
+            get => _domain;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _domain = value;
             }

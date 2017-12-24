@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AK.Net.Dns
@@ -46,7 +47,29 @@ namespace AK.Net.Dns
     {
         #region Private Fields.
 
-        private volatile List<T> _items;        
+        private volatile List<T> _items;
+
+        #endregion
+
+        #region Explicit Interface.
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        #region Private Impl.
+
+        private List<T> NewCopy()
+        {
+            var newItems = new List<T>(_items);
+
+            _items = newItems;
+
+            return newItems;
+        }
 
         #endregion
 
@@ -55,9 +78,9 @@ namespace AK.Net.Dns
         /// <summary>
         /// Initialises a new instance of the CopyOnMutateCollection&lt;T&gt; class.
         /// </summary>
-        public CopyOnMutateCollection() {
-
-            _items = new List<T>();            
+        public CopyOnMutateCollection()
+        {
+            _items = new List<T>();
         }
 
         /// <summary>
@@ -67,9 +90,9 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="collection"/> is <see langword="null"/>.
         /// </exception>
-        public CopyOnMutateCollection(IEnumerable<T> collection) {            
-
-            _items = new List<T>(collection);            
+        public CopyOnMutateCollection(IEnumerable<T> collection)
+        {
+            _items = new List<T>(collection);
         }
 
         /// <summary>
@@ -78,8 +101,8 @@ namespace AK.Net.Dns
         /// </summary>
         /// <param name="item">The item to locate.</param>
         /// <returns>The zero-based index of the item, otherwise; -1,</returns>
-        public int IndexOf(T item) {
-
+        public int IndexOf(T item)
+        {
             return _items.IndexOf(item);
         }
 
@@ -93,8 +116,8 @@ namespace AK.Net.Dns
         /// Thrown when <paramref name="index"/> is less that zero or greater than
         /// <see cref="AK.Net.Dns.CopyOnMutateCollection&lt;T&gt;.Count"/>.
         /// </exception>
-        public void Insert(int index, T item) {
-
+        public void Insert(int index, T item)
+        {
             NewCopy().Insert(index, item);
         }
 
@@ -106,8 +129,8 @@ namespace AK.Net.Dns
         /// Thrown when <paramref name="index"/> is less that zero or greater than or equal to
         /// <see cref="AK.Net.Dns.CopyOnMutateCollection&lt;T&gt;.Count"/>.
         /// </exception>
-        public void RemoveAt(int index) {
-
+        public void RemoveAt(int index)
+        {
             NewCopy().RemoveAt(index);
         }
 
@@ -119,26 +142,26 @@ namespace AK.Net.Dns
         /// Thrown when <paramref name="index"/> is less that zero or greater than or equal to
         /// <see cref="AK.Net.Dns.CopyOnMutateCollection&lt;T&gt;.Count"/>.
         /// </exception>
-        public T this[int index] {
-
-            get { return _items[index]; }
-            set { NewCopy()[index] = value; }
+        public T this[int index]
+        {
+            get => _items[index];
+            set => NewCopy()[index] = value;
         }
 
         /// <summary>
         /// Adds the specified <paramref name="item"/> to the end of this collection.
         /// </summary>
         /// <param name="item">The item to add.</param>
-        public void Add(T item) {
-
+        public void Add(T item)
+        {
             NewCopy().Add(item);
         }
 
         /// <summary>
         /// Clears all items from this collection.
         /// </summary>
-        public void Clear() {
-
+        public void Clear()
+        {
             _items = new List<T>();
         }
 
@@ -149,8 +172,8 @@ namespace AK.Net.Dns
         /// <param name="item">The item to locate.</param>
         /// <returns><see langword="true"/> if the <paramref name="item"/> is contained
         /// within this collection, otherwise; <see langword="false"/>.</returns>
-        public bool Contains(T item) {
-
+        public bool Contains(T item)
+        {
             return _items.Contains(item);
         }
 
@@ -162,26 +185,20 @@ namespace AK.Net.Dns
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="array"/> is <see langword="null"/>.
         /// </exception>
-        public void CopyTo(T[] array, int arrayIndex) {
-
+        public void CopyTo(T[] array, int arrayIndex)
+        {
             _items.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
         /// Returns the number of items in this collection.
         /// </summary>
-        public int Count {
-
-            get { return _items.Count; }
-        }
+        public int Count => _items.Count;
 
         /// <summary>
         /// Returns a value indicating if this collection is readonly.
         /// </summary>
-        public bool IsReadOnly {
-
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Removes the specified <paramref name="item"/> from this collection.
@@ -189,8 +206,8 @@ namespace AK.Net.Dns
         /// <param name="item">The item to remove.</param>
         /// <returns><see langword="true"/> if the <paramref name="item"/> is was removed
         /// from this collection, otherwise; <see langword="false"/>.</returns>
-        public bool Remove(T item) {
-            
+        public bool Remove(T item)
+        {
             return NewCopy().Remove(item);
         }
 
@@ -202,31 +219,9 @@ namespace AK.Net.Dns
         /// </returns>
         /// <remarks>The returned enumerator will <b>not</b> throw an exception
         /// if this collection is modified during enumeration.</remarks>
-        public IEnumerator<T> GetEnumerator() {
-
-            return _items.GetEnumerator();            
-        }
-
-        #endregion
-
-        #region Explicit Interface.
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-
-            return GetEnumerator();
-        }
-
-        #endregion
-
-        #region Private Impl.
-        
-        private List<T> NewCopy() {
-
-            List<T> newItems = new List<T>(_items);
-
-            _items = newItems;
-
-            return newItems;
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _items.GetEnumerator();
         }
 
         #endregion

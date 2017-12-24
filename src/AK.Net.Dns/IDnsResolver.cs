@@ -27,6 +27,30 @@ namespace AK.Net.Dns
     public interface IDnsResolver
     {
         /// <summary>
+        /// Gets or sets the <see cref="AK.Net.Dns.IDnsCache"/> responsible for
+        /// caching query replies.
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown when <paramref name="value"/> is <see langword="null"/>.
+        /// </exception>
+        IDnsCache Cache { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="AK.Net.Dns.IDnsTransport"/> responsible for
+        /// transfering queries.
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown when <paramref name="value"/> is <see langword="null"/>.
+        /// </exception>
+        IDnsTransport Transport { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="AK.Net.Dns.DnsName"/> suffix used to convert
+        /// relative names to absolute names before they are queried.
+        /// </summary>
+        DnsName NameSuffix { get; set; }
+
+        /// <summary>
         /// Accepts responsibility for completely resolving the specified
         /// <paramref name="question"/> and returning the reply.
         /// </summary>
@@ -307,30 +331,5 @@ namespace AK.Net.Dns
         /// not being answered.
         /// </exception>
         MXInfo EndGetMXInfo(IAsyncResult iar);
-
-        /// <summary>
-        /// Gets or sets the <see cref="AK.Net.Dns.IDnsCache"/> responsible for
-        /// caching query replies.
-        /// </summary>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when <paramref name="value"/> is <see langword="null"/>.
-        /// </exception>
-        IDnsCache Cache { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="AK.Net.Dns.IDnsTransport"/> responsible for
-        /// transfering queries.
-        /// </summary>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when <paramref name="value"/> is <see langword="null"/>.
-        /// </exception>
-        IDnsTransport Transport { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="AK.Net.Dns.DnsName"/> suffix used to convert
-        /// relative names to absolute names before they are queried.
-        /// </summary>
-        DnsName NameSuffix { get; set; }
     }
 }
-

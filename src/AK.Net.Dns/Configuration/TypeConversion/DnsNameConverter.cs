@@ -49,10 +49,12 @@ namespace AK.Net.Dns.Configuration.TypeConversion
         /// <see langword="true"/> if this converter can perform the conversion;
         /// otherwise, <see langword="false"/>.
         /// </returns>
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
-
-            if(sourceType == typeof(string))
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            if (sourceType == typeof(string))
+            {
                 return true;
+            }
 
             return base.CanConvertFrom(context, sourceType);
         }
@@ -73,10 +75,12 @@ namespace AK.Net.Dns.Configuration.TypeConversion
         /// <see langword="true"/> if this converter can perform the conversion;
         /// otherwise, <see langword="false"/>.
         /// </returns>
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
-
-            if(destinationType == typeof(DnsName))
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            if (destinationType == typeof(DnsName))
+            {
                 return true;
+            }
 
             return base.CanConvertTo(context, destinationType);
         }
@@ -103,12 +107,14 @@ namespace AK.Net.Dns.Configuration.TypeConversion
         /// The conversion cannot be performed.
         /// </exception>
         public override object ConvertFrom(ITypeDescriptorContext context,
-            CultureInfo culture, object value) {
+            CultureInfo culture, object value)
+        {
+            var nameString = value as string;
 
-            string nameString = value as string;
-
-            if(nameString != null)
+            if (nameString != null)
+            {
                 return DnsName.Parse(nameString);
+            }
 
             return base.ConvertFrom(context, culture, value);
         }
@@ -140,10 +146,12 @@ namespace AK.Net.Dns.Configuration.TypeConversion
         /// The conversion cannot be performed.
         /// </exception>
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture,
-            object value, Type destinationType) {
-
-            if(destinationType == typeof(DnsName))
+            object value, Type destinationType)
+        {
+            if (destinationType == typeof(DnsName))
+            {
                 return value.ToString();
+            }
 
             return base.ConvertTo(context, culture, value, destinationType);
         }

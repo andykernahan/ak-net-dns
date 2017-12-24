@@ -66,4 +66,3 @@ namespace AK.Net.Dns
             TimeSpan ttl, IDnsReader reader);
     }
 }
-

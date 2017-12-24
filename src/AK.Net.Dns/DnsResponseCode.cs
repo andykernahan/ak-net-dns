@@ -69,6 +69,6 @@ namespace AK.Net.Dns
         /// <summary>
         /// Indicates that the query failed as the requestor is not authorised.
         /// </summary>
-        NotAuth = 9,
+        NotAuth = 9
     }
 }

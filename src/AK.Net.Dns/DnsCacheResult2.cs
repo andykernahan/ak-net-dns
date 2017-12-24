@@ -16,19 +16,26 @@ using System;
 using System.Collections.Generic;
 
 namespace AK.Net.Dns
-{   
+{
     /// <summary>
     /// Contains the result of a <see cref="AK.Net.Dns.IDnsCache"/> operation.
     /// This class is <see langword="sealed"/>.
     /// </summary>
-    [Serializable]    
+    [Serializable]
     public class DnsCacheResult2
     {
-        #region Private Fields.
+        #region Private Impl.
 
-        private readonly bool _isEmpty;
-        private readonly DnsResponseCode _responseCode;
-        private readonly ICollection<DnsRecord> _records;
+        private DnsCacheResult2()
+        {
+            IsEmpty = true;
+            ResponseCode = DnsResponseCode.NoError;
+            Records = DnsRecord.EmptyArray;
+        }
+
+        #endregion
+
+        #region Private Fields.
 
         #endregion
 
@@ -45,7 +52,9 @@ namespace AK.Net.Dns
         /// </summary>
         /// <param name="responseCode">The cache response code.</param>
         public DnsCacheResult2(DnsResponseCode responseCode)
-            : this(responseCode, DnsRecord.EmptyArray) { }
+            : this(responseCode, DnsRecord.EmptyArray)
+        {
+        }
 
         /// <summary>
         /// Intitialises a new instance of the <see cref="DnsCacheResult2"/> type.
@@ -59,61 +68,43 @@ namespace AK.Net.Dns
         /// Thrown when <paramref name="records"/> is not readonly.
         /// </exception>
         public DnsCacheResult2(DnsResponseCode responseCode,
-            ICollection<DnsRecord> records) {
-
+            ICollection<DnsRecord> records)
+        {
             Guard.NotNull(records, "records");
-            if(!records.IsReadOnly)
+            if (!records.IsReadOnly)
+            {
                 throw Guard.CollectionMustBeReadonly("records");
+            }
 
-            _responseCode = responseCode;
-            _records = records;
-            _isEmpty = false;
+            ResponseCode = responseCode;
+            Records = records;
+            IsEmpty = false;
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
+        public override string ToString()
+        {
             return string.Format("IsEmpty={0}, ResponseCode={1}, Records={2}",
-                this.IsEmpty, this.ResponseCode, this.Records.Count);
+                IsEmpty, ResponseCode, Records.Count);
         }
 
         /// <summary>
         /// Gets the response code of this cache result.
         /// </summary>
-        public DnsResponseCode ResponseCode {
-
-            get { return _responseCode; }
-        }
+        public DnsResponseCode ResponseCode { get; }
 
         /// <summary>
         /// Gets the records returned by the cache operation.
         /// </summary>
-        public ICollection<DnsRecord> Records {
-
-            get { return _records; }
-        }
+        public ICollection<DnsRecord> Records { get; }
 
         /// <summary>
         /// Gets a value indicating if this cache result is empty.
         /// </summary>
-        public bool IsEmpty {
-
-            get { return _isEmpty; }
-        }
-
-        #endregion
-
-        #region Private Impl.
-
-        private DnsCacheResult2() {
-
-            _isEmpty = true;
-            _responseCode = DnsResponseCode.NoError;
-            _records = DnsRecord.EmptyArray;
-        }
+        public bool IsEmpty { get; }
 
         #endregion
     }

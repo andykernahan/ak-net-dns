@@ -13,11 +13,8 @@
 // limitations under the License.
 
 using System;
-using System.Net;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
-using AK.Net.Dns.Records;
 
 namespace AK.Net.Dns
 {
@@ -28,9 +25,6 @@ namespace AK.Net.Dns
     public class MXInfo
     {
         #region Private Fields.
-
-        private readonly DnsName _domain;
-        private readonly IList<DnsName> _exchanges;
 
         private static readonly ReadOnlyCollection<DnsName> EMPTY_EXCHANGES =
             new ReadOnlyCollection<DnsName>(new DnsName[0]);
@@ -44,12 +38,12 @@ namespace AK.Net.Dns
         /// mail exchanges specified.
         /// </summary>
         /// <param name="domain">The domain.</param>
-        public MXInfo(DnsName domain) {
-
+        public MXInfo(DnsName domain)
+        {
             Guard.NotNull(domain, "domain");
 
-            _domain = domain;
-            _exchanges = EMPTY_EXCHANGES;
+            Domain = domain;
+            Exchanges = EMPTY_EXCHANGES;
         }
 
         /// <summary>
@@ -58,31 +52,25 @@ namespace AK.Net.Dns
         /// </summary>
         /// <param name="domain">The owner domain.</param>
         /// <param name="exchanges">The mail exchanges sorted in order of preference.</param>
-        public MXInfo(DnsName domain, DnsName[] exchanges) {
-
+        public MXInfo(DnsName domain, DnsName[] exchanges)
+        {
             Guard.NotNull(domain, "domain");
             Guard.NotNull(exchanges, "exchanges");
 
-            _domain = domain;
-            _exchanges = exchanges.Length > 0 ? Array.AsReadOnly(exchanges) : EMPTY_EXCHANGES;
+            Domain = domain;
+            Exchanges = exchanges.Length > 0 ? Array.AsReadOnly(exchanges) : EMPTY_EXCHANGES;
         }
 
         /// <summary>
         /// Gets the owner domain name.
         /// </summary>
-        public DnsName Domain {
-
-            get { return _domain; }
-        }
+        public DnsName Domain { get; }
 
         /// <summary>
         /// Gets the exchanges, sorted in order of preference, which are responsible
         /// for processing incoming mail for the owner domain.
         /// </summary>
-        public IList<DnsName> Exchanges {
-
-            get { return _exchanges; }
-        }
+        public IList<DnsName> Exchanges { get; }
 
         #endregion
     }

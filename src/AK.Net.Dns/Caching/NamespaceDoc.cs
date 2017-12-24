@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 namespace AK.Net.Dns.Caching
 {
 #if BUILD_DOCS
-    /// <summary>
-    /// Contains <see cref="AK.Net.Dns.IDnsCache"/> implementations.
-    /// </summary>
+/// <summary>
+/// Contains <see cref="AK.Net.Dns.IDnsCache"/> implementations.
+/// </summary>
     internal sealed class NamespaceDoc { }
 #endif
 }

@@ -23,6 +23,15 @@ namespace AK.Net.Dns.Records
     [Serializable]
     public class MXRecord : DnsRecord, IComparable<MXRecord>, IComparable
     {
+        #region Explicit Interface.
+
+        int IComparable.CompareTo(object obj)
+        {
+            return CompareTo(obj as MXRecord);
+        }
+
+        #endregion
+
         #region Private Fields.
 
         private short _preference;
@@ -35,7 +44,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of MXRecord records. This field is readonly.
         /// </summary>
-        new public static readonly MXRecord[] EmptyArray = { };
+        public new static readonly MXRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the MXRecord class and specifies the owner name,
@@ -55,8 +64,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public MXRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.MX, cls, ttl) {
-
+            : base(owner, DnsRecordType.MX, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -81,8 +90,8 @@ namespace AK.Net.Dns.Records
         /// </exception>
         public MXRecord(DnsName owner, DnsRecordClass cls, TimeSpan ttl, short preference,
             DnsName exchange)
-            : base(owner, DnsRecordType.MX, cls, ttl) {
-
+            : base(owner, DnsRecordType.MX, cls, ttl)
+        {
             Guard.NotNull(exchange, "exchange");
 
             _preference = preference;
@@ -97,12 +106,12 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteInt16(this.Preference);
-            writer.WriteName(this.Exchange);
+            writer.WriteInt16(Preference);
+            writer.WriteName(Exchange);
         }
 
         /// <summary>
@@ -112,24 +121,26 @@ namespace AK.Net.Dns.Records
         /// <param name="other">The other instance.</param>
         /// <returns>A value indicating relative eqaulity with the 
         /// <paramref name="other"/> instance.</returns>
-        public int CompareTo(MXRecord other) {
-
-            if(other == null)
+        public int CompareTo(MXRecord other)
+        {
+            if (other == null)
+            {
                 return 1;
+            }
 
-            int res = this.Owner.CompareTo(other.Owner);
+            var res = Owner.CompareTo(other.Owner);
 
-            return res != 0 ? res : this.Preference.CompareTo(other.Preference);
+            return res != 0 ? res : Preference.CompareTo(other.Preference);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} {1,-2} {2}", base.ToString(), this.Preference,
-                this.Exchange);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} {1,-2} {2}", base.ToString(), Preference,
+                Exchange);
         }
 
         /// <summary>
@@ -138,10 +149,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public DnsName Exchange {
-
-            get {  return _exchange; }
-            set {
+        public DnsName Exchange
+        {
+            get => _exchange;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _exchange = value;
             }
@@ -150,19 +162,10 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Gets or sets the prefence of the exchange.
         /// </summary>
-        public short Preference {
-
-            get { return _preference; }
-            set { _preference = value; }
-        }
-
-        #endregion
-
-        #region Explicit Interface.
-
-        int IComparable.CompareTo(object obj) {
-
-            return CompareTo(obj as MXRecord);            
+        public short Preference
+        {
+            get => _preference;
+            set => _preference = value;
         }
 
         #endregion

@@ -13,13 +13,10 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-using AK.Net.Dns.Records;
-
 namespace AK.Net.Dns
-{   
+{
     /// <summary>
     /// Contains the result of a <see cref="AK.Net.Dns.IDnsCache"/> operation.
     /// </summary>
@@ -29,9 +26,6 @@ namespace AK.Net.Dns
     {
         #region Private Fields.
 
-        private DnsReply _reply;
-        private DnsCacheResultType _type;
-
         #endregion
 
         #region Public Interface.
@@ -39,17 +33,17 @@ namespace AK.Net.Dns
         /// <summary>
         /// Defines a failed cache result. This field is <see langword="readonly"/>.
         /// </summary>
-        public static readonly DnsCacheResult Failed = 
+        public static readonly DnsCacheResult Failed =
             new DnsCacheResult(DnsCacheResultType.Failed);
 
         /// <summary>
         /// Intitialises a new instance of the <see cref="DnsCacheResult"/> type.
         /// </summary>
         /// <param name="type">The cache result type.</param>
-        public DnsCacheResult(DnsCacheResultType type) {
-
-            _type = type;
-            _reply = null;
+        public DnsCacheResult(DnsCacheResultType type)
+        {
+            Type = type;
+            Reply = null;
         }
 
         /// <summary>
@@ -58,35 +52,29 @@ namespace AK.Net.Dns
         /// <param name="type">The cache result type.</param>
         /// <param name="reply">The reply returned by the operation.</param>
         public DnsCacheResult(DnsCacheResultType type, DnsReply reply)
-            : this(type) {
-
-            _reply = reply;
+            : this(type)
+        {
+            Reply = reply;
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return string.Format("Type={0}, Reply={1}", this.Type, this.Reply);
+        public override string ToString()
+        {
+            return string.Format("Type={0}, Reply={1}", Type, Reply);
         }
 
         /// <summary>
         /// Gets the type of this cache result.
         /// </summary>
-        public DnsCacheResultType Type {
-
-            get { return _type; }
-        }
+        public DnsCacheResultType Type { get; }
 
         /// <summary>
         /// Gets the reply returned by the cache operation.
         /// </summary>
-        public DnsReply Reply {
-
-            get { return _reply; }
-        }
+        public DnsReply Reply { get; }
 
         #endregion
     }

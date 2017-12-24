@@ -13,11 +13,10 @@
 // limitations under the License.
 
 using System;
-using System.Resources;
 using System.Reflection;
-using System.Security.Permissions;
-using System.Runtime.CompilerServices;
+using System.Resources;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 
 [assembly: AssemblyTitle("DNS Sandbox for .NET 3.5")]
 [assembly: AssemblyDescription("Domain Name System Library Sandbox for .NET 3.5.")]

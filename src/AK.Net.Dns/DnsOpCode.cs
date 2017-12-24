@@ -41,6 +41,6 @@ namespace AK.Net.Dns
         /// <summary>
         /// A server update message.
         /// </summary>
-        Update = 5,
+        Update = 5
     }
 }

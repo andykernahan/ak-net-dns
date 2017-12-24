@@ -13,13 +13,9 @@
 // limitations under the License.
 
 using System;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
 using System.Collections.Generic;
-
-using AK.Net.Dns.Records;
+using System.Threading;
+using log4net;
 
 namespace AK.Net.Dns.Caching
 {
@@ -34,10 +30,8 @@ namespace AK.Net.Dns.Caching
         private long _hits;
         private long _misses;
         private long _questions;
-        private log4net.ILog _log;
+        private ILog _log;
         private readonly Timer _statisticsTimer;
-        private readonly DateTime _createdOn;
-        private readonly Dictionary<DnsName, CacheNode> _nodes;
 
         private static readonly TimeSpan STAT_LOG_INTERVAL = TimeSpan.FromSeconds(5);
 
@@ -48,12 +42,12 @@ namespace AK.Net.Dns.Caching
         /// <summary>
         /// Initialises a new instance of the <see cref="DnsCache2"/> class.
         /// </summary>
-        public DnsCache2() {            
-
-            _createdOn = DnsClock.Now();
-            _nodes = new Dictionary<DnsName, CacheNode>();
-            _statisticsTimer = new Timer((o) => LogStatistics(), null,
-                STAT_LOG_INTERVAL, STAT_LOG_INTERVAL);          
+        public DnsCache2()
+        {
+            CreatedOn = DnsClock.Now();
+            CacheNodes = new Dictionary<DnsName, CacheNode>();
+            _statisticsTimer = new Timer(o => LogStatistics(), null,
+                STAT_LOG_INTERVAL, STAT_LOG_INTERVAL);
         }
 
         /// <summary>
@@ -65,15 +59,19 @@ namespace AK.Net.Dns.Caching
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="question"/> is <see langword="null"/>.
         /// </exception>
-        public DnsCacheResult2 Get(DnsQuestion question) {
-
+        public DnsCacheResult2 Get(DnsQuestion question)
+        {
             Guard.NotNull(question, "question");
 
             IncrementQuestions();
-            if(_questions % 2 == 0)
+            if (_questions % 2 == 0)
+            {
                 IncrementHits();
+            }
             else
+            {
                 IncrementMisses();
+            }
 
             return DnsCacheResult2.Empty;
         }
@@ -86,61 +84,52 @@ namespace AK.Net.Dns.Caching
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="reply"/> is <see langword="null"/>.
         /// </exception>
-        public void Put(DnsReply reply) {
-
+        public void Put(DnsReply reply)
+        {
             Guard.NotNull(reply, "reply");
         }
 
         /// <summary>
         /// Gets the number of questions this cache has been asked.
         /// </summary>
-        public long Questions {
-
-            get { return _questions; }
-        }
+        public long Questions => _questions;
 
         /// <summary>
         /// Gets the number of cache misses.
         /// </summary>
-        public long Misses {
-
-            get { return _misses; }
-        }
+        public long Misses => _misses;
 
         /// <summary>
         /// Gets the number of cache hits.
         /// </summary>
-        public long Hits {
-
-            get { return _hits; }
-        }
+        public long Hits => _hits;
 
         /// <summary>
         /// Gets the cache hit ratio.
         /// </summary>
-        public double HitRatio {
-
-            get {
-                if(this.Questions == 0 || this.Hits == 0)
-                    return 0.0d;                
-                return (double)this.Hits / (double)this.Questions;
+        public double HitRatio
+        {
+            get
+            {
+                if (Questions == 0 || Hits == 0)
+                {
+                    return 0.0d;
+                }
+                return Hits / (double)Questions;
             }
         }
 
         /// <summary>
         /// Gets the time at which this instance was created.
         /// </summary>
-        public DateTime CreatedOn {
-
-            get { return _createdOn; }
-        }
+        public DateTime CreatedOn { get; }
 
         #endregion
 
         #region Protected Interface.
 
-        protected virtual CacheNode GetCacheNode(DnsQuestion question) {
-
+        protected virtual CacheNode GetCacheNode(DnsQuestion question)
+        {
             //CacheNode head;
             //CacheNode match = null;
             //DateTime now = DnsClock.Now();
@@ -177,60 +166,60 @@ namespace AK.Net.Dns.Caching
             //    return match;
             //} else {
             //    IncrementMisses();
-                return null;
+            return null;
             //}
         }
 
         /// <summary>
         /// Increments the number of questions this cache has been asked.
         /// </summary>
-        protected void IncrementQuestions() {
-
+        protected void IncrementQuestions()
+        {
             Interlocked.Increment(ref _questions);
         }
 
         /// <summary>
         /// Increments the number of cache misses for this cache.
         /// </summary>
-        protected void IncrementMisses() {
-
+        protected void IncrementMisses()
+        {
             Interlocked.Increment(ref _misses);
         }
 
         /// <summary>
         /// Increments the number of cache hits for this cache.
         /// </summary>
-        protected void IncrementHits() {
-
+        protected void IncrementHits()
+        {
             Interlocked.Increment(ref _hits);
         }
 
         /// <summary>
         /// Logs informative, periodic, statistics.
         /// </summary>
-        public virtual void LogStatistics() {
-
-            this.Log.InfoFormat("Id={0}, CreatedOn={1}, Questions={2}, Hits={3}, Misses={4}, HitRatio={5:0.00}",
-                GetHashCode(), this.CreatedOn, this.Questions, this.Hits,
-                this.Misses, this.HitRatio);
+        public virtual void LogStatistics()
+        {
+            Log.InfoFormat("Id={0}, CreatedOn={1}, Questions={2}, Hits={3}, Misses={4}, HitRatio={5:0.00}",
+                GetHashCode(), CreatedOn, Questions, Hits,
+                Misses, HitRatio);
         }
 
         /// <summary>
         /// Gets the dictionary of cache nodes contained by this cache.
         /// </summary>
-        protected Dictionary<DnsName, CacheNode> CacheNodes {
-
-            get { return _nodes; }
-        }
+        protected Dictionary<DnsName, CacheNode> CacheNodes { get; }
 
         /// <summary>
         /// Gets the <see cref="log4net.ILog"/> for this type.
         /// </summary>
-        protected log4net.ILog Log {
-
-            get {
-                if(_log == null)
-                    _log = log4net.LogManager.GetLogger(GetType());
+        protected ILog Log
+        {
+            get
+            {
+                if (_log == null)
+                {
+                    _log = LogManager.GetLogger(GetType());
+                }
                 return _log;
             }
         }
@@ -246,20 +235,18 @@ namespace AK.Net.Dns.Caching
             #region Private Fields.
 
             private readonly DateTime _expires;
-            private readonly ICollection<DnsRecord> _records;
-            private readonly CacheNodeSource _source;
 
             #endregion
 
             #region Public Interface.
-            
-            public CacheNode(DnsResponseCode responseCode, DnsRecordType recordType,
-                ICollection<DnsRecord> records, CacheNodeSource source) {
 
+            public CacheNode(DnsResponseCode responseCode, DnsRecordType recordType,
+                ICollection<DnsRecord> records, CacheNodeSource source)
+            {
                 Guard.NotNull(records, "records");
-                
-                _records = records;                
-                _source = source;                
+
+                Records = records;
+                Source = source;
             }
 
             /// <summary>
@@ -268,26 +255,20 @@ namespace AK.Net.Dns.Caching
             /// <param name="dateTime">The current date time.</param>
             /// <returns><se langword="true"/> if this node is alive, otherwise;
             /// <see langword="false"/>.</returns>
-            public bool IsAlive(DateTime dateTime) {                
-
+            public bool IsAlive(DateTime dateTime)
+            {
                 return false;
             }
 
             /// <summary>
             /// Gets the records contained by this node.
             /// </summary>
-            public ICollection<DnsRecord> Records {
-
-                get { return _records; }
-            }
+            public ICollection<DnsRecord> Records { get; }
 
             /// <summary>
             /// Gets the source of this node.
             /// </summary>
-            public CacheNodeSource Source {
-
-                get { return _source; }
-            }            
+            public CacheNodeSource Source { get; }
 
             #endregion
         }

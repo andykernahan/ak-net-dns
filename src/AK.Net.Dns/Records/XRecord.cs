@@ -33,7 +33,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of XRecord records. This field is readonly.
         /// </summary>
-        new public static readonly XRecord[] EmptyArray = { };
+        public new static readonly XRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the XRecord class and specifies the owner name,
@@ -55,8 +55,8 @@ namespace AK.Net.Dns.Records
         /// </exception>
         public XRecord(DnsName owner, DnsRecordType type, DnsRecordClass cls, TimeSpan ttl,
             IDnsReader reader)
-            : base(owner, type, cls, ttl) {
-
+            : base(owner, type, cls, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             _data = reader.ReadBytes(reader.ReadUInt16());
@@ -80,8 +80,8 @@ namespace AK.Net.Dns.Records
         /// <see cref="System.Net.Sockets.AddressFamily.InterNetwork"/> family.
         /// </exception>
         public XRecord(DnsName owner, DnsRecordType type, DnsRecordClass cls, TimeSpan ttl, byte[] data)
-            : base(owner, type, cls, ttl) {
-
+            : base(owner, type, cls, ttl)
+        {
             Guard.NotNull(data, "data");
 
             _data = data;
@@ -91,9 +91,9 @@ namespace AK.Net.Dns.Records
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} {1}", base.ToString(), DnsUtility.ToString(this.Data));
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} {1}", base.ToString(), DnsUtility.ToString(Data));
         }
 
         /// <summary>
@@ -104,11 +104,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteBytes(this.Data);
+            writer.WriteBytes(Data);
         }
 
         /// <summary>
@@ -117,10 +117,11 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public byte[] Data {
-
-            get { return _data; }
-            set {
+        public byte[] Data
+        {
+            get => _data;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _data = value;
             }

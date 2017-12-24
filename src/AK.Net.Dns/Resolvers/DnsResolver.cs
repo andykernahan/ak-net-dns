@@ -15,8 +15,8 @@
 using System;
 using System.Linq;
 using System.Net;
-
 using AK.Net.Dns.Records;
+using log4net;
 using F = AK.Net.Dns.DnsFuncs;
 
 namespace AK.Net.Dns.Resolvers
@@ -30,8 +30,7 @@ namespace AK.Net.Dns.Resolvers
     {
         #region Private Fields.
 
-        private log4net.ILog _log;
-        private DnsName _nameSuffix;
+        private ILog _log;
         private IDnsCache _cache;
         private IDnsTransport _transport;
 
@@ -59,17 +58,20 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public virtual DnsReply Resolve(DnsQuestion question) {
-
+        public virtual DnsReply Resolve(DnsQuestion question)
+        {
             Guard.NotNull(question, "question");
 
             DnsReply reply;
-            DnsCacheResult cacheResult = this.Cache.Get(question);
+            var cacheResult = Cache.Get(question);
 
-            if(cacheResult.Type == DnsCacheResultType.Failed) {
+            if (cacheResult.Type == DnsCacheResultType.Failed)
+            {
                 reply = Resolve(CreateQuery(question));
-                this.Cache.Put(reply);
-            } else {
+                Cache.Put(reply);
+            }
+            else
+            {
                 reply = cacheResult.Reply;
             }
 
@@ -92,24 +94,30 @@ namespace AK.Net.Dns.Resolvers
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="question"/> is <see langword="null"/>.
         /// </exception>
-        public virtual IAsyncResult BeginResolve(DnsQuestion question, AsyncCallback callback, object state) {
-
+        public virtual IAsyncResult BeginResolve(DnsQuestion question, AsyncCallback callback, object state)
+        {
             Guard.NotNull(question, "question");
 
-            ResolveAsyncState asyncState = new ResolveAsyncState(callback, state);
+            var asyncState = new ResolveAsyncState(callback, state);
 
-            asyncState.QueueOperation(delegate {
-                try {
+            asyncState.QueueOperation(delegate
+            {
+                try
+                {
                     asyncState.Result = Resolve(question);
-                } catch(DnsException exc) {
+                }
+                catch (DnsException exc)
+                {
                     asyncState.Exception = exc;
-                } finally {
+                }
+                finally
+                {
                     asyncState.OnComplete();
                 }
             });
 
             return asyncState;
-        }        
+        }
 
         /// <summary>
         /// Ends an asynchronous operation to resolve the <see cref="AK.Net.Dns.DnsReply"/>
@@ -136,14 +144,16 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurred during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public virtual DnsReply EndResolve(IAsyncResult iar) {
-
+        public virtual DnsReply EndResolve(IAsyncResult iar)
+        {
             Guard.NotNull(iar, "iar");
 
-            ResolveAsyncState state = iar as ResolveAsyncState;
+            var state = iar as ResolveAsyncState;
 
-            if(state == null)
+            if (state == null)
+            {
                 throw Guard.InvalidAsyncResult("iar");
+            }
 
             state.OnEndCalled();
 
@@ -173,37 +183,42 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public virtual IPHostEntry GetHostEntry(string hostOrAddress) {
-
+        public virtual IPHostEntry GetHostEntry(string hostOrAddress)
+        {
             Guard.NotEmpty(hostOrAddress, "hostOrAddress");
 
             DnsName qname;
-            IPAddress address;            
+            IPAddress address;
 
-            if(IPAddress.TryParse(hostOrAddress, out address))
+            if (IPAddress.TryParse(hostOrAddress, out address))
+            {
                 return GetHostEntry(address);
-            else if(DnsName.TryParse(hostOrAddress, out qname)) {
+            }
+            if (DnsName.TryParse(hostOrAddress, out qname))
+            {
                 DnsReply reply;
 
                 qname = AppendNameSuffix(qname);
                 reply = Resolve(new DnsQuestion(qname, DnsQueryType.A, DnsQueryClass.IN));
-                if(reply.Answers.Count > 0) {
-                    return new IPHostEntry() {
+                if (reply.Answers.Count > 0)
+                {
+                    return new IPHostEntry
+                    {
                         HostName = (from cn in reply.Answers
-                                    where F.IsCName(cn) && cn.Owner.Equals(qname)
-                                    select F.ToCName(cn).Canonical).FirstOrDefault() ?? qname,
+                                       where F.IsCName(cn) && cn.Owner.Equals(qname)
+                                       select F.ToCName(cn).Canonical).FirstOrDefault() ?? qname,
                         AddressList = (from a in reply.Answers
-                                       where F.IsAOrAaaa(a)
-                                       select F.ToIP(a)).ToArray(),
-                        Aliases = DnsUtility.EMPTY_STRING_ARRAY
-                    };
-                } else {
-                    return new IPHostEntry() {
-                        HostName = qname,
-                        AddressList = DnsUtility.EMPTY_IP_ARRAY,
+                            where F.IsAOrAaaa(a)
+                            select F.ToIP(a)).ToArray(),
                         Aliases = DnsUtility.EMPTY_STRING_ARRAY
                     };
                 }
+                return new IPHostEntry
+                {
+                    HostName = qname,
+                    AddressList = DnsUtility.EMPTY_IP_ARRAY,
+                    Aliases = DnsUtility.EMPTY_STRING_ARRAY
+                };
             }
 
             throw Guard.MustBeAnIPAddressOrDnsName("hostOrAddress");
@@ -226,19 +241,20 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public virtual IPHostEntry GetHostEntry(IPAddress address) {
-
+        public virtual IPHostEntry GetHostEntry(IPAddress address)
+        {
             Guard.NotNull(address, "address");
 
-            DnsName qname = PtrRecord.MakeName(address);
-            DnsReply reply = Resolve(new DnsQuestion(qname, DnsQueryType.Ptr, DnsQueryClass.IN));
+            var qname = PtrRecord.MakeName(address);
+            var reply = Resolve(new DnsQuestion(qname, DnsQueryType.Ptr, DnsQueryClass.IN));
 
-            return new IPHostEntry() {
-                AddressList = new IPAddress[] { address },
+            return new IPHostEntry
+            {
+                AddressList = new[] {address},
                 Aliases = DnsUtility.EMPTY_STRING_ARRAY,
                 HostName = (from ptr in reply.Answers
-                            where F.IsPtr(ptr) && ptr.Owner.Equals(qname)
-                            select F.ToPtr(ptr).Domain).FirstOrDefault() ?? null
+                               where F.IsPtr(ptr) && ptr.Owner.Equals(qname)
+                               select F.ToPtr(ptr).Domain).FirstOrDefault() ?? null
             };
         }
 
@@ -256,18 +272,24 @@ namespace AK.Net.Dns.Resolvers
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="address"/> is <see langword="null"/>.
         /// </exception>
-        public virtual IAsyncResult BeginGetHostEntry(IPAddress address, AsyncCallback callback, object state) {
-
+        public virtual IAsyncResult BeginGetHostEntry(IPAddress address, AsyncCallback callback, object state)
+        {
             Guard.NotNull(address, "address");
 
-            GetHostEntryAsyncState asyncState = new GetHostEntryAsyncState(callback, state);
+            var asyncState = new GetHostEntryAsyncState(callback, state);
 
-            asyncState.QueueOperation(delegate {
-                try {
+            asyncState.QueueOperation(delegate
+            {
+                try
+                {
                     asyncState.Result = GetHostEntry(address);
-                } catch(DnsException exc) {
+                }
+                catch (DnsException exc)
+                {
                     asyncState.Exception = exc;
-                } finally {
+                }
+                finally
+                {
                     asyncState.OnComplete();
                 }
             });
@@ -300,14 +322,16 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurred during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public virtual IPHostEntry EndGetHostEntry(IAsyncResult iar) {
-
+        public virtual IPHostEntry EndGetHostEntry(IAsyncResult iar)
+        {
             Guard.NotNull(iar, "iar");
 
-            GetHostEntryAsyncState state = iar as GetHostEntryAsyncState;
+            var state = iar as GetHostEntryAsyncState;
 
-            if(state == null)
+            if (state == null)
+            {
                 throw Guard.InvalidAsyncResult("iar");
+            }
 
             state.OnEndCalled();
 
@@ -331,19 +355,20 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public virtual MXInfo GetMXInfo(DnsName domain) {
+        public virtual MXInfo GetMXInfo(DnsName domain)
+        {
+            var qname = AppendNameSuffix(domain);
+            var reply = Resolve(new DnsQuestion(qname, DnsQueryType.MX, DnsQueryClass.IN));
 
-            DnsName qname = AppendNameSuffix(domain);
-            DnsReply reply = Resolve(new DnsQuestion(qname, DnsQueryType.MX, DnsQueryClass.IN));
-
-            if(reply.Answers.Count > 0) {
+            if (reply.Answers.Count > 0)
+            {
                 return new MXInfo(qname,
                     (from ans in reply.Answers
-                     where F.IsMX(ans)
-                     let mx = F.ToMX(ans)
-                     orderby mx
-                     select mx.Exchange).ToArray()
-                    );
+                        where F.IsMX(ans)
+                        let mx = F.ToMX(ans)
+                        orderby mx
+                        select mx.Exchange).ToArray()
+                );
             }
 
             return new MXInfo(domain);
@@ -362,18 +387,24 @@ namespace AK.Net.Dns.Resolvers
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="domain"/> is <see langword="null"/>.
         /// </exception>
-        public virtual IAsyncResult BeginGetMXInfo(DnsName domain, AsyncCallback callback, object state) {
-
+        public virtual IAsyncResult BeginGetMXInfo(DnsName domain, AsyncCallback callback, object state)
+        {
             Guard.NotNull(domain, "domain");
 
-            GetMXInfoAsyncState asyncState = new GetMXInfoAsyncState(callback, state);
+            var asyncState = new GetMXInfoAsyncState(callback, state);
 
-            asyncState.QueueOperation(delegate {
-                try {
+            asyncState.QueueOperation(delegate
+            {
+                try
+                {
                     asyncState.Result = GetMXInfo(domain);
-                } catch(DnsException exc) {
+                }
+                catch (DnsException exc)
+                {
                     asyncState.Exception = exc;
-                } finally {
+                }
+                finally
+                {
                     asyncState.OnComplete();
                 }
             });
@@ -405,16 +436,18 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurred during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public virtual MXInfo EndGetMXInfo(IAsyncResult iar) {
-
+        public virtual MXInfo EndGetMXInfo(IAsyncResult iar)
+        {
             Guard.NotNull(iar, "iar");
 
-            GetMXInfoAsyncState state = iar as GetMXInfoAsyncState;
+            var state = iar as GetMXInfoAsyncState;
 
-            if(state == null)
+            if (state == null)
+            {
                 throw Guard.InvalidAsyncResult("iar");
-            
-            state.OnEndCalled();            
+            }
+
+            state.OnEndCalled();
 
             return state.Result;
         }
@@ -439,10 +472,10 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurs during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public virtual DnsName[] GetNameServers(DnsName domain) {
-
-            DnsName qname = AppendNameSuffix(domain);
-            DnsReply reply = Resolve(new DnsQuestion(qname, DnsQueryType.NS, DnsQueryClass.IN));
+        public virtual DnsName[] GetNameServers(DnsName domain)
+        {
+            var qname = AppendNameSuffix(domain);
+            var reply = Resolve(new DnsQuestion(qname, DnsQueryType.NS, DnsQueryClass.IN));
 
             return reply.Answers.Where(F.IsNS).Select(x => F.ToNS(x).Domain).ToArray();
         }
@@ -461,18 +494,24 @@ namespace AK.Net.Dns.Resolvers
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="domain"/> is <see langword="null"/>.
         /// </exception>
-        public virtual IAsyncResult BeginGetNameServers(DnsName domain, AsyncCallback callback, object state) {
-
+        public virtual IAsyncResult BeginGetNameServers(DnsName domain, AsyncCallback callback, object state)
+        {
             Guard.NotNull(domain, "domain");
 
-            GetNameServersAsyncState asyncState = new GetNameServersAsyncState(callback, state);
+            var asyncState = new GetNameServersAsyncState(callback, state);
 
-            asyncState.QueueOperation(delegate {
-                try {
+            asyncState.QueueOperation(delegate
+            {
+                try
+                {
                     asyncState.Result = GetNameServers(domain);
-                } catch(DnsException exc) {
+                }
+                catch (DnsException exc)
+                {
                     asyncState.Exception = exc;
-                } finally {
+                }
+                finally
+                {
                     asyncState.OnComplete();
                 }
             });
@@ -508,14 +547,16 @@ namespace AK.Net.Dns.Resolvers
         /// Thrown when an error occurred during the resolution, such as the query
         /// not being answered.
         /// </exception>
-        public virtual DnsName[] EndGetNameServers(IAsyncResult iar) {
-
+        public virtual DnsName[] EndGetNameServers(IAsyncResult iar)
+        {
             Guard.NotNull(iar, "iar");
 
-            GetNameServersAsyncState state = iar as GetNameServersAsyncState;
+            var state = iar as GetNameServersAsyncState;
 
-            if(state == null)
+            if (state == null)
+            {
                 throw Guard.InvalidAsyncResult("iar");
+            }
 
             state.OnEndCalled();
 
@@ -529,10 +570,11 @@ namespace AK.Net.Dns.Resolvers
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public IDnsCache Cache {
-
-            get { return _cache; }
-            set {
+        public IDnsCache Cache
+        {
+            get => _cache;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _cache = value;
             }
@@ -545,10 +587,11 @@ namespace AK.Net.Dns.Resolvers
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public IDnsTransport Transport {
-
-            get { return _transport; }
-            set {
+        public IDnsTransport Transport
+        {
+            get => _transport;
+            set
+            {
                 Guard.NotNull(value, "value");
                 _transport = value;
             }
@@ -558,11 +601,7 @@ namespace AK.Net.Dns.Resolvers
         /// Gets or sets the <see cref="AK.Net.Dns.DnsName"/> suffix used to convert
         /// relative names to absolute names before they are queried.
         /// </summary>
-        public DnsName NameSuffix {
-
-            get { return _nameSuffix; }
-            set { _nameSuffix = value; }
-        }
+        public DnsName NameSuffix { get; set; }
 
         #endregion
 
@@ -598,14 +637,13 @@ namespace AK.Net.Dns.Resolvers
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="name"/> is <see langword="null"/>.
         /// </exception>
-        protected DnsName AppendNameSuffix(DnsName name) {
-
+        protected DnsName AppendNameSuffix(DnsName name)
+        {
             Guard.NotNull(name, "name");
 
-            DnsName suffix = this.NameSuffix;
+            var suffix = NameSuffix;
 
-            return suffix != null && name.Kind == DnsNameKind.Relative ?
-                name.Concat(suffix) : name;
+            return suffix != null && name.Kind == DnsNameKind.Relative ? name.Concat(suffix) : name;
         }
 
         /// <summary>
@@ -616,15 +654,15 @@ namespace AK.Net.Dns.Resolvers
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="question"/> is <see langword="null"/>.
         /// </exception>
-        protected virtual DnsQuery CreateQuery(DnsQuestion question) {
-
+        protected virtual DnsQuery CreateQuery(DnsQuestion question)
+        {
             Guard.NotNull(question, "question");
 
-            DnsQuery query = new DnsQuery();
+            var query = new DnsQuery();
 
-            query.Header.Id = DnsResolver.GenerateQueryId();
+            query.Header.Id = GenerateQueryId();
             query.Header.IsRecursionDesired = true;
-            query.Questions.Add(question);            
+            query.Questions.Add(question);
 
             return query;
         }
@@ -639,11 +677,12 @@ namespace AK.Net.Dns.Resolvers
         /// <exception cref="AK.Net.Dns.DnsResolutionException">
         /// Thrown when
         /// </exception>
-        protected void AssertIsPositiveReply(DnsReply reply) {
-
+        protected void AssertIsPositiveReply(DnsReply reply)
+        {
             Guard.NotNull(reply, "reply");
 
-            if(reply.Header.ResponseCode != DnsResponseCode.NoError) {
+            if (reply.Header.ResponseCode != DnsResponseCode.NoError)
+            {
                 throw Guard.DnsResolverNegativeResponseCodeReceived(
                     reply.Header.ResponseCode, reply.Questions.FirstOrDefault());
             }
@@ -653,19 +692,22 @@ namespace AK.Net.Dns.Resolvers
         /// Gets a query identifier.
         /// </summary>
         /// <returns>A query identifier.</returns>
-        protected static int GenerateQueryId() {
-
-            return DnsResolver.QUERY_ID_GEN.Next(10, DnsHeader.MaxId);
+        protected static int GenerateQueryId()
+        {
+            return QUERY_ID_GEN.Next(10, DnsHeader.MaxId);
         }
 
         /// <summary>
         /// Gets the <see cref="log4net.ILog"/> for this type.
         /// </summary>
-        protected log4net.ILog Log {
-
-            get {
-                if(_log == null)
-                    _log = log4net.LogManager.GetLogger(GetType());
+        protected ILog Log
+        {
+            get
+            {
+                if (_log == null)
+                {
+                    _log = LogManager.GetLogger(GetType());
+                }
                 return _log;
             }
         }
@@ -677,29 +719,35 @@ namespace AK.Net.Dns.Resolvers
         private sealed class GetMXInfoAsyncState : DnsAsyncState<MXInfo>
         {
             public GetMXInfoAsyncState(AsyncCallback callback, object state)
-                : base(callback, state) { }
+                : base(callback, state)
+            {
+            }
         }
 
         private sealed class GetNameServersAsyncState : DnsAsyncState<DnsName[]>
         {
             public GetNameServersAsyncState(AsyncCallback callback, object state)
-                : base(callback, state) { }
+                : base(callback, state)
+            {
+            }
         }
 
         private sealed class ResolveAsyncState : DnsAsyncState<DnsReply>
         {
             public ResolveAsyncState(AsyncCallback callback, object state)
-                : base(callback, state) { }
+                : base(callback, state)
+            {
+            }
         }
 
         private sealed class GetHostEntryAsyncState : DnsAsyncState<IPHostEntry>
         {
             public GetHostEntryAsyncState(AsyncCallback callback, object state)
-                : base(callback, state) { }
+                : base(callback, state)
+            {
+            }
         }
 
         #endregion
     }
 }
-
-

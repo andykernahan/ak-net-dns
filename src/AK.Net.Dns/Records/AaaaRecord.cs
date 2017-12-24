@@ -14,11 +14,10 @@
 
 using System;
 using System.Net;
-using AddressFamily = System.Net.Sockets.AddressFamily;
 
 namespace AK.Net.Dns.Records
 {
-	/// <summary>
+    /// <summary>
     /// A DNS AAAA [RFC3596] record which contains the IPv6
     /// <see cref="System.Net.IPAddress"/> of the owner domain.
     /// </summary>
@@ -36,7 +35,7 @@ namespace AK.Net.Dns.Records
         /// <summary>
         /// Defines an empty array of AaaaRecord records. This field is readonly.
         /// </summary>
-        new public static readonly AaaaRecord[] EmptyArray = { };
+        public new static readonly AaaaRecord[] EmptyArray = { };
 
         /// <summary>
         /// Initialises a new instance of the AaaaRecord class and specifies the owner name,
@@ -55,8 +54,8 @@ namespace AK.Net.Dns.Records
         /// <paramref name="reader"/>.
         /// </exception>
         public AaaaRecord(DnsName owner, TimeSpan ttl, IDnsReader reader)
-            : base(owner, DnsRecordType.Aaaa, DnsRecordClass.IN, ttl) {
-
+            : base(owner, DnsRecordType.Aaaa, DnsRecordClass.IN, ttl)
+        {
             Guard.NotNull(reader, "reader");
 
             // Skip the RDLENGTH.
@@ -80,8 +79,8 @@ namespace AK.Net.Dns.Records
         /// <see cref="System.Net.Sockets.AddressFamily.InterNetworkV6"/> family.
         /// </exception>
         public AaaaRecord(DnsName owner, TimeSpan ttl, IPAddress address)
-            : base(owner, DnsRecordType.Aaaa, DnsRecordClass.IN, ttl) {
-
+            : base(owner, DnsRecordType.Aaaa, DnsRecordClass.IN, ttl)
+        {
             Guard.IsIPv6(address, "address");
 
             _address = address;
@@ -95,20 +94,20 @@ namespace AK.Net.Dns.Records
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when <paramref name="writer"/> is <see langword="null"/>.
         /// </exception>
-        public override void WriteData(IDnsWriter writer) {
-
+        public override void WriteData(IDnsWriter writer)
+        {
             Guard.NotNull(writer, "writer");
 
-            writer.WriteIPAddress(this.Address);
+            writer.WriteIPAddress(Address);
         }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> representation of this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> representation of this instance.</returns>
-        public override string ToString() {
-
-            return DnsUtility.Format("{0} {1}", base.ToString(), this.Address);
+        public override string ToString()
+        {
+            return DnsUtility.Format("{0} {1}", base.ToString(), Address);
         }
 
         /// <summary>
@@ -121,10 +120,11 @@ namespace AK.Net.Dns.Records
         /// Thrown when <paramref name="value"/> is not of the
         /// <see cref="System.Net.Sockets.AddressFamily.InterNetworkV6"/> family.
         /// </exception>
-        public IPAddress Address {
-
-            get { return _address; }
-            set {
+        public IPAddress Address
+        {
+            get => _address;
+            set
+            {
                 Guard.IsIPv6(value, "value");
                 _address = value;
             }
