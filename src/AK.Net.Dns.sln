@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AK.Net.Dns", "AK.Net.Dns\AK
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AK.Net.Dns.Sandbox", "AK.Net.Dns.Sandbox\AK.Net.Dns.Sandbox.csproj", "{0E80437B-40A5-4F0D-B77C-44854EC0FAA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AK.NDig", "AK.NDig\AK.NDig.csproj", "{E6115067-E26D-44B8-B68C-C729CF0617E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,12 @@ Global
 		{0E80437B-40A5-4F0D-B77C-44854EC0FAA7}.Docs|Any CPU.Build.0 = Debug|Any CPU
 		{0E80437B-40A5-4F0D-B77C-44854EC0FAA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E80437B-40A5-4F0D-B77C-44854EC0FAA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6115067-E26D-44B8-B68C-C729CF0617E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6115067-E26D-44B8-B68C-C729CF0617E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6115067-E26D-44B8-B68C-C729CF0617E8}.Docs|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6115067-E26D-44B8-B68C-C729CF0617E8}.Docs|Any CPU.Build.0 = Debug|Any CPU
+		{E6115067-E26D-44B8-B68C-C729CF0617E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6115067-E26D-44B8-B68C-C729CF0617E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
